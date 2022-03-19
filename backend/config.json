@@ -1,0 +1,6 @@
+{
+    "server": {
+        "webPort": 8080,
+        "wsPort": 3030
+    }
+}
