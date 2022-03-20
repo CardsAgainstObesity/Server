@@ -12,6 +12,7 @@ const require = createRequire(
     import.meta.url);
 
 const config = require("./config.json");
+const random_names = require("./resources/random/names.json");
 const game = Game.singleton;
 
 const app = express();
@@ -32,7 +33,17 @@ app.get("/api/room/players/:roomId", (req, res) => {
     if (game.rooms.has(roomId)) {
         let players = Array.from(game.rooms.get(roomId).players.values()).map(value => value.toJSON());
         console.log(players);
-        res.send({ "players": players});
+        res.send(players);
+    } else {
+        res.send(new ErrorResponse("UknownRoom").toJSON());
+    }
+});
+
+app.get("/api/room/czar/:roomId", (req, res) => {
+    let roomId = req.params.roomId;
+    if (game.rooms.has(roomId)) {
+        let czar = game.rooms.get(roomId).czar;
+        res.send(czar);
     } else {
         res.send(new ErrorResponse("UknownRoom").toJSON());
     }
@@ -64,17 +75,29 @@ WSServer.listen(server, (server) => {
         socket.on("roomJoinRequest", (roomId) => {
             if (!game.rooms.has(roomId)) { // If room doesn't exist, then send an error
                 socket.emit("error", new ErrorResponse("UknownRoom").toJSON());
-                game.createRoom(roomId);
+                game.createRoom(roomId,player,15,7);
+            } else if(game.rooms.get(roomId)._deleted) {
+                socket.emit("error", new ErrorResponse("RoomDeleted").toJSON());
             } else {
                 // If room exists then send a roomConnectionSuccess message
                 let room = game.rooms.get(roomId);
                 if (room.addPlayer(player)) {
                     LoggingSystem.singleton.log("[Game] Adding Player(" + player.id + ") to Room(" + room.id + ")");
                     socket.join(room.id); // make the client join the sockets room ( for better management of game rooms )
-                    socket.emit("roomConnectionSuccess", room.id);
+                    socket.emit("RoomConnectionSuccess", room.toJSON()); // Tell the socket that the connection to the room was successful
+                    socket.to(room.id).emit("PlayerConnected",player.toJSON()); // Send a broadcast (excluding the socket) to the room anouncing a new player
                 }
             }
         });
+
+        socket.on("RequestPlayerChangeName", (newName) => {
+            let crispyChickenName = random_names[Math.floor(Math.random () * random_names.length)];
+            player.name = newName || crispyChickenName;
+            //if(player.room) {
+                //socket.to(player.room.id).emit("PlayerChangeName",{"player":player.id, "name":newName});
+            //}
+        });
+
         socket.on("disconnect", () => {
             console.log("Socket disconnected");
             let room = player.room;

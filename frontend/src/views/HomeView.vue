@@ -17,6 +17,7 @@ import API from '@/services/API.mjs';
 async function connect() {
   const roomId = document.getElementById('code').value;
   console.log("Attempting socket connect:", roomId);
+  WSConnection.changeName();
   WSConnection.joinRoom(roomId);
   let players = await API.getRoomPlayers(roomId);
   console.log(players);

@@ -14,6 +14,7 @@ export default class Player {
         this._cards = [];
         this._socket = socket;
         this._room = undefined;
+        this._isCzar = false;
     }
 
     /**
@@ -70,8 +71,10 @@ export default class Player {
      */
     toJSON() {
         return {
+            "id": this.id,
             "name": this.name,
-            "obesity": this.obesity
+            "obesity": this.obesity,
+            "room": this.room.id
         }
     }
 }

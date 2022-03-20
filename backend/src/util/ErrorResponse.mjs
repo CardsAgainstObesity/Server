@@ -1,5 +1,5 @@
 /**
- * @typedef {"UknownRoom" | "RoomAlreadyExists"} ErrorResponseType
+ * @typedef {"UknownRoom" | "RoomAlreadyExists" || "RoomDeleted"} ErrorResponseType
  */
 
 
