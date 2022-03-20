@@ -1,0 +1,38 @@
+let cards = [{
+        text: "Bondrewd",
+        dark: false,
+    },
+    {
+        text: "Mitty",
+        dark: false,
+    },
+    {
+        text: "Reg",
+        dark: false,
+    },
+    {
+        text: "Riko",
+        dark: false,
+    },
+    {
+        text: "McDonald's",
+        dark: false,
+    },
+];
+
+let game = {
+    gamestate: "choose",
+    set state(value) {
+        console.log(`${this.gamestate} => ${value}`);
+        this.gamestate = value;
+        console.log(`New gamestate: ${this.gamestate}`);
+    },
+    get state() {
+        console.log(`${this.gamestate}`);
+        return this.gamestate;
+    }
+}
+
+let czar = "Tu puta madre";
+
+export { cards, game, czar }

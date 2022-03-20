@@ -1,18 +1,25 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import GameView from '../views/GameView.vue'
+import ChooseView from '../views/ChooseView.vue'
+import VoteView from '../views/VoteView.vue'
 
-const router = createRouter({
+let router = createRouter({
     history: createWebHistory(
         import.meta.env.BASE_URL),
     routes: [{
             path: '/',
             name: 'home',
             component: HomeView
-        }, {
+        },
+        {
             path: '/partida',
-            name: 'partida',
-            component: GameView
+            name: 'choose',
+            component: ChooseView
+        },
+        {
+            path: '/partida',
+            name: 'vote',
+            component: VoteView
         }
         // ,
         // {

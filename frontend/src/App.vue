@@ -1,41 +1,81 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from '@/components/HelloWorld.vue'
+import { RouterLink, RouterView } from 'vue-router';
+import HelloWorld from '@/components/HelloWorld.vue';
+import { game } from '@/services/cards.mjs';
+</script>
+
+<script>
+export default {
+    name: 'App',
+    data () {
+      return {
+        gamestate: game.state
+      }
+    }
+}
 </script>
 
 <template>
-  <header>
-    <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <main>
+    <header>
+      <div class="topnav logo">
+        <nav class="left noselect">
+          <RouterLink to="/">Home</RouterLink>
+          <RouterLink :to="{ name: gamestate }">Partida</RouterLink>
+          <RouterLink :to="{ name: 'choose' }">Partida (Elegir)</RouterLink>
+          <RouterLink :to="{ name: 'vote' }">Partida (Votar)</RouterLink>
+        </nav>
+      </div>
+    </header>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div> -->
-    <h1>Cartas Contra la Obesidad</h1>
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/partida">Partida</RouterLink>
-      </nav>
-  </header>
+    <RouterView />
 
-  <RouterView />
-  <footer>
-    <p>Footer</p>
-  </footer>
+    <footer>
+      <p>
+        Creado por
+        <a href="https://twitter.com/guskikalola">Guskikalola</a> y
+        <a href="https://twitter.com/Zlender02">Zlendy</a>.
+      </p>
+    </footer>
+  </main>
 </template>
 
 <style>
-@import '@/assets/base.css';
+@import "@/assets/base.css";
+
+.logo {
+  /* object-fit: cover; */
+  background-image: url("@/assets/logo.png");
+  background-size: auto 2rem;
+  background-repeat: no-repeat;
+  background-position: 99%, center;
+}
+
+div.topnav {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-background-soft);
+  margin-bottom: 2rem;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
 
 a,
 .green {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
+  color: #83b4f0;
   transition: 0.4s;
 }
 
 @media (hover: hover) {
   a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+    background-color: #2E3440;
   }
 }
 
@@ -49,74 +89,14 @@ nav a.router-link-exact-active:hover {
 
 nav a {
   display: inline-block;
-  padding: 0 1rem;
+  padding: 1rem 1rem;
   border-left: 1px solid var(--color-border);
 }
 
-/* #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
-}
-
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
+footer {
+  position: fixed;
+  bottom: 1%;
   width: 100%;
-  font-size: 12px;
   text-align: center;
-  margin-top: 2rem;
 }
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-} */
 </style>
