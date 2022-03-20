@@ -7,15 +7,15 @@ import WSConnection from '@/services/ws.mjs';
   <main>
     <!-- <TheWelcome /> -->
     <p>Introduce codigo de sala</p>
-    <input id="code" placeholder="Codigo">
-    <button @click='connect'>Submit</button>
+    <input id="code" placeholder="Codigo" />
+    <button @click="connect">Submit</button>
   </main>
 </template>
 
 <script>
-function connect(event){
-	const roomId = document.getElementById('code').value;
-	console.log("Attempting socket connect:", roomId);
-	WSConnection.socket.emit('roomJoinRequest', roomId);
+function connect() {
+  const roomId = document.getElementById('code').value;
+  console.log("Attempting socket connect:", roomId);
+  WSConnection.socket.emit('roomJoinRequest', roomId);
 }
 </script>

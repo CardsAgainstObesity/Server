@@ -14,7 +14,7 @@ export default class WSConnection {
 
     static connect() {
         // Create a connection to the WS server
-        WSConnection._socket = io("192.168.0.31:8683");
+        WSConnection._socket = io("localhost:8683");
         WSConnection.socket.on("connect", () => {
             console.log("[WS] Connected to the server");
         });
