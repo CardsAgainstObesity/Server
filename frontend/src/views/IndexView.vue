@@ -1,15 +1,19 @@
 <script setup>
-import TheWelcome from '@/components/TheWelcome.vue';
 import WSConnection from '@/services/ws.mjs';
+import Nav from "@/components/Nav.vue";
 </script>
 
 <template>
-  <main>
-    <!-- <TheWelcome /> -->
-    <p>Introduce codigo de sala</p>
-    <input id="code" placeholder="Codigo" />
-    <button @click="connect">Submit</button>
-  </main>
+  <div>
+    <Nav />
+    <div class="left_padding">
+      <main>
+        <p>Introduce codigo de sala</p>
+        <input id="code" placeholder="Codigo" />
+        <button @click="connect">Submit</button>
+      </main>
+    </div>
+  </div>
 </template>
 
 <script>

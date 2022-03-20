@@ -1,11 +1,13 @@
 <script setup>
 import Card from "@/components/Card.vue";
+import Nav from "@/components/Nav.vue";
 import { cards, game, czar } from "@/services/cards.mjs";
 game.state = "vote";
 </script>
 
 <template>
     <div>
+        <Nav/>
         <h1 class="left_padding noselect">{{ czar }} es el Zar de las cartas.</h1>
         <div class="container">
             <Card text="Made in Abyss" :dark="true" />

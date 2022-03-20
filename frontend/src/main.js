@@ -5,7 +5,6 @@ import WSConnection from './services/ws.mjs';
 
 WSConnection.connect();
 
-
 const app = createApp(App);
 app.use(router);
 app.mount('#app');

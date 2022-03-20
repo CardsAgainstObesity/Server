@@ -71,5 +71,10 @@ footer {
 }
 
 .left_padding {
-    padding-left: 10px;
+    padding-left: 2.5%;
+}
+
+.centered_text {
+    margin-left: 20%;
+    margin-right: 20%;
 }

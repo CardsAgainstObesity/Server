@@ -1,43 +1,24 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView, RouterLink } from 'vue-router';
 import HelloWorld from '@/components/HelloWorld.vue';
-import { game } from '@/services/cards.mjs';
-</script>
-
-<script>
-export default {
-    name: 'App',
-    data () {
-      return {
-        gamestate: game.state
-      }
-    }
-}
+import Nav from "@/components/Nav.vue";
 </script>
 
 <template>
-  <main>
-    <header>
-      <div class="topnav logo">
-        <nav class="left noselect">
-          <RouterLink to="/">Home</RouterLink>
-          <RouterLink :to="{ name: gamestate }">Partida</RouterLink>
-          <RouterLink :to="{ name: 'choose' }">Partida (Elegir)</RouterLink>
-          <RouterLink :to="{ name: 'vote' }">Partida (Votar)</RouterLink>
-        </nav>
-      </div>
-    </header>
-
+  <div>
     <RouterView />
-
     <footer>
       <p>
         Creado por
         <a href="https://twitter.com/guskikalola">Guskikalola</a> y
         <a href="https://twitter.com/Zlender02">Zlendy</a>.
       </p>
+      <p>
+        <RouterLink :to="{ name: 'choose' }">DEBUG Elegir</RouterLink>, 
+        <RouterLink :to="{ name: 'vote' }">DEBUG Votar</RouterLink>
+      </p>
     </footer>
-  </main>
+  </div>
 </template>
 
 <style>
@@ -75,7 +56,7 @@ a,
 
 @media (hover: hover) {
   a:hover {
-    background-color: #2E3440;
+    background-color: #2e3440;
   }
 }
 
