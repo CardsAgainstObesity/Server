@@ -21,7 +21,7 @@ let cards = [{
 ];
 
 let game = {
-    gamestate: "choose",
+    gamestate: "lobby",
     set state(value) {
         console.log(`${this.gamestate} => ${value}`);
         this.gamestate = value;

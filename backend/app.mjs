@@ -7,6 +7,8 @@ import ErrorResponse from './src/util/ErrorResponse.mjs';
 import http from 'http';
 import path from 'path';
 import Player from './src/player/Player.mjs';
+import cors from 'cors';
+
 
 const require = createRequire(
     import.meta.url);
@@ -17,6 +19,7 @@ const game = Game.singleton;
 
 const app = express();
 app.use(express.static(path.resolve('../frontend/dist')));
+app.use(cors());
 
 // Server instance
 const server = http.createServer(app);
@@ -75,8 +78,8 @@ WSServer.listen(server, (server) => {
         socket.on("roomJoinRequest", (roomId) => {
             if (!game.rooms.has(roomId)) { // If room doesn't exist, then send an error
                 socket.emit("error", new ErrorResponse("UknownRoom").toJSON());
-                game.createRoom(roomId,player,15,7);
-            } else if(game.rooms.get(roomId)._deleted) {
+                game.createRoom(roomId, player, 15, 7);
+            } else if (game.rooms.get(roomId)._deleted) {
                 socket.emit("error", new ErrorResponse("RoomDeleted").toJSON());
             } else {
                 // If room exists then send a roomConnectionSuccess message
@@ -85,16 +88,16 @@ WSServer.listen(server, (server) => {
                     LoggingSystem.singleton.log("[Game] Adding Player(" + player.id + ") to Room(" + room.id + ")");
                     socket.join(room.id); // make the client join the sockets room ( for better management of game rooms )
                     socket.emit("RoomConnectionSuccess", room.toJSON()); // Tell the socket that the connection to the room was successful
-                    socket.to(room.id).emit("PlayerConnected",player.toJSON()); // Send a broadcast (excluding the socket) to the room anouncing a new player
+                    socket.to(room.id).emit("PlayerConnected", player.toJSON()); // Send a broadcast (excluding the socket) to the room anouncing a new player
                 }
             }
         });
 
         socket.on("RequestPlayerChangeName", (newName) => {
-            let crispyChickenName = random_names[Math.floor(Math.random () * random_names.length)];
+            let crispyChickenName = random_names[Math.floor(Math.random() * random_names.length)];
             player.name = newName || crispyChickenName;
             //if(player.room) {
-                //socket.to(player.room.id).emit("PlayerChangeName",{"player":player.id, "name":newName});
+            //socket.to(player.room.id).emit("PlayerChangeName",{"player":player.id, "name":newName});
             //}
         });
 

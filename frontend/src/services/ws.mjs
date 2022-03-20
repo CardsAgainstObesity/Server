@@ -1,4 +1,5 @@
 import { io, Socket } from 'socket.io-client';
+import Room from './Room.mjs';
 
 export default class WSConnection {
 
@@ -14,25 +15,37 @@ export default class WSConnection {
 
     static connect() {
         // Create a connection to the WS server
-        WSConnection._socket = io();
+        // TODO : Cambiar para producción
+        WSConnection._socket = io("localhost:8683");
+
         WSConnection.socket.on("connect", () => {
             console.log("[WS] Connected to the server");
         });
 
         WSConnection.socket.on("error", console.error);
         WSConnection.socket.on("RoomConnectionSuccess", (room) => {
-            console.log("[WS] Connected to room: " , room);
+            console.log("[WS] Connected to room: ", room);
+            Room.roomId = room.id;
         });
         WSConnection.socket.on("PlayerConnected", (player) => {
             console.log(player);
+            Room.addPlayer(player);
         });
+
+        WSConnection.socket.on("PlayerDisconnected", (player) => {
+            console.log(player);
+            Room.removePlayer(player);
+        });
+
+        WSConnection.socket.on("RoomStatusChanged");
+
     }
 
     static joinRoom(roomId) {
-        WSConnection.socket.emit("roomJoinRequest",roomId);
+        WSConnection.socket.emit("roomJoinRequest", roomId);
     }
-    
+
     static changeName(newName) {
-        WSConnection.socket.emit("RequestPlayerChangeName",newName);
+        WSConnection.socket.emit("RequestPlayerChangeName", newName);
     }
 }

@@ -1,8 +1,10 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import IndexView from '../views/IndexView.vue'
-import ChooseView from '../views/ChooseView.vue'
-import VoteView from '../views/VoteView.vue'
-import RulesView from '../views/RulesView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import IndexView from '../views/IndexView.vue';
+import RulesView from '../views/RulesView.vue';
+import LobbyView from '../views/game/LobbyView.vue';
+import ChooseView from '../views/game/ChooseView.vue';
+import VoteView from '../views/game/VoteView.vue';
+
 
 let router = createRouter({
     history: createWebHistory(
@@ -11,6 +13,11 @@ let router = createRouter({
             path: '/',
             name: 'index',
             component: IndexView
+        },
+        {
+            path: '/game',
+            name: 'lobby',
+            component: LobbyView
         },
         {
             path: '/game',

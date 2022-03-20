@@ -14,6 +14,7 @@ import Nav from "@/components/Nav.vue";
         <a href="https://twitter.com/Zlender02">Zlendy</a>.
       </p>
       <p>
+        <RouterLink :to="{ name: 'lobby' }">DEBUG Lobby</RouterLink>, 
         <RouterLink :to="{ name: 'choose' }">DEBUG Elegir</RouterLink>, 
         <RouterLink :to="{ name: 'vote' }">DEBUG Votar</RouterLink>
       </p>
@@ -30,6 +31,12 @@ import Nav from "@/components/Nav.vue";
   background-size: auto 2rem;
   background-repeat: no-repeat;
   background-position: 99%, center;
+}
+
+@media only screen and (max-width: 500px) {
+  .logo {
+    background-image: none !important;
+  }
 }
 
 div.topnav {

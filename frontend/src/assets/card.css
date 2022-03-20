@@ -13,6 +13,7 @@
     background: #2e3440 !important;
     width: 300px !important;
     min-height: 400px !important;
+    font-size: 25px;
 }
 
 .event-card {
