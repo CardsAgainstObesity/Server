@@ -13,11 +13,17 @@ export default class LoggingSystem {
     constructor() {
         let current = new Date();
         let date = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
-        this._loggingFile = path.resolve("logs/" + date + ".log");
+        this._loggingFolder = "logs/"
+        this._loggingFile = date + ".log";
+        this._loggingPath = path.resolve( this._loggingFolder + this._loggingFile);
     }
 
-    _appendToFile(content) {
-        fs.appendFile(this._loggingFile, content, 
+    async _appendToFile(content) {
+        if(!fs.existsSync(this._loggingFolder)) {
+            fs.mkdirSync(this._loggingFolder);
+        }
+
+        fs.appendFile(this._loggingPath, content, 
             {
                 encoding: "utf-8",
                 flag: "a+"

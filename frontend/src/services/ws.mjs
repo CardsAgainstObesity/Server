@@ -14,12 +14,25 @@ export default class WSConnection {
 
     static connect() {
         // Create a connection to the WS server
-        WSConnection._socket = io("localhost:8683");
+        WSConnection._socket = io();
         WSConnection.socket.on("connect", () => {
             console.log("[WS] Connected to the server");
         });
 
         WSConnection.socket.on("error", console.error);
+        WSConnection.socket.on("RoomConnectionSuccess", (room) => {
+            console.log("[WS] Connected to room: " , room);
+        });
+        WSConnection.socket.on("PlayerConnected", (player) => {
+            console.log(player);
+        });
+    }
 
+    static joinRoom(roomId) {
+        WSConnection.socket.emit("roomJoinRequest",roomId);
+    }
+    
+    static changeName(newName) {
+        WSConnection.socket.emit("RequestPlayerChangeName",newName);
     }
 }

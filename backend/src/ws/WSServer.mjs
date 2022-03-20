@@ -7,15 +7,20 @@ export default class WSServer {
      */
     static io;
 
-    static listen(port, callback) {
-        WSServer.io = new Server(port, {
+    /**
+     * 
+     * @param {*} server HTTP server
+     * @param {*} callback Callback function 
+     */
+    static listen(server, callback) {
+        WSServer.io = new Server(server, {
             cors: {
                 origin: "*",
                 methods: ["GET", "POST"]
             }
         });
         if (callback && typeof callback == "function") {
-            callback(port);
+            callback(server);
         }
     }
 

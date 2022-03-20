@@ -1,5 +1,5 @@
 /**
- * @typedef {"UknownRoom"} ErrorResponseType
+ * @typedef {"UknownRoom" | "RoomAlreadyExists" || "RoomDeleted"} ErrorResponseType
  */
 
 
@@ -24,6 +24,7 @@ export default class ErrorResponse {
 
     toJSON() {
         return {
+            "error": true,
             "type": this.type
         }
     }
