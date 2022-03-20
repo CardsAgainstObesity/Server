@@ -11,9 +11,9 @@ game.state = "choose";
         <div class="left_padding">
             <h1 class="noselect">{{ czar }} es el Zar de las cartas.</h1>
             <div class="container left">
-                <Card text="Made in Abyss" :dark="true" />
+                <Card text="Made in Abyss" :dark="true" :clickable="false" />
                 <div class="break" />
-                <Card v-for="card in cards" :text="card.text" :dark="card.dark" />
+                <Card v-for="card in cards" :text="card.text" :dark="card.dark" :clickable="true" />
             </div>
         </div>
     </div>

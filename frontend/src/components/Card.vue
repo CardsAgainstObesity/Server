@@ -7,15 +7,16 @@ defineProps({
     dark: {
         type: Boolean,
         required: true
+    },
+    clickable: {
+        type: Boolean,
+        required: true
     }
 })
 </script>
 
 <template>
-    <div v-if="dark" class="event-card dark">
-        <h1 class="noselect">{{text}}</h1>
-    </div>
-    <div v-else class="event-card">
+    <div :class="'event-card ' + (dark ? 'dark':' ') + (clickable ? 'clickable':' ')">
         <p class="noselect">{{text}}</p>
     </div>
 </template>
