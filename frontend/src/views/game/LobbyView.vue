@@ -67,7 +67,6 @@ ul.playerlist {
   padding-left: 0;
 }
 ul.playerlist > li {
-  border: 1px solid white;
   border-radius: 0.5rem;
   padding: 0.5rem;
   margin-bottom: 0.5rem;

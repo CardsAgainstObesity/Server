@@ -7,12 +7,15 @@ import Room from '../services/Room.mjs';
 
 <template>
 	<div>
-		<Nav />
+		<Nav :hidelogo="true" />
 		<div class="centered">
 			<main>
-				<h1>Introduce codigo de sala</h1>
-				<input type="text" id="code" placeholder="Codigo" />
-				<button @click="connect">Submit</button>
+				<img class="logo" src="@/assets/logo.png" />
+				<h1>Unete a una partida</h1>
+				<input type="text" id="code" placeholder="Codigo de sala" />
+				<button @click="connect">Unirse</button>
+				<hr />
+				<button>Crea una nueva partida</button>
 			</main>
 		</div>
 	</div>
@@ -30,6 +33,14 @@ async function connect() {
 </script>
 
 <style scoped>
+img.logo {
+	width: 100%;
+}
+
+hr {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
 .centered {
 	margin: 0;
 	position: fixed;
@@ -41,6 +52,7 @@ async function connect() {
 	background-color: #222222;
 	border-radius: 1rem;
 	text-align: center;
+	max-width: 50vh;
 }
 
 button,
@@ -48,12 +60,13 @@ input#code[type="text"] {
 	margin-bottom: 0.5rem;
 	max-width: 50vw;
 	background-color: #181818;
+	font-size: 1rem;
 }
 
 input[type="text"]:focus,
 button:hover {
-    background-color: #83b4f0 !important;
-    color: #181818;
+	background-color: #83b4f0 !important;
+	color: #181818;
 }
 
 input#code[type="text"] {

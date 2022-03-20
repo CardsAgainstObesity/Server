@@ -66,8 +66,16 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+
+/*******************************/
+
 footer {
-    justify-content: center;
+    bottom: 0;
+    position: fixed;
+    padding-bottom: 0.5%;
+    width: 100%;
+    text-align: center;
+    background-color: #181818;
 }
 
 .left_padding {
@@ -104,4 +112,18 @@ button:hover {
 
 button:hover {
     cursor: pointer;
+}
+
+div.logo {
+    /* object-fit: cover; */
+    background-image: url("@/assets/logo.png");
+    background-size: auto 2rem;
+    background-repeat: no-repeat;
+    background-position: 99%, center;
+}
+
+@media only screen and (max-width: 500px) {
+    .logo {
+        background-image: none !important;
+    }
 }

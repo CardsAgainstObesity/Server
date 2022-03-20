@@ -25,20 +25,6 @@ import Nav from "@/components/Nav.vue";
 <style>
 @import "@/assets/base.css";
 
-.logo {
-  /* object-fit: cover; */
-  background-image: url("@/assets/logo.png");
-  background-size: auto 2rem;
-  background-repeat: no-repeat;
-  background-position: 99%, center;
-}
-
-@media only screen and (max-width: 500px) {
-  .logo {
-    background-image: none !important;
-  }
-}
-
 div.topnav {
   position: relative;
   overflow: hidden;
@@ -79,12 +65,5 @@ nav a {
   display: inline-block;
   padding: 1rem 1rem;
   border-left: 1px solid var(--color-border);
-}
-
-footer {
-  position: fixed;
-  bottom: 1%;
-  width: 100%;
-  text-align: center;
 }
 </style>
