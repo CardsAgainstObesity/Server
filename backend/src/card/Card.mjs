@@ -1,14 +1,14 @@
 export default class Card {
 
-    constructor() {
-        this._type;
+    constructor(isDark) {
+        this._isDark = isDark;
     }
 
     /**
      * @readonly
-     * @returns {String} Card type
+     * @returns {boolean} true if the card is black, false if the card is white
      */
-    get type() {
-        return this.type;
+    get isDark() {
+        return this._isDark;
     }
 }

@@ -20,4 +20,11 @@ export default class Room {
     get id() {
         return this._id;
     }
+
+    toJSON() {
+        return {
+            "id": this.id,
+            "players": this.players
+        }
+    }
 }

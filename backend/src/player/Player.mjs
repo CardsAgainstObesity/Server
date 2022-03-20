@@ -5,6 +5,7 @@ export default class Player {
         this._id;
         this._obesity;
         this._cards;
+        this._socket;
     }
 
     /**

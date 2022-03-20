@@ -1,6 +1,8 @@
 {
-    "server": {
-        "webPort": 8080,
-        "wsPort": 3030
+    "ws": {
+        "port": 3030
+    },
+    "api": {
+        "port": 8683
     }
 }

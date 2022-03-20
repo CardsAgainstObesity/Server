@@ -4,6 +4,9 @@ export default class Game {
 
     static _instance = null;
 
+    /**
+     * @returns {Game} Game instance
+     */
     static get singleton() {
         if (Game._instance == null)
             Game._instance = new Game();
