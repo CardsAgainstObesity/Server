@@ -5,7 +5,8 @@ import WSServer from './src/ws/WSServer.mjs';
 import Game from './src/game/Game.mjs';
 import ErrorResponse from './src/util/ErrorResponse.mjs';
 import http from 'http';
-import cors from 'cors';
+import path from 'path';
+import Player from './src/player/Player.mjs';
 
 const require = createRequire(
     import.meta.url);
@@ -13,31 +14,40 @@ const require = createRequire(
 const config = require("./config.json");
 const game = Game.singleton;
 
-
 const app = express();
+app.use(express.static(path.resolve('../frontend/dist')));
 
 // Server instance
 const server = http.createServer(app);
 
-/*         API (read-only)         */
+/*         Express         */
 
-app.get("/room/exists/:roomId", (req, res) => {
+app.get("/api/room/exists/:roomId", (req, res) => {
     let roomId = req.params.roomId;
     res.send({ "exists": game.rooms.has(roomId) });
 });
 
-// Start listening for API requests on configured port
-server.listen(config.api.port, () => {
-    LoggingSystem.singleton.log("[API] Listening to " + config.api.port);
+app.get("/api/room/players/:roomId", (req, res) => {
+    let roomId = req.params.roomId;
+    if(game.rooms.has(roomId)) {
+        res.send({ "players": game.rooms.get(roomId).players });
+    } else {
+        res.send(new ErrorResponse("UknownRoom").toJSON());
+    }
 });
 
+// Start listening for requests on configured port
+server.listen(config.port, () => {
+    let host = server.address().address + ":" + server.address().port;
+    LoggingSystem.singleton.log("[WEB] Listening to " + host);
+});
 /*         WS         */
 
-
 // Start listening for WS connections on configured port
-WSServer.listen(server, (port) => {
+WSServer.listen(server, (server) => {
 
-    LoggingSystem.singleton.log("[WSServer] Listening to " + port);
+    let host = server.address().address + ":" + server.address().port;
+    LoggingSystem.singleton.log("[WSServer] Listening to " + host);
 
 
     // Namespace used for sockets connecting to the server
@@ -46,19 +56,27 @@ WSServer.listen(server, (port) => {
     // Listen for connections
     WSServer.io.on("connection", (socket) => {
         console.log("Socket connected: " + socket.id);
+        // Create a player entity which will with the socket
+        let player = new Player(socket);
         // Client has requested to join a room
         socket.on("roomJoinRequest", (roomId) => {
             console.log(roomId);
             if (!game.rooms.has(roomId)) { // If room doesn't exist, then send an error
                 socket.emit("error", new ErrorResponse("UknownRoom").toJSON());
+                game.createRoom(roomId);
             } else { // If room exists then send a roomConnectionSuccess message
                 let room = game.rooms.get(roomId);
-                console.log(game.rooms.has(roomId))
+                room.addPlayer(player);
+                socket.join(room.id); // make the client join the sockets room ( for better management of game rooms )
                 socket.emit("roomConnectionSuccess", room.toJSON());
             }
         });
         socket.on("disconnect", () => {
-            console.log("Socket disconnected")
+            console.log("Socket disconnected");
+            let room = player.room;
+            if(room) {
+                room.removePlayer(player);
+            }
         });
     });
 
