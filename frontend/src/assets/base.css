@@ -82,3 +82,26 @@ footer {
 .clickable {
     cursor: pointer;
 }
+
+input[type="text"],
+button {
+    color: #83b4f0;
+    transition: 0.5s;
+    background-color: #222222;
+    border: 0px solid white;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+    outline: none;
+}
+
+input[type="text"]:focus,
+button:hover {
+    background-color: #83b4f0;
+    color: #222222;
+}
+
+button:hover {
+    cursor: pointer;
+}
