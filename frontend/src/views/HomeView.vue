@@ -1,6 +1,7 @@
 <script setup>
 import TheWelcome from '@/components/TheWelcome.vue';
 import WSConnection from '@/services/ws.mjs';
+import API from '@/services/API.mjs';
 </script>
 
 <template>
@@ -13,9 +14,11 @@ import WSConnection from '@/services/ws.mjs';
 </template>
 
 <script>
-function connect() {
+async function connect() {
   const roomId = document.getElementById('code').value;
   console.log("Attempting socket connect:", roomId);
-  WSConnection.socket.emit('roomJoinRequest', roomId);
+  WSConnection.joinRoom(roomId);
+  let players = await API.getRoomPlayers(roomId);
+  console.log(players);
 }
 </script>

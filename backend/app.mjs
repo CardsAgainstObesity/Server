@@ -29,8 +29,10 @@ app.get("/api/room/exists/:roomId", (req, res) => {
 
 app.get("/api/room/players/:roomId", (req, res) => {
     let roomId = req.params.roomId;
-    if(game.rooms.has(roomId)) {
-        res.send({ "players": game.rooms.get(roomId).players });
+    if (game.rooms.has(roomId)) {
+        let players = Array.from(game.rooms.get(roomId).players.values()).map(value => value.toJSON());
+        console.log(players);
+        res.send({ "players": players});
     } else {
         res.send(new ErrorResponse("UknownRoom").toJSON());
     }
@@ -60,21 +62,23 @@ WSServer.listen(server, (server) => {
         let player = new Player(socket);
         // Client has requested to join a room
         socket.on("roomJoinRequest", (roomId) => {
-            console.log(roomId);
             if (!game.rooms.has(roomId)) { // If room doesn't exist, then send an error
                 socket.emit("error", new ErrorResponse("UknownRoom").toJSON());
                 game.createRoom(roomId);
-            } else { // If room exists then send a roomConnectionSuccess message
+            } else {
+                // If room exists then send a roomConnectionSuccess message
                 let room = game.rooms.get(roomId);
-                room.addPlayer(player);
-                socket.join(room.id); // make the client join the sockets room ( for better management of game rooms )
-                socket.emit("roomConnectionSuccess", room.toJSON());
+                if (room.addPlayer(player)) {
+                    LoggingSystem.singleton.log("[Game] Adding Player(" + player.id + ") to Room(" + room.id + ")");
+                    socket.join(room.id); // make the client join the sockets room ( for better management of game rooms )
+                    socket.emit("roomConnectionSuccess", room.id);
+                }
             }
         });
         socket.on("disconnect", () => {
             console.log("Socket disconnected");
             let room = player.room;
-            if(room) {
+            if (room) {
                 room.removePlayer(player);
             }
         });

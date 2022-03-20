@@ -9,11 +9,11 @@ export default class Player {
      */
     constructor(socket) {
         this._id = socket.id;
-        this._name;
-        this._obesity;
-        this._cards;
-        this._socket;
-        this._room;
+        this._name = "Sandvich-" + Math.floor(Math.random() * Date.now());
+        this._obesity = 0;
+        this._cards = [];
+        this._socket = socket;
+        this._room = undefined;
     }
 
     /**
@@ -50,11 +50,28 @@ export default class Player {
         return this._room;
     }
 
+    set room(value) {
+        if(this.room != undefined) {
+            this.room.removePlayer(this);
+        }
+        this._room = value;
+    }
+
     /**
      * @readonly
      * @returns {Card[]} Returns player's deck
      */
     get cards() {
-        return
+        return this._cards;
+    }
+
+    /**
+     * 
+     */
+    toJSON() {
+        return {
+            "name": this.name,
+            "obesity": this.obesity
+        }
     }
 }

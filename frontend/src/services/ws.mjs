@@ -20,6 +20,14 @@ export default class WSConnection {
         });
 
         WSConnection.socket.on("error", console.error);
+        WSConnection.socket.on("roomConnectionSuccess", (roomId) => {
+            console.log("[WS] Connected to room: " , roomId);
+        });
+    }
 
+    static joinRoom(roomId) {
+        WSConnection.socket.emit("roomJoinRequest",roomId);
+        // Temporal
+        WSConnection.socket.emit("changeName","Sandvich-" + Math.floor(Math.random() * Date.now()));
     }
 }
