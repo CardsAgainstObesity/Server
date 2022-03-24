@@ -4,7 +4,7 @@ import RulesView from '../views/RulesView.vue';
 import LobbyView from '../views/game/LobbyView.vue';
 import ChooseView from '../views/game/ChooseView.vue';
 import VoteView from '../views/game/VoteView.vue';
-
+import AboutView from '../views/AboutView.vue';
 
 let router = createRouter({
     history: createWebHistory(
@@ -33,6 +33,11 @@ let router = createRouter({
             path: '/rules',
             name: 'rules',
             component: RulesView
+        },
+        {
+            path: '/about',
+            name: 'about',
+            component: AboutView
         },
         // ,
         // {

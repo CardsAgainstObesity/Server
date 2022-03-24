@@ -6,17 +6,6 @@ import { game } from "@/services/cards.mjs";
 import Room from "@/services/Room.mjs";
 import API from "@/services/API.mjs";
 game.state = "lobby";
-// let playerlist = [
-//   {name: "Colonel Sanders"},
-//   {name: "Juanpe Tortillas"},
-//   {name: "Tocameles Escroto"},
-//   {name: "Albion Offline"}
-// ]
-// function appendplayer() {
-//   const player = { name: 'CUM' };
-//   console.log(player)
-//   playerlist.push(player);
-// }
 </script>
 
 <script>
@@ -24,7 +13,8 @@ export default {
   name: 'LobbyView',
   data() {
     return {
-      playerlist: []
+      playerlist: [],
+      nIntervId: undefined
     }
   },
   methods: {
@@ -37,6 +27,15 @@ export default {
       let players = await API.getRoomPlayers(Room.roomId);
       console.log(players);
       this.playerlist = players;
+      // if (!this.nIntervId) {
+      //   this.nIntervId = setInterval(() => {
+      //     // let players = await API.getRoomPlayers(Room.roomId);
+      //     API.getRoomPlayers(Room.roomId).then(players => {
+      //       console.log(players);
+      //       this.playerlist = players;
+      //     });
+      //   }, 1000);
+      // }
     }
   }
 }

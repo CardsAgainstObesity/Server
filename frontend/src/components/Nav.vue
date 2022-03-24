@@ -15,6 +15,7 @@ defineProps({
                 <RouterLink to="/">Inicio</RouterLink>
                 <RouterLink :to="{ name: game.state }">Partida</RouterLink>
                 <RouterLink to="/rules">Reglas</RouterLink>
+                <RouterLink to="/about">Acerca de</RouterLink>
             </nav>
         </div>
     </header>
