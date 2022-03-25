@@ -49,7 +49,7 @@ export default class LoggingSystem {
      * @param {String} content - Log message 
      */
     log(caller,content) {
-        let message = this.date_prefix + " " +this.caller + " " + content;
+        let message = this.date_prefix + " " + caller + " " + content;
         this._appendToFile(message + "\n");
     }
 
