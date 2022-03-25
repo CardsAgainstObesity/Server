@@ -12,7 +12,7 @@ game.state = "vote";
         <div class="container">
             <Card text="Made in Abyss" :dark="true" />
             <div class="break" />
-            <Card v-for="card in cards" :text="card.text" :dark="card.dark" />
+            <Card v-for="card in cards" :text="card.text" :dark="card.dark" :key="card" />
         </div>
     </div>
 </template>

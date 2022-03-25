@@ -1,0 +1,12 @@
+# Cosas pendientes por hacer
+- Hacer que la aplicación sea instalable como PWA.
+    - [ ] service-worker.js
+    - [ ] manifest.json
+    - [ ] HTTPs
+- Añadir una pagina "/about" con la lista de tecnologías usadas
+- Añadir un panel de debug (evidentemente esto debe ser ocultado en producción)
+    - [ ] Mostrar las cartas de todos los jugadores a la vez
+- Añadir una pagina "/settings" con diversos parametros ajustables por el jugador
+    - [ ] Idioma
+    - [ ] Color de acento
+    - [ ] Tema (Claro/Oscuro/...)

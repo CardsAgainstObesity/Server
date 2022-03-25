@@ -13,7 +13,7 @@ game.state = "choose";
             <div class="container left">
                 <Card text="Made in Abyss" :dark="true" :clickable="false" />
                 <div class="break" />
-                <Card v-for="card in cards" :text="card.text" :dark="card.dark" :clickable="true" />
+                <Card v-for="card in cards" :text="card.text" :dark="card.dark" :clickable="true" :key="card" />
             </div>
         </div>
     </div>

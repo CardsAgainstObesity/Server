@@ -1,7 +1,7 @@
 <script setup>
 import WSConnection from '@/services/ws.mjs';
 import Nav from "@/components/Nav.vue";
-import Player from "@/components/Player.vue";
+import Playerlist from "@/components/Playerlist.vue";
 import { game } from "@/services/cards.mjs";
 import Room from "@/services/Room.mjs";
 import API from "@/services/API.mjs";
@@ -50,33 +50,8 @@ export default {
         <button @click="appendplayer()">DEBUG Append player</button>
         <button @click="loadPlayers()">DEBUG Load player</button>
         <h1>Jugadores en la partida</h1>
-        <ul class="playerlist">
-          <li v-for="player in playerlist">
-            <Player :name="player.name" />
-          </li>
-        </ul>
+        <Playerlist :list="playerlist" />
       </main>
     </div>
   </div>
 </template>
-
-<style scoped>
-ul.playerlist {
-  list-style-type: none;
-  padding-left: 0;
-}
-ul.playerlist > li {
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-  min-width: 200px;
-  max-width: 50vw;
-  background-color: #222222;
-}
-@media only screen and (max-width: 1000px) {
-  ul.playerlist > li {
-    max-width: 100% !important;
-    margin-right: 2.5%;
-  }
-}
-</style>
