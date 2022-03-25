@@ -1,0 +1,35 @@
+-- Server ( GameServer ) --
++ error
+    * Description: An error occurred
+    * Args: Error error
++ RoomConnectionSuccess
+    * Description: Connection to room succeed
+    * Args: Object roomJSON
++ RoomCreationSuccess
+    * Description:
+    * Args: Object roomJSON
+
+-- Server/Room --
++ RoomStatusChanged
+    * Description: Room status changed
+    * Args: String status
++ RoomCzarChanged
+    * Description: Room czar changed
+    * Args: Object playerJSON
++ RoomPlayerConnection
+    * Description: New player connected
+    * Args: Object playerJSON
++ RoomPlayerDisconnection
+    * Description: A player disconnected
+    * Args: Object playerJSON
++ RoomRemoved
+    * Description: Room removed
+    * Args: Object roomJSON
+
+-- Socket ( client ) --
++ RoomConnectionRequest
+    * Description: Requests to join a room
+    * Args: String roomId
++ RoomCreationRequest
+    * Description: Requests to create a room
+    * Args: String roomId

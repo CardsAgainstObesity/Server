@@ -4,6 +4,9 @@ export default class LoggingSystem {
 
     static _instance = null;
 
+    /**
+     * @returns {LoggingSystem} LoggingSystem singleton instance
+     */
     static get singleton() {
         if(LoggingSystem._instance == null)
             LoggingSystem._instance = new LoggingSystem();
@@ -34,18 +37,19 @@ export default class LoggingSystem {
 
     /**
      * @readonly
-     * @returns {String} Log message prefix
+     * @returns {String} Log message date prefix. Ex.: Sun, 20 Mar 2022 20:19:35 GMT
      */
-    get prefix() {
-        return "["+new Date().toGMTString()+"] ";
+    get date_prefix() {
+        return new Date().toGMTString();
     }
 
     /**
      * Creates a log entry
+     * @param {String} caller - Message prefix
      * @param {String} content - Log message 
      */
-    log(content) {
-        let message = this.prefix + content;
+    log(caller,content) {
+        let message = this.date_prefix + " " +this.caller + " " + content;
         this._appendToFile(message + "\n");
     }
 
