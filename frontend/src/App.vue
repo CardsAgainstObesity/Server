@@ -14,9 +14,9 @@ import Nav from "@/components/Nav.vue";
         <a href="https://twitter.com/Zlender02">Zlendy</a>.
       </p>
       <p>
-        <RouterLink :to="{ name: 'lobby' }">DEBUG Lobby</RouterLink>, 
-        <RouterLink :to="{ name: 'choose' }">DEBUG Elegir</RouterLink>, 
-        <RouterLink :to="{ name: 'vote' }">DEBUG Votar</RouterLink>
+        <RouterLink :to="{ name: 'lobby', params: { id: 'DEBUG' } }">DEBUG Lobby</RouterLink>, 
+        <RouterLink :to="{ name: 'choose', params: { id: 'DEBUG' } }">DEBUG Elegir</RouterLink>, 
+        <RouterLink :to="{ name: 'vote', params: { id: 'DEBUG' } }">DEBUG Votar</RouterLink>
       </p>
     </footer>
   </div>

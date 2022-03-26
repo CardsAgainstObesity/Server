@@ -15,14 +15,15 @@ export default class WSConnection {
 
     static connect() {
         // Create a connection to the WS server
-        // TODO : Cambiar para producción
-        WSConnection._socket = io("localhost:8080");
+        WSConnection._socket = io("localhost:8080"); // TODO: Cambiar para producción
 
         WSConnection.socket.on("connect", () => {
             console.log("[WS] Connected to the server");
         });
 
-        WSConnection.socket.on("error", console.error);
+        WSConnection.socket.on("error", (err) => {
+            console.error("ERROR:",err);
+        });
 
         WSConnection.socket.on("RoomConnectionSuccess", (room) => {
             console.log("[WS] Connected to room: ", room);
@@ -51,7 +52,7 @@ export default class WSConnection {
         });
 
         WSConnection.socket.on("RoomStatusChanged", (status) => {
-            console.log("[WS] Room status changed: ",staus);
+            console.log("[WS] Room status changed: ",status);
             Room.status = status;
         });
 

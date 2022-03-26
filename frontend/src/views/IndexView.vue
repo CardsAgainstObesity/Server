@@ -30,14 +30,20 @@ export default {
 		const name = document.getElementById('name').value;
 		WSConnection.changeName(name);
 		WSConnection.joinRoom(roomId);
-		this.$router.push({ name: 'lobby' });
+		WSConnection.socket.on("RoomConnectionSuccess", (room) => {
+			Room.roomId = room.roomId; // Si esto no se pone el valor de Room.roomId es "undefined".
+			this.$router.replace({ name: 'lobby', params: { id: Room.roomId } })
+        });
     },
     create() {
 		const roomId = document.getElementById('code').value;
 		const name = document.getElementById('name').value;
 		WSConnection.changeName(name);
 		WSConnection.createRoom(roomId);
-		this.$router.push({ name: 'lobby' });
+		WSConnection.socket.on("RoomCreationSuccess", (room) => {
+			Room.roomId = room.roomId; // Si esto no se pone el valor de Room.roomId es "undefined".
+			this.$router.replace({ name: 'lobby', params: { id: Room.roomId } })
+        });
     }
   }
 };

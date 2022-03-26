@@ -15,17 +15,17 @@ let router = createRouter({
             component: IndexView
         },
         {
-            path: '/game',
+            path: '/game/:id',
             name: 'lobby',
             component: LobbyView
         },
         {
-            path: '/game',
+            path: '/game/:id',
             name: 'choose',
             component: ChooseView
         },
         {
-            path: '/game',
+            path: '/game/:id',
             name: 'vote',
             component: VoteView
         },

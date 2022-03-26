@@ -25,11 +25,12 @@ export default {
       if (!this.nIntervId) {
         this.nIntervId = setInterval(() => { // TODO: Esto es muy cutre, debe ser cambiado por algun mecanismo de Vue si es posible.
           this.playerlist = Room.playersArr;
-        }, 500);
+        }, 250);
       }
-    }
+    },
   },
   mounted() {
+    if (Room.roomId == "") this.$router.replace({ name: "index" });
     this.loadPlayers();
   }
 };
