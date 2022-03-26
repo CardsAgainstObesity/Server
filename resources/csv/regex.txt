@@ -1,0 +1,1 @@
+Match new lines that don't end in ".": (?<!\.)\n
