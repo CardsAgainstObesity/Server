@@ -51,8 +51,8 @@ import Nav from "@/components/Nav.vue";
     height: 75%;
 }
 
-h2,
-h2 {
+h1,
+h3 {
     margin-top: 15px;
 }
 b {

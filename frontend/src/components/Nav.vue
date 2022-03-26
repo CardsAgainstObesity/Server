@@ -11,7 +11,7 @@ defineProps({
 </script>
 <template>
     <header>
-        <div class="topnav logo" :style="(hidelogo === false ? '':'background-image: none;')">
+        <div class="topnav logo" :class="(hidelogo === true ? 'hide':'')">
             <nav class="left noselect">
                 <RouterLink to="/">Inicio</RouterLink>
                 <RouterLink :to="{ name: game.state, params: { id: (Room.roomId == '' ? 'DEBUG':Room.roomId) } }">Partida</RouterLink>
@@ -21,3 +21,11 @@ defineProps({
         </div>
     </header>
 </template>
+
+<style scoped>
+@media only screen and (min-height: 601px) {
+	div.hide {
+		background-image: none;
+	}
+}
+</style>

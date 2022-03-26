@@ -11,10 +11,9 @@ import Room from '../services/Room.mjs';
 			<main>
 				<img class="logo" src="@/assets/logo.png" />
 				<input type="text" id="name" placeholder="Tu nombre" />
-				<h1>Unete a una partida</h1>
 				<input type="text" id="code" placeholder="Codigo de sala" />
+				<br>
 				<button @click="connect">Unirse</button>
-				<hr />
 				<button @click="create">Crea una nueva partida</button>
 			</main>
 		</div>
@@ -52,12 +51,9 @@ export default {
 <style scoped>
 img.logo {
 	width: 100%;
+	margin-bottom: 2rem;
 }
 
-hr {
-	margin-top: 1rem;
-	margin-bottom: 1rem;
-}
 .centered {
 	margin: 0;
 	position: fixed;
@@ -65,11 +61,26 @@ hr {
 	left: 50%;
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
-	padding: 8rem 2rem;
+	padding: 5rem 2rem;
 	background-color: #222222;
 	border-radius: 1rem;
 	text-align: center;
 	max-width: 50vh;
+}
+
+@media only screen and (max-height: 600px) {
+	img.logo {
+		display: none;
+	}
+
+	.centered {
+		top: 15%;
+		left: 10%;
+		right: 10%;
+		-ms-transform: none;
+		transform: none;
+		max-width: 100vw;
+	}
 }
 
 button,
