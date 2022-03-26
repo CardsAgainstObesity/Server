@@ -1,6 +1,4 @@
 <script setup>
-import IconPlayer from "@/components/icons/IconPlayer.vue";
-import IconPlayerReady from "@/components/icons/IconPlayerReady.vue";
 import Player from "@/components/Player.vue";
 
 defineProps({
