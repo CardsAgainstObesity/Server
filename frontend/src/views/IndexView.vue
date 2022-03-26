@@ -1,7 +1,6 @@
 <script setup>
 import WSConnection from '@/services/ws.mjs';
 import Nav from "@/components/Nav.vue";
-import API from '@/services/API.mjs';
 import Room from '../services/Room.mjs';
 </script>
 
@@ -11,25 +10,37 @@ import Room from '../services/Room.mjs';
 		<div class="centered">
 			<main>
 				<img class="logo" src="@/assets/logo.png" />
+				<input type="text" id="name" placeholder="Tu nombre" />
 				<h1>Unete a una partida</h1>
 				<input type="text" id="code" placeholder="Codigo de sala" />
 				<button @click="connect">Unirse</button>
 				<hr />
-				<button>Crea una nueva partida</button>
+				<button @click="create">Crea una nueva partida</button>
 			</main>
 		</div>
 	</div>
 </template>
 
 <script>
-async function connect() {
-	const roomId = document.getElementById('code').value;
-	console.log("Attempting socket connect:", roomId);
-	WSConnection.changeName();
-	WSConnection.joinRoom(roomId);
-	let players = await API.getRoomPlayers(roomId);
-	console.log(players);
-}
+export default {
+  name: "IndexView",
+  methods: {
+    connect() {
+		const roomId = document.getElementById('code').value;
+		const name = document.getElementById('name').value;
+		WSConnection.changeName(name);
+		WSConnection.joinRoom(roomId);
+		this.$router.push({ name: 'lobby' });
+    },
+    create() {
+		const roomId = document.getElementById('code').value;
+		const name = document.getElementById('name').value;
+		WSConnection.changeName(name);
+		WSConnection.createRoom(roomId);
+		this.$router.push({ name: 'lobby' });
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -56,7 +67,7 @@ hr {
 }
 
 button,
-input#code[type="text"] {
+input[type="text"] {
 	margin-bottom: 0.5rem;
 	max-width: 50vw;
 	background-color: #181818;
@@ -69,7 +80,7 @@ button:hover {
 	color: #181818;
 }
 
-input#code[type="text"] {
+input[type="text"] {
 	min-width: 200px;
 }
 </style>

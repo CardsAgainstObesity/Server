@@ -3,6 +3,7 @@ export default class Room {
     static _roomId = "";
     static _players = new Map();
     static _status = "lobby";
+    
 
     static get players() {
         return Room._players;

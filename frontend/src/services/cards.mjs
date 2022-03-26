@@ -28,7 +28,7 @@ let game = {
         console.log(`New gamestate: ${this.gamestate}`);
     },
     get state() {
-        console.log(`${this.gamestate}`);
+        console.log(`Current gamestate: ${this.gamestate}`);
         return this.gamestate;
     }
 }

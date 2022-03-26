@@ -4,6 +4,10 @@ import LoggingSystem from "../util/LoggingSystem.mjs";
 import Room from "../entity/Room.mjs";
 import Player from "../entity/Player.mjs";
 
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const random_name = require("../../resources/random/names.json");
+
 export default class GameServer {
     static __instance = null;
 
@@ -42,7 +46,12 @@ export default class GameServer {
      */
     listen(server) {
         // Start the Socket.IO Server instance
-        this.__io = new Server(server);
+        this.__io = new Server(server, {
+            cors: {
+                origin: "*", // TODO: CAMBIAR ESTO EN PRODUCCIÓN POR FAVOR
+                methods: ["GET", "POST"]
+            }
+        });
         // Send log message
         const host = server.address().address + ":" + server.address().port;
         LoggingSystem.singleton.log("[" + this.constructor.name + "]", "Listening to: " + host);
@@ -70,15 +79,16 @@ export default class GameServer {
 
             // Create a player for the client
             let player = new Player(socket.id);
-
             // ----
             // Room creation
             // ----
-            socket.on("RoomCreationRequest", roomId => {
+            socket.on("RoomCreationRequest", (id) => {
+                let roomId = id ? id : Date.now().toString(36).substr(2);
+                LoggingSystem.singleton.log("[" + this.constructor.name + "]", "Created room: " + roomId);
                 // Check if already room exists in the server
                 let roomExists = this.rooms.has(roomId);
                 if (!roomExists) {
-                    let room = new Room(roomId);
+                    let room = new Room(roomId, player);
                     // Add room to sever
                     this.rooms.set(roomId, room);
                     // Bind room events to server
@@ -89,8 +99,19 @@ export default class GameServer {
                     });
                     // Add socket to the sockets room
                     socket.join(roomId);
-                    // Send room creation success reply
-                    socket.emit("RoomCreationSuccess", room.toJSON());
+                    // Leave room if any
+                    player.leaveRoom();
+                    // Check if there is space in the room
+                    if (room.players.size < room.maxPlayers) {
+                        // Send room creation success reply
+                        socket.emit("RoomCreationSuccess", room.toJSON());
+                        // Join room
+                        room.addPlayer(player);
+                    } else {
+                        // Send connection error reply
+                        socket.emit("error", new Error("RoomCapacityExceed"));
+                    }
+
                 } else {
                     // Send creation error reply
                     socket.emit("error", new Error("RoomAlreadyExists"));
@@ -127,6 +148,27 @@ export default class GameServer {
                 } else {
                     // Send connection error reply
                     socket.emit("error", new Error("UknownRoom"));
+                }
+            });
+
+            // ----
+            // Name change
+            // ----
+            socket.on("RequestPlayerChangeName", (name) => {
+
+                let newName;
+
+                if(!name || name == "") {
+                    // Get random name
+                    newName = random_name[Math.floor(Math.random()*random_name.length)];
+                } else {
+                    newName = name.slice(0,20);
+                }
+
+                player.name = newName;
+                if (player.room) {
+                    let roomId = player.room.id;
+                    socket.to(roomId).emit("PlayerChangeName", newName);
                 }
             });
 

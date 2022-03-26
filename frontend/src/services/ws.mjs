@@ -16,33 +16,53 @@ export default class WSConnection {
     static connect() {
         // Create a connection to the WS server
         // TODO : Cambiar para producción
-        WSConnection._socket = io("localhost:8683");
+        WSConnection._socket = io("localhost:8080");
 
         WSConnection.socket.on("connect", () => {
             console.log("[WS] Connected to the server");
         });
 
         WSConnection.socket.on("error", console.error);
+
         WSConnection.socket.on("RoomConnectionSuccess", (room) => {
             console.log("[WS] Connected to room: ", room);
             Room.roomId = room.id;
+            room.players.forEach(ply =>{
+                Room.addPlayer(ply);
+            });
         });
-        WSConnection.socket.on("PlayerConnected", (player) => {
-            console.log(player);
+
+        WSConnection.socket.on("RoomCreationSuccess", (room) => {
+            console.log("[WS] Created room: ", room);
+            Room.roomId = room.id;
+            room.players.forEach(ply =>{
+                Room.addPlayer(ply);
+            });
+        });
+
+        WSConnection.socket.on("RoomPlayerConnection", (player) => {
+            console.log("[WS] Player connected: ",player);
             Room.addPlayer(player);
         });
 
-        WSConnection.socket.on("PlayerDisconnected", (player) => {
-            console.log(player);
+        WSConnection.socket.on("RoomPlayerDisconnection", (player) => {
+            console.log("[WS] Player disconnected: ",player);
             Room.removePlayer(player);
         });
 
-        WSConnection.socket.on("RoomStatusChanged");
+        WSConnection.socket.on("RoomStatusChanged", (status) => {
+            console.log("[WS] Room status changed: ",staus);
+            Room.status = status;
+        });
 
     }
 
+    static createRoom(roomId) {
+        WSConnection.socket.emit("RoomCreationRequest",roomId);
+    }
+
     static joinRoom(roomId) {
-        WSConnection.socket.emit("roomJoinRequest", roomId);
+        WSConnection.socket.emit("RoomConnectionRequest", roomId);
     }
 
     static changeName(newName) {

@@ -8,6 +8,8 @@
 + RoomCreationSuccess
     * Description:
     * Args: Object roomJSON
++ PlayerChangeName
+    * Description: Player changed name
 
 -- Server/Room --
 + RoomStatusChanged
@@ -33,3 +35,6 @@
 + RoomCreationRequest
     * Description: Requests to create a room
     * Args: String roomId
++ RequestPlayerChangeName
+    * Description: Request a name change
+    * Args: String name

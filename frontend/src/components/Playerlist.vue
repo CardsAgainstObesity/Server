@@ -36,11 +36,28 @@ ul.playerlist > li {
   max-width: 50vw;
   background-color: #222222;
   transition: background-color 0.25s, transform 0.25s;
+  overflow-x: hidden;
 }
 
 ul.playerlist > li:hover {
-    background-color: #333;
+  background-color: #333;
+  transform: scale(1.025);
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: scale(1);
+  }
+  50% {
     transform: scale(1.025);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+ul.playerlist > li:last-child {
+  animation: 1s ease-out 0s 1 slideInFromLeft;
 }
 
 @media only screen and (max-width: 1000px) {

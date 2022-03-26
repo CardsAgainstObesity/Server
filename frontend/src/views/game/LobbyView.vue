@@ -1,21 +1,20 @@
 <script setup>
-import WSConnection from '@/services/ws.mjs';
+import WSConnection from "@/services/ws.mjs";
 import Nav from "@/components/Nav.vue";
 import Playerlist from "@/components/Playerlist.vue";
 import { game } from "@/services/cards.mjs";
 import Room from "@/services/Room.mjs";
-import API from "@/services/API.mjs";
 game.state = "lobby";
 </script>
 
 <script>
 export default {
-  name: 'LobbyView',
+  name: "LobbyView",
   data() {
     return {
       playerlist: [],
-      nIntervId: undefined
-    }
+      nIntervId: undefined,
+    };
   },
   methods: {
     appendplayer(player) {
@@ -23,23 +22,17 @@ export default {
       this.playerlist.push(_player);
     },
     async loadPlayers() {
-      console.log("?");
-      let players = await API.getRoomPlayers(Room.roomId);
-      console.log(players);
-      this.playerlist = players;
-      // if (!this.nIntervId) {
-      //   this.nIntervId = setInterval(() => {
-      //     // let players = await API.getRoomPlayers(Room.roomId);
-      //     API.getRoomPlayers(Room.roomId).then(players => {
-      //       console.log(players);
-      //       this.playerlist = players;
-      //     });
-      //   }, 1000);
-      // }
+      if (!this.nIntervId) {
+        this.nIntervId = setInterval(() => { // TODO: Esto es muy cutre, debe ser cambiado por algun mecanismo de Vue si es posible.
+          this.playerlist = Room.playersArr;
+        }, 500);
+      }
     }
+  },
+  mounted() {
+    this.loadPlayers();
   }
-}
-
+};
 </script>
 
 <template>
@@ -50,7 +43,7 @@ export default {
         <button @click="appendplayer()">DEBUG Append player</button>
         <button @click="loadPlayers()">DEBUG Load player</button>
         <h1>Jugadores en la partida</h1>
-        <Playerlist :list="playerlist" />
+        <Playerlist :list="playerlist" :lobby="true" />
       </main>
     </div>
   </div>

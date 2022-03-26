@@ -16,7 +16,7 @@ const server = http.createServer(app);
 // Start listening for requests on configured port
 server.listen(config.port, () => {
     let host = server.address().address + ":" + server.address().port;
-    LoggingSystem.singleton.log("[WEB]","Listening to " + host);
+    LoggingSystem.singleton.log("[WEB]", "Listening to " + host);
 });
 
 // Link GameServer to HTTP server

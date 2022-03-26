@@ -15,10 +15,11 @@ export default class Room extends EventHandler {
      * @param {String} roomId Room identifier 
      */
     constructor(roomId, host) {
+        super();
         this.__roomId = roomId;
         this.__players = new Map();
         this.__status = "lobby";
-        this.__czar = undefined;
+        this.__czar = host;//undefined;
         this.__goalObesity = 7;
         this.__host = host;
         this.__maxPlayers = 8;
@@ -105,6 +106,7 @@ export default class Room extends EventHandler {
     addPlayer(player) {
         if(this.players.size == this.maxPlayers) throw new Error("RoomCapacityExceed");
         else {
+            player.room = this;
             this.players.set(player.id, player);
             this.emit("RoomPlayerConnection", player.toJSON());
         }
@@ -115,8 +117,8 @@ export default class Room extends EventHandler {
      * @param {Player} player 
      */
     removePlayer(player) {
-        this.players.delete(player.id);
         this.emit("RoomPlayerDisconnection", player.toJSON());
+        this.players.delete(player.id);
     }
 
     /**

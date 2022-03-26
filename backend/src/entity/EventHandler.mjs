@@ -20,7 +20,7 @@
      * @returns Listener's identifier
      */
     addListener(callback) {
-        var identifier = this.__listeners.size();
+        var identifier = this.__listeners.size;
         this.__listeners.set(identifier,callback);
         return identifier;
     }

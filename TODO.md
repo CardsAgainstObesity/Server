@@ -10,3 +10,4 @@
     - [ ] Idioma
     - [ ] Color de acento
     - [ ] Tema (Claro/Oscuro/...)
+- Comentar los tipos de dato de las funciones del frontend

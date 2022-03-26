@@ -10,9 +10,9 @@ game.state = "vote";
         <Nav/>
         <h1 class="left_padding noselect">{{ czar }} es el Zar de las cartas.</h1>
         <div class="container">
-            <Card text="Made in Abyss" :dark="true" />
+            <Card text="Made in Abyss" :dark="true" :clickable="false" />
             <div class="break" />
-            <Card v-for="card in cards" :text="card.text" :dark="card.dark" :key="card" />
+            <Card v-for="card in cards" :text="card.text" :dark="card.dark" :clickable="true" :key="card" />
         </div>
     </div>
 </template>

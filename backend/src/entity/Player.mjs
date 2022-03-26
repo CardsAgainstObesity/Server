@@ -3,8 +3,9 @@ import Room from "./Room.mjs";
 export default class Player {
     constructor(id) {
         this.__id = id;
-        this.__obesity;
+        this.__obesity = 0;
         this.__room;
+        this.__name;
     }   
 
     /**
@@ -32,6 +33,17 @@ export default class Player {
         this.__room = value;
     }
 
+    set name(value) {
+        this.__name = value;
+    }
+
+    /**
+     * @returns {String}
+     */
+    get name() {
+        return this.__name;
+    }
+
     /**
      * If the player is in a room, leaves it
      */
@@ -49,7 +61,8 @@ export default class Player {
     toJSON(){
         return {
             "id": this.id,
-            "obesity" : this.obesity
+            "obesity" : this.obesity,
+            "name": this.name
         }
     }
 }
