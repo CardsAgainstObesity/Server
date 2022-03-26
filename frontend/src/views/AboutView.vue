@@ -19,7 +19,6 @@ import Nav from "@/components/Nav.vue";
                 <img class="image" src="/logos/socketio.svg" />
                 <h3>Socket.io</h3>
             </div>
-            <!-- <div class="break" /> -->
         </div>
         <h1 class="left_padding">Tools</h1>
         <div class="container">

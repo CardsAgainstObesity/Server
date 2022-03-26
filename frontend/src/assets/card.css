@@ -28,6 +28,12 @@
     margin: 0;
 }
 
+.card_input {
+    background-color: rgba(1, 1, 1, 0.5);
+    padding: 0px 0.75rem;
+    border-radius: 1rem;
+}
+
 .noselect {
     -webkit-touch-callout: none;
     /* iOS Safari */
@@ -40,6 +46,5 @@
     -ms-user-select: none;
     /* Internet Explorer/Edge */
     user-select: none;
-    /* Non-prefixed version, currently
-                                    supported by Chrome, Edge, Opera and Firefox */
+    /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }

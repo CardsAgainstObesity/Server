@@ -21,7 +21,7 @@ export default {
       const _player = { name: player ? player.name : "YOinkS" };
       this.playerlist.push(_player);
     },
-    async loadPlayers() {
+    loadPlayers() {
       if (!this.nIntervId) {
         this.nIntervId = setInterval(() => { // TODO: Esto es muy cutre, debe ser cambiado por algun mecanismo de Vue si es posible.
           this.playerlist = Room.playersArr;

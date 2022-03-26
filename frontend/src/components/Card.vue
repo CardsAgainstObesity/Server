@@ -17,6 +17,6 @@ defineProps({
 
 <template>
     <div :class="'event-card ' + (dark ? 'dark':' ') + (clickable ? 'clickable':' ')">
-        <p class="noselect">{{text}}</p>
+        <p v-html="text" class="noselect"></p>
     </div>
 </template>
