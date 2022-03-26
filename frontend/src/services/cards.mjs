@@ -22,6 +22,7 @@ let cards = [{
 
 let game = {
     gamestate: "lobby",
+    _card: 0,
     set state(value) {
         console.log(`${this.gamestate} => ${value}`);
         this.gamestate = value;
@@ -30,6 +31,12 @@ let game = {
     get state() {
         console.log(`Current gamestate: ${this.gamestate}`);
         return this.gamestate;
+    },
+    set card(value){
+        this._card = value;
+    },
+    get card(){
+        return this._card;
     }
 }
 
