@@ -20,3 +20,4 @@
     - [ ] Errores encontrados en una partida
 - Migrar de HTTP/1.1 a HTTP/2
 - Comprobar que la aplicación se sienta rapida aun con una velocidad de internet muy mala (DevTools -> Networking)
+- Usar Cloudflare para permitir conexiones a la pagina web sin exponer la IP publica del servidor y además tener protección contra DDoS y/o Bots.
