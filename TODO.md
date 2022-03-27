@@ -3,6 +3,7 @@
     - [ ] service-worker.js
     - [ ] manifest.json
     - [ ] HTTPs
+    - [ ] Poner un botón custom para instalar la PWA.´´
 - Añadir una pagina "/about" con la lista de tecnologías usadas
 - Añadir un panel de debug (evidentemente esto debe ser ocultado en producción)
     - [ ] Mostrar las cartas de todos los jugadores a la vez
@@ -11,3 +12,11 @@
     - [ ] Color de acento
     - [ ] Tema (Claro/Oscuro/...)
 - Comentar los tipos de dato de las funciones del frontend
+- Permitir el cambio de nombre no solo en index sino tambien en el lobby.
+- Arreglar destruir partidas
+- Meter telemetría básica (sin poder identificar a los jugadores individualmente)
+    - [ ] Saber la duración de las partidas
+    - [ ] Cuantos jugadores suelen jugar de media
+    - [ ] Errores encontrados en una partida
+- Migrar de HTTP/1.1 a HTTP/2
+- Comprobar que la aplicación se sienta rapida aun con una velocidad de internet muy mala (DevTools -> Networking)
