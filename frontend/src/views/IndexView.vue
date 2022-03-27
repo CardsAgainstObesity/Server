@@ -1,12 +1,14 @@
 <script setup>
-import WSConnection from '@/services/ws.mjs';
 import Nav from "@/components/Nav.vue";
+import Toast from "@/components/Toast.vue";
+import WSConnection from '@/services/ws.mjs';
 import Room from '../services/Room.mjs';
 </script>
 
 <template>
 	<div>
 		<Nav :hidelogo="true" />
+		<Toast text="<ERROR MESSAGE>" type="error" />
 		<div class="centered">
 			<main>
 				<img class="logo" src="@/assets/logo.png" />
