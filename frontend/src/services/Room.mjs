@@ -3,6 +3,7 @@ export default class Room {
     static _roomId = "";
     static _players = new Map();
     static _status = "lobby";
+    static _czar = null;
     
 
     static get players() {
@@ -26,5 +27,13 @@ export default class Room {
 
     static removePlayer(player) {
         Room._players.delete(player.id);
+    }
+    
+    static setCzar(player) {
+        Room._czar = player;
+    }
+
+    static start() {
+        // TODO
     }
 }

@@ -56,6 +56,16 @@ export default class WSConnection {
             Room.status = status;
         });
 
+        WSConnection.socket.on("RoomCzarChanged", (newCzar) => {
+            console.log("[WS] Room Czar changed: ", newCzar);
+            Room.setCzar(newCzar);
+        });
+
+        WSConnection.socket.on("RoomStart", () => {
+            console.log("[WS] Room started!");
+            Room.start();
+        })
+
     }
 
     static createRoom(roomId) {

@@ -50,6 +50,7 @@ export default class Player {
     leaveRoom() {
         if(this.room) {
             this.room.removePlayer(this);
+            this.__room = undefined;
         }
     }
 

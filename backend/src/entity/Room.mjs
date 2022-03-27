@@ -1,12 +1,25 @@
 import EventHandler from "./EventHandler.mjs";
+import Lobby from "./Lobby.mjs";
 import Player from "./Player.mjs";
+
+/**
+ * 
+ * @param {Player} player 
+ * @param {Player[]} playerList 
+ */
+function getPlayerIndex(player, playerList) {
+    playerList.forEach((p,index) => {
+        if(p.id == player.id) return index;
+    });
+    return -1;
+}
 
 /**
  * @typedef {"lobby" | "choosing" | "voting" | "finished"} RoomStatus
  */
 
 /**
- * @typedef {"RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged"} GameEvent
+ * @typedef {"RoomStart" | "RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged"} GameEvent
  */
 
 export default class Room extends EventHandler {
@@ -19,10 +32,20 @@ export default class Room extends EventHandler {
         this.__roomId = roomId;
         this.__players = new Map();
         this.__status = "lobby";
-        this.__czar = host;//undefined;
+        this.__czar = host;
         this.__goalObesity = 7;
         this.__host = host;
         this.__maxPlayers = 8;
+
+        this.__lobby = new Lobby();
+        this.__cards;
+    }
+
+    /**
+     * @returns {Lobby}
+     */
+    get lobby() {
+        return this.__lobby;
     }
 
     /**
@@ -53,6 +76,9 @@ export default class Room extends EventHandler {
         return this.__czar;
     }
 
+    /**
+     * @returns {Player}
+     */
     get host() {
         return this.__host;
     }
@@ -78,6 +104,13 @@ export default class Room extends EventHandler {
     setCzar(player) {
         this.__czar = player;
         this.emit("RoomCzarChanged", player.toJSON());
+    }
+
+    rotateCzar() {
+        let playerList = Array.from(this.players.values());
+        let index = getPlayerIndex(this.czar, playerList);
+        let nextCzar = playerList[(index + 1) % playerList.length];
+        this.setCzar(nextCzar);
     }
 
     /**
@@ -125,7 +158,21 @@ export default class Room extends EventHandler {
      * Removes the room
      */
     remove() {
+        this.setStatus("finished");
         this.emit("RoomRemoved", this.toJSON());
+    }
+
+    start() {
+
+        // Get the final cardpacks
+        this.lobby
+        .joinCardpacks()
+        .then(cards => {
+            this.__cards = cards;
+            this.emit("RoomStart");
+            this.setStatus("choosing");
+        })
+
     }
 
     /**

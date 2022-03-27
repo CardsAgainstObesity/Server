@@ -1,5 +1,5 @@
-const fetch = import("node-fetch");
-const FormData = import("form-data");
+import fetch from "node-fetch";
+import FormData from "form-data";
 
 
 const base = "https://pastebin.com/"
