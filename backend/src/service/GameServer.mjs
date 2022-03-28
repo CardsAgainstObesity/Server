@@ -83,7 +83,7 @@ export default class GameServer {
             // Room creation
             // ----
             socket.on("RoomCreationRequest", (id) => {
-                let roomId = id ? id : Date.now().toString(36).substr(2);
+                let roomId = id ? id.replace(" ", "").slice(0,10) : Date.now().toString(36).substr(2);
                 LoggingSystem.singleton.log("[" + this.constructor.name + "]", "Created room: " + roomId);
                 // Check if already room exists in the server
                 let roomExists = this.rooms.has(roomId);
@@ -162,7 +162,7 @@ export default class GameServer {
                     // Get random name
                     newName = random_name[Math.floor(Math.random()*random_name.length)];
                 } else {
-                    newName = name.slice(0,20);
+                    newName = name.slice(0,25);
                 }
 
                 player.name = newName;
