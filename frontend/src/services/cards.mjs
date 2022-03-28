@@ -1,21 +1,25 @@
 let cards = [{
-        text: "Bondrewd",
+        text: "Barack Obama.",
         dark: false,
     },
     {
-        text: "Mitty",
+        text: "Gente blanca.",
         dark: false,
     },
     {
-        text: "Reg",
+        text: "Los niños de la guerra.",
         dark: false,
     },
     {
-        text: "Riko",
+        text: "Racismo.",
         dark: false,
     },
     {
-        text: "McDonald's",
+        text: "Pedofilia.",
+        dark: false,
+    },
+    {
+        text: "Porno con tentáculos.",
         dark: false,
     },
 ];

@@ -1,6 +1,7 @@
 import express from 'express';
 import { createRequire } from "module";
 import http from 'http';
+import path from 'path';
 import LoggingSystem from './src/util/LoggingSystem.mjs';
 import GameServer from './src/service/GameServer.mjs';
 
@@ -8,7 +9,7 @@ const require = createRequire(import.meta.url);
 const config = require("./config.json");
 
 const app = express();
-//app.use(express.static(path.resolve('../frontend/dist')));
+app.use(express.static(path.resolve('../frontend/dist')));
 
 // HTTP Server instance
 const server = http.createServer(app);

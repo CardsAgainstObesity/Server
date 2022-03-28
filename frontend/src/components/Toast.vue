@@ -13,7 +13,7 @@ defineProps({
 </script>
 
 <template>
-    <dialog class="error" open>
+    <dialog class="error" style="display: none;" open>
         <div class="content">
             <span class="text">
                 <svg style="width:20px; vertical-align: bottom;" viewBox="0 0 24 24">

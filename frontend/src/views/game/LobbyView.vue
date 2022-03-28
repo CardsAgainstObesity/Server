@@ -41,8 +41,8 @@ export default {
     <Nav />
     <div class="left_padding">
       <main>
-        <button @click="appendplayer()">DEBUG Append player</button>
-        <button @click="loadPlayers()">DEBUG Load player</button>
+        <!-- <button @click="appendplayer()">DEBUG Append player</button>
+        <button @click="loadPlayers()">DEBUG Load player</button> -->
         <h1>Jugadores en la partida</h1>
         <Playerlist :list="playerlist" :lobby="true" />
       </main>
