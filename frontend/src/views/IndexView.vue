@@ -31,7 +31,7 @@ export default {
     return {
       showToast: false,
       nTimeoutId: undefined,
-      toastText: "TEST",
+      toastText: "ERROR",
     };
   },
   mounted() {
@@ -117,6 +117,7 @@ input[type="text"] {
   max-width: 50vw;
   background-color: #181818;
   font-size: 1rem;
+  width: 100%;
 }
 
 input[type="text"]:focus,

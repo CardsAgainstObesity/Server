@@ -27,6 +27,7 @@ export default class WSConnection {
 
         WSConnection.socket.on("RoomConnectionSuccess", (room) => {
             console.log("[WS] Connected to room: ", room);
+            Room.setCzar(room.czar);
             Room.roomId = room.id;
             room.players.forEach(ply =>{
                 Room.addPlayer(ply);
@@ -35,6 +36,7 @@ export default class WSConnection {
 
         WSConnection.socket.on("RoomCreationSuccess", (room) => {
             console.log("[WS] Created room: ", room);
+            Room.setCzar(room.czar);
             Room.roomId = room.id;
             room.players.forEach(ply =>{
                 Room.addPlayer(ply);

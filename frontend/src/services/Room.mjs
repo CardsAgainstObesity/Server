@@ -33,6 +33,10 @@ export default class Room {
         Room._czar = player;
     }
 
+    static getCzar() {
+        return Room._czar;
+    }
+
     static start() {
         // TODO
     }

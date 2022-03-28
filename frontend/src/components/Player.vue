@@ -14,13 +14,18 @@ defineProps({
     avatar: {
         type: String,
         required: false
+    },
+    czar: {
+        type: Boolean,
+        required: true
     }
 })
 </script>
 
 <template>
     <div class="player">
-        <IconPlayer />
+        <IconPlayerCzar v-if="czar" />
+        <IconPlayer v-else />
         <span>{{name}}</span>
     </div>
 </template>
