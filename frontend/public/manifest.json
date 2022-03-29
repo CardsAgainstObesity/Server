@@ -1,0 +1,21 @@
+{
+    "short_name": "CCO",
+    "name": "Cartas Contra la Obesidad",
+    "description": "Progressive Web App (Dev)",
+    "icons": [
+      {
+      "src":"/icons/pwa/192x.png",
+      "sizes": "192x192",
+      "type": "image/png"
+      },
+      {
+      "src":"/icons/pwa/512x.png",
+      "sizes": "512x512",
+      "type": "image/png"
+      }
+    ],
+    "start_url": "/",
+    "background_color": "#181818",
+    "theme_color": "#222222",
+    "display": "standalone"
+  }

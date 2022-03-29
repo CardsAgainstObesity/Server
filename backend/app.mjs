@@ -9,6 +9,7 @@ import GameServer from './src/service/GameServer.mjs';
 
 const require = createRequire(import.meta.url);
 const config = require("./config.json");
+const secure_server = true;
 
 const app = express();
 app.use(express.static(path.resolve('../frontend/dist')));
@@ -19,10 +20,12 @@ const options = {
     cert: readFileSync('src/openssl/cert.pem'),
     passphrase: 'abcd',
 }
-const server = https.createServer(options, app);
+let server;
+if (secure_server) server = https.createServer(options, app);
+else server = http.createServer(app);
 
 // Start listening for requests on configured port
-server.listen(config.secure_port, () => {
+server.listen(secure_server ? config.secure_port:config.port, () => {
     let host = server.address().address + ":" + server.address().port;
     LoggingSystem.singleton.log("[WEB]", "Listening to " + host);
 });

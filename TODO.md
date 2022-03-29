@@ -1,9 +1,10 @@
 # Cosas pendientes por hacer
 - Hacer que la aplicación sea instalable como PWA.
-    - [ ] service-worker.js
-    - [ ] manifest.json
-    - [ ] HTTPs
-    - [ ] Poner un botón custom para instalar la PWA.´´
+    - [x] service-worker.js
+    - [x] manifest.json
+    - [x] HTTPs
+    - [ ] Poner un botón custom para instalar la PWA.
+    - [ ] Guardar en cache todo el frontend de Vue, de forma que el cliente solo haga peticiones al servidor para cosas que cambian constantemente (Como WS).
 - Añadir una pagina "/about" con la lista de tecnologías usadas
 - Añadir un panel de debug (evidentemente esto debe ser ocultado en producción)
     - [ ] Mostrar las cartas de todos los jugadores a la vez
@@ -18,6 +19,11 @@
     - [ ] Saber la duración de las partidas
     - [ ] Cuantos jugadores suelen jugar de media
     - [ ] Errores encontrados en una partida
-- Migrar de HTTP/1.1 a HTTP/2
 - Comprobar que la aplicación se sienta rapida aun con una velocidad de internet muy mala (DevTools -> Networking)
-- Usar Cloudflare para permitir conexiones a la pagina web sin exponer la IP publica del servidor y además tener protección contra DDoS y/o Bots.
+- Guardar el historial de partidas jugadas localmente en IndexedDB/WebStorage
+    - [ ] Pantalla para ver el historial de partidas. (Se envia el log de la partida una vez se termina la misma, y este log se almacena localmente).
+        - [ ] Ver las cartas que tenia cada jugador en cada turno
+        - [ ] Ver que carta tiró cada jugador en un determinado turno
+        - [ ] Ver cual fue la carta ganadora de un determinado turno
+        - [ ] Ver quien era el czar en un determinado turno
+        - [ ] Ver los puntos de cada jugador en cada turno
