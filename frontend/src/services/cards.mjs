@@ -22,6 +22,22 @@ let cards = [{
         text: "Porno con tentáculos.",
         dark: false,
     },
+    {
+        text: "Nazis.",
+        dark: false,
+    },
+    {
+        text: "Pilotos kamikaze.",
+        dark: false,
+    },
+    {
+        text: "Colegios tradicionalmente negros.",
+        dark: false,
+    },
+    {
+        text: "Ocultar una erección.",
+        dark: false,
+    }
 ];
 
 let game = {

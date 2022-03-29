@@ -13,7 +13,7 @@ import Nav from "@/components/Nav.vue";
             </p>
             <p>
                 La persona que
-                <b>haya cagado más recientemente</b> es designada como el
+                <b>haya cagado más recientemente</b>, es decir, <b>el primero que se une a la partida</b>, es designada como el
                 <b>Zar del primer turno</b>, y elige una
                 <b>carta de pregunta</b> (carta negra). El
                 <b>Zar lee en alto</b> la susodicha pregunta o la frase incompleta.

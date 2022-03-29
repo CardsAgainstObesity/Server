@@ -1,6 +1,7 @@
 <script setup>
 import Card from "@/components/Card.vue";
 import Nav from "@/components/Nav.vue";
+import Room from "@/services/Room.mjs";
 import { cards, game, czar } from "@/services/cards.mjs";
 game.state = "choose";
 </script>
@@ -9,7 +10,7 @@ game.state = "choose";
     <div>
         <Nav />
         <div class="left_padding">
-            <h1 class="noselect">{{ czar }} es el Zar de las cartas.</h1>
+            <h1 class="noselect">{{ Room.getCzar().name }} es el Zar de las cartas.</h1>
             <div class="container left">
                 <Card text="Así es, yo maté a ___. ¿Que cómo lo hice? ___." :dark="true" :clickable="false" />
                 <button @click="resetCards()" class="btn">RESET</button>

@@ -13,8 +13,8 @@ defineProps({
     <header>
         <div class="topnav logo" :class="(hidelogo === true ? 'hide':'')">
             <nav class="left noselect">
-                <RouterLink to="/">Inicio</RouterLink>
-                <RouterLink :to="{ name: game.state, params: { id: (Room.roomId == '' ? 'DEBUG':Room.roomId) } }">Partida</RouterLink>
+                <RouterLink v-if="Room.roomId == ''" to="/">Inicio</RouterLink>
+                <RouterLink v-if="Room.roomId != ''" :to="{ name: game.state, params: { id: (Room.roomId == '' ? 'DEBUG':Room.roomId) } }">Partida</RouterLink>
                 <RouterLink to="/rules">Reglas</RouterLink>
                 <RouterLink to="/about">Acerca de</RouterLink>
             </nav>
