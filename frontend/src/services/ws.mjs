@@ -15,7 +15,7 @@ export default class WSConnection {
 
     static connect() {
         // Create a connection to the WS server
-        WSConnection._socket = io(window.location.hostname + ":8080"); // TODO: Cambiar para producción
+        WSConnection._socket = io(window.location.hostname + ":" + window.location.port); // TODO: Cambiar para producción
 
         WSConnection.socket.on("connect", () => {
             console.log("[WS] Connected to the server");
