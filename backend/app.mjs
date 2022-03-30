@@ -9,7 +9,7 @@ import GameServer from './src/service/GameServer.mjs';
 
 const require = createRequire(import.meta.url);
 const config = require("./config.json");
-const secure_server = true;
+const secure_server = false;
 
 const app = express();
 app.use(express.static(path.resolve('../frontend/dist')));

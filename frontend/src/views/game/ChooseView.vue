@@ -23,11 +23,23 @@ game.state = "choose";
 </template>
 
 <script>
+export default {
+  name: "ChooseView",
+  mounted() {
+    if (game.card_index != 0) {
+        document.querySelectorAll('.card_input').forEach((card, key) => {
+            card.innerHTML = game.getCardValue(key) == undefined ? "[...]":game.getCardValue(key);
+        });
+    }
+  }
+};
+
 function resetCards() {
     for (let input of document.querySelectorAll('.card_input')){
-        input.innerHTML = "...";
+        input.innerHTML = "[...]";
     }
-    game.card = 0;
+    game.card_index = 0;
+    game.clearCardValues();
 }
 </script>
 

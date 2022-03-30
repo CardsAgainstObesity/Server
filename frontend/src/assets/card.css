@@ -29,10 +29,8 @@
 }
 
 .card_input {
-    background-color: rgba(1, 1, 1, 0.5);
-    padding: 0px 0.75rem;
-    border-radius: 1rem;
-    white-space: pre-wrap;
+    color: #82b2ee;
+    font-weight: bold;
 }
 
 .noselect {

@@ -23,12 +23,16 @@ defineProps({
 </template>
 
 <script>
-const chapuza = `<span class='card_input'>...</span>`;
+const chapuza = `<span class='card_input'>[...]</span>`;
 function assignInput(value, clickable) {
     if (clickable){
-        document.querySelectorAll('.card_input')[game.card].innerHTML = value.replaceAll(".","");
-        game.card++;
-        if (document.querySelectorAll('.card_input').length <= game.card) game.card = 0;
+        if (document.querySelectorAll('.card_input').length <= game.card_index) {
+          game.card = 0;
+        } else {
+          document.querySelectorAll('.card_input')[game.card_index].innerHTML = value.replaceAll(".","");
+          game.appendCardValue(value.replaceAll(".",""));
+          game.card_index++;
+        }
     }
 }
 </script>

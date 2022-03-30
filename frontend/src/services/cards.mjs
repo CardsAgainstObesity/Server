@@ -42,7 +42,8 @@ let cards = [{
 
 let game = {
     gamestate: "lobby",
-    _card: 0,
+    _card_index: 0,
+    _card_values: [],
     set state(value) {
         console.log(`${this.gamestate} => ${value}`);
         this.gamestate = value;
@@ -52,11 +53,20 @@ let game = {
         console.log(`Current gamestate: ${this.gamestate}`);
         return this.gamestate;
     },
-    set card(value){
-        this._card = value;
+    set card_index(index){
+        this._card_index = index;
     },
-    get card(){
-        return this._card;
+    get card_index(){
+        return this._card_index;
+    },
+    appendCardValue(card_value){
+        this._card_values.push(card_value);
+    },
+    getCardValue(index){
+        return this._card_values[index];
+    },
+    clearCardValues(){
+        this._card_values = [];
     }
 }
 
