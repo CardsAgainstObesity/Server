@@ -14,6 +14,10 @@ const secure_server = false;
 const app = express();
 app.use(express.static(path.resolve('../frontend/dist')));
 
+app.get('*', function (req, res) { // Redirect all URLs to VueJS
+    res.sendFile(path.resolve('../frontend/dist/index.html'));
+});
+    
 // HTTP Server instance
 const options = {
     key: readFileSync('src/openssl/key.pem'),

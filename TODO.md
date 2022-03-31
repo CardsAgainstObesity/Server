@@ -27,3 +27,4 @@
         - [ ] Ver cual fue la carta ganadora de un determinado turno
         - [ ] Ver quien era el czar en un determinado turno
         - [ ] Ver los puntos de cada jugador en cada turno
+- Cambiar la lista de jugadores de data a computed (se actualiza automaticamente en teoria)
