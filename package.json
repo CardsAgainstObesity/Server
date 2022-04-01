@@ -12,6 +12,7 @@
     "dependencies": {
         "cors": "^2.8.5",
         "csvtojson": "^2.0.10",
+        "dotenv": "^16.0.0",
         "express": "^4.17.3",
         "form-data": "^4.0.0",
         "node-fetch": "^3.2.3",

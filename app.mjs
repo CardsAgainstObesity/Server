@@ -6,16 +6,17 @@ import path from 'path';
 import { readFileSync } from 'fs';
 import LoggingSystem from './src/util/LoggingSystem.mjs';
 import GameServer from './src/service/GameServer.mjs';
+import 'dotenv/config';
 
 const require = createRequire(import.meta.url);
 const config = require("./config.json");
 const secure_server = false;
 
 const app = express();
-app.use(express.static(path.resolve('../frontend/dist')));
+app.use(express.static(process.env.FRONTEND_DIST));
 
 app.get('*', function (req, res) { // Redirect all URLs to VueJS
-    res.sendFile(path.resolve('../frontend/dist/index.html'));
+    res.sendFile(process.env.FRONTEND_DIST+'/index.html');
 });
     
 // HTTP Server instance
