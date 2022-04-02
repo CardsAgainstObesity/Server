@@ -13,10 +13,10 @@ const config = require("./config.json");
 const secure_server = false;
 
 const app = express();
-app.use(express.static(process.env.FRONTEND_DIST));
+app.use(express.static(process.env.FRONTEND_PATH+'/dist'));
 
 app.get('*', function (req, res) { // Redirect all URLs to VueJS
-    res.sendFile(process.env.FRONTEND_DIST+'/index.html');
+    res.sendFile(process.env.FRONTEND_PATH+'/dist/index.html');
 });
     
 // HTTP Server instance
