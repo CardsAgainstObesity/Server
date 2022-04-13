@@ -29,8 +29,20 @@
     * Args: Object roomJSON
 + RoomStart
     * Description: The game started
+    * Args: Object roomJSON
 + LobbyAddCardpackSuccess
     * Description: Added a cardpack to the lobby
+    * Args: {
+                id: string;
+                author: string;
+                name: {
+                    es: string;
+                    en: string;
+                };
+            }; 
++ LobbyRemoveCardpackSuccess
+    * Description: Removed a cardpack to the lobby
+    * Args: String cardpack_id
 
 -- Socket ( client ) --
 + RoomConnectionRequest
@@ -45,18 +57,22 @@
 + LobbyAddCardpackRequest
     * Description: Adds a new cardpack
     * CONDITION: Player id == Room host id
-    * Args: {Player emiter, String cardpack_source}
+    * Args: {String room_id, String cardpack_id}
 + LobbyRemoveCardpackRequest
     * Description: Removes a selected cardpack
     * CONDITION: Player id == Room host id
-    * Args: {Player emiter, String cardpack_name}
+    * Args: {String room_id, String cardpack_id}
 + RoomStartRequest
     * Description: Request to start the game
     * CONDITION: Player id == Room host id
-    * Args: Player emiter
+    * Args: String room_id
 
 
 Error types:
 + UknownRoom
 + RoomCapacityExceed
 + RoomAlreadyExists
++ CardpackAlreadyAdded
++ InvalidCardpack
++ NotEnoughPlayers
++ NotEnoughCards

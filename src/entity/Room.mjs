@@ -2,14 +2,18 @@ import EventHandler from "./EventHandler.mjs";
 import Lobby from "./Lobby.mjs";
 import Player from "./Player.mjs";
 
+const MIN_WHITE_CARDS_AMOUNT = 30;
+const MIN_BLACK_CARDS_AMOUNT = 30;
+const MIN_PLAYERS_AMOUNT = 2;
+
 /**
  * 
  * @param {Player} player 
  * @param {Player[]} playerList 
  */
 function getPlayerIndex(player, playerList) {
-    playerList.forEach((p,index) => {
-        if(p.id == player.id) return index;
+    playerList.forEach((p, index) => {
+        if (p.id == player.id) return index;
     });
     return -1;
 }
@@ -19,22 +23,23 @@ function getPlayerIndex(player, playerList) {
  */
 
 /**
- * @typedef {"RoomStart" | "RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged"} GameEvent
+ * @typedef {"LobbyRemoveCardpackSuccess" | "LobbyAddCardpackSuccess" | "RoomStart" | "RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged"} GameEvent
  */
 
 export default class Room extends EventHandler {
     /**
      * 
      * @param {String} roomId Room identifier 
+     * @param {Player} createdBy The player that created the room
      */
-    constructor(roomId, host) {
+    constructor(roomId, createdBy) {
         super();
         this.__roomId = roomId;
         this.__players = new Map();
         this.__status = "lobby";
-        this.__czar = host;
+        this.__czar = createdBy;
         this.__goalObesity = 7;
-        this.__host = host;
+        this.__createdBy = createdBy;
         this.__maxPlayers = 8;
 
         this.__lobby = new Lobby();
@@ -80,7 +85,7 @@ export default class Room extends EventHandler {
      * @returns {Player}
      */
     get host() {
-        return this.__host;
+        return this.__czar;
     }
 
     /**
@@ -137,7 +142,7 @@ export default class Room extends EventHandler {
      * @param {Player} player 
      */
     addPlayer(player) {
-        if(this.players.size == this.maxPlayers) throw new Error("RoomCapacityExceed");
+        if (this.players.size == this.maxPlayers) throw new Error("RoomCapacityExceed");
         else {
             player.room = this;
             this.players.set(player.id, player);
@@ -150,8 +155,8 @@ export default class Room extends EventHandler {
      * @param {Player} player 
      */
     removePlayer(player) {
-        this.emit("RoomPlayerDisconnection", player.toJSON());
         this.players.delete(player.id);
+        this.emit("RoomPlayerDisconnection", player.toJSON());
     }
 
     /**
@@ -162,17 +167,65 @@ export default class Room extends EventHandler {
         this.emit("RoomRemoved", this.toJSON());
     }
 
+    /**
+     * 
+     * @returns {Promise<"NotEnoughCards" | "NotEnoughPlayers">} Resolves to false if the room started successfully, else resolves to error message
+     */
     start() {
-
+        if (this.status != "lobby") return;
         // Get the final cardpacks
-        this.lobby
-        .joinCardpacks()
-        .then(cards => {
-            this.__cards = cards;
-            this.emit("RoomStart");
-            this.setStatus("choosing");
-        })
+        return new Promise((resolve, reject) => {
+            this.lobby
+                .joinCardpacks()
+                .then(cardpack => {
+                    console.log(cardpack)
+                    let white_am = cardpack.cards["en"] == undefined ? 0 : cardpack.cards["en"]["white"].length;
+                    let black_am = cardpack.cards["en"] == undefined ? 0 : cardpack.cards["en"]["black"].length;
+                    if (this.players.size < MIN_PLAYERS_AMOUNT) {
+                        resolve("NotEnoughPlayers");
+                    }
+                    else if (white_am >= MIN_WHITE_CARDS_AMOUNT && black_am >= MIN_BLACK_CARDS_AMOUNT) {
+                        this.__cards = cardpack.cards;
+                        resolve(false);
+                        this.emit("RoomStart", this.toJSON());
+                        this.setStatus("choosing");
+                    } else {
+                        resolve("NotEnoughCards");
+                    }
+                })
+                .catch(console.error)
+        });
+    }
 
+    /**
+     * @param {import("./Cardpack.mjs").DefaultCardpackId} packId
+     * @returns {Promise<import("./Cardpack.mjs").PackInfoType>} 
+     */
+    addCardPack(packId) {
+        if (this.status != "lobby") return;
+        // Add the cardpack to the lobby
+        return new Promise((resolve, reject) => {
+            this.lobby
+                .addCardPack(packId)
+                .then(cardpack => {
+                    this.emit("LobbyAddCardpackSuccess", cardpack.pack_info);
+                    resolve(cardpack.pack_info);
+                })
+                .catch(reject);
+        });
+    }
+
+    /**
+     * @param {import("./Cardpack.mjs").DefaultCardpackName} packId 
+     * @returns {boolean} True if pack was removed, else false
+     */
+    removeCardPack(packId) {
+        if (this.status != "lobby") return false;
+        // Remove the cardpack to the lobby
+        if (this.lobby.removeCardPack(packId)) {
+            this.emit("LobbyRemoveCardpackSuccess", packId);
+            return true;
+        } else return false;
     }
 
     /**

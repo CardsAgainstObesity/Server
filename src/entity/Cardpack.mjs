@@ -1,40 +1,62 @@
-import { readPasteBin } from "../util/Pastebin.mjs";
-
+import fs from 'fs';
+import path from 'path';
 const default_cardpacks = {
-    "base" : "../../resources/cardpacks/base_game/pack.json"
+    "base": "./resources/cardpacks/base_game/pack.json"
 }
 
-export default class Cardpack {
-    constructor() {}
-    
+/**
+ * @typedef {"base"} DefaultCardpackId
+ */
+
+/**
+ * @typedef PackInfoType   
+ * @property {String} id
+ * @property {String} author
+ * @property {Object} name 
+ * @property {String} name.es
+ * @property {String} name.en
+ */
+
+/**
+ * @typedef CardpackType
+ * @property {PackInfoType} pack_info
+ * @property {Object} cards
+ * @property {Object} cards.en
+ * @property {String[]} cards.en.white
+ * @property {String[]} cards.en.black 
+ * @property {Object} cards.es
+ * @property {String[]} cards.es.white
+ * @property {String[]} cards.es.black 
+ */
+
+export class Cardpack {
+    constructor() { }
+
     /**
-     * @param {String} source Pastebin URL or default pack name
+     * @param {DefaultCardpackId} name Default pack name
+     * @returns {Promise<CardpackType>}
      */
-    static from(source) {
+    static from(name) {
         return new Promise((resolve, reject) => {
-            let urlCheck = /https:\/\/pastebin\.com\/.*/;
-            if (urlCheck.test(source)) {
-                // Source is pastebin url
-                let pasteKey = source.slice(source.lastIndexOf("/"));
-                readPasteBin(pasteKey)
-                    .then((content) => {
+            // Check if its a default cardpack
+            let cardpack = default_cardpacks[name];
+            if (cardpack) {
+                fs.promises.readFile(path.resolve(cardpack), {
+                    encoding: "utf8"
+                })
+                    .then(buffer => {
                         try {
-                            resolve(JSON.parse(content));
-                        } catch {
-                            reject("Invalid JSON");
+                            var json = JSON.parse(buffer.toString());
+                            resolve(json);
+                        } catch (error) {
+                            reject(error);
                         }
-                    });
+                    })
+                    .catch(console.error);
+
+
             } else {
-                // Check if its a default cardpack
-                let cardpack = default_cardpacks[source];
-                if(cardpack) {
-                    fetch(cardpack)
-                    .then(res => res.json())
-                    .then(resolve)
-                    .catch(reject);
-                } else {
-                    reject("Invalid cardpack");
-                }
+                reject("Invalid cardpack");
             }
         });
     }

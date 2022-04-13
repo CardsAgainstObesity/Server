@@ -83,7 +83,7 @@ export default class GameServer {
             // Room creation
             // ----
             socket.on("RoomCreationRequest", (id) => {
-                let roomId = id ? id.replace(" ", "").slice(0,10) : Date.now().toString(36).substr(2);
+                let roomId = id ? id.replace(" ", "").slice(0, 10) : Date.now().toString(36).substr(2);
                 LoggingSystem.singleton.log("[" + this.constructor.name + "]", "Created room: " + roomId);
                 // Check if already room exists in the server
                 let roomExists = this.rooms.has(roomId);
@@ -158,11 +158,11 @@ export default class GameServer {
 
                 let newName;
 
-                if(!name || name == "") {
+                if (!name || name == "") {
                     // Get random name
-                    newName = random_name[Math.floor(Math.random()*random_name.length)];
+                    newName = random_name[Math.floor(Math.random() * random_name.length)];
                 } else {
-                    newName = name.slice(0,25);
+                    newName = name.slice(0, 25);
                 }
 
                 player.name = newName;
@@ -176,54 +176,84 @@ export default class GameServer {
             // Add cardpack 
             // ----
             socket.on("LobbyAddCardpackRequest", (args) => {
-                let player = args["emiter"];
-                let cardpack_source = args["cardpack_source"];
-                if((!player || !cardpack_source) || !(player instanceof Player)) {
+                let emiter_id = socket.id;
+                let cardpack_id = args["cardpack_id"];
+                let room_id = args["room_id"];
+                let room = this.rooms.get(room_id);
+                if (!room || !(room instanceof Room)) {
                     socket.emit("error", "InvalidEventArgs");
-                } else if(player.id != player.room.host.id) {
-                    socket.emit("error", "NoPermissions");
-                }else {
-                    player.room.lobby
-                    .addCardPack(cardpack_source)
-                    .then(() => socket.emit("LobbyAddCardpackSuccess",pack.name))
-                    .catch(() => socket.emit("error", "InvalidCardpack"));
-                } 
+                } else {
+                    let emiter = room.players.get(emiter_id);
+                    if ((!emiter || !cardpack_id) || !(emiter instanceof Player)) {
+                        socket.emit("error", "InvalidEventArgs");
+                    } else if (emiter.id != emiter.room.host.id) {
+                        socket.emit("error", "NoPermissions");
+                    } else {
+                        emiter.room.addCardPack(cardpack_id)
+                            .then(cardpack => {
+                                if (!cardpack) socket.emit("error", "InvalidCardpack");
+                            })
+                            .catch(() => {
+                                socket.emit("error", "CardpackAlreadyAdded");
+                            });
+                    }
+                }
             });
             // ----
             // Remove cardpack 
             // ----
             socket.on("LobbyRemoveCardpackRequest", (args) => {
-                let player = args["emiter"];
-                let cardpack_name = args["cardpack_name"];
-                if((!player || !cardpack_name) || !(player instanceof Player)) {
+                let emiter_id = socket.id;
+                let cardpack_id = args["cardpack_id"];
+                let room_id = args["room_id"];
+                let room = this.rooms.get(room_id);
+                if (!room || !(room instanceof Room)) {
                     socket.emit("error", "InvalidEventArgs");
-                } else if(player.id != player.room.host.id) {
-                    socket.emit("error", "NoPermissions");
-                }else {
-                    if(player.room) {
-                        player.room.lobby
-                        .removeCardPack(cardpack_name);
+                } else {
+                    let emiter = room.players.get(emiter_id);
+                    if ((!emiter || !cardpack_id) || !(emiter instanceof Player)) {
+                        socket.emit("error", "InvalidEventArgs");
+                    } else if (emiter.id != emiter.room.host.id) {
+                        socket.emit("error", "NoPermissions");
                     } else {
-                        socket.emit("error","PlayerNotInARoom");
+                        if (emiter.room) {
+                            if(!emiter.room.removeCardPack(cardpack_id)) {
+                                socket.emit("error", "CardpackNotRemoved");
+                            }
+                        } else {
+                            socket.emit("error", "PlayerNotInARoom");
+                        }
                     }
                 }
             });
             // ----
             // Start the game
             // ----
-            socket.on("RoomStartRequest", (emiter) => {
-                let player = args["emiter"];
-                if(!player || !(player instanceof Player)) {
+            socket.on("RoomStartRequest", (room_id) => {
+                let emiter_id = socket.id;
+                let room = this.rooms.get(room_id);
+                if (!room || !(room instanceof Room)) {
                     socket.emit("error", "InvalidEventArgs");
-                } else if(player.id != player.room.host.id) {
-                    socket.emit("error", "NoPermissions");
                 } else {
-                    if(player.room) {
-                        player.room.start();
+                    let emiter = room.players.get(emiter_id);
+                    if (!emiter || !(emiter instanceof Player)) {
+                        socket.emit("error", "InvalidEventArgs");
+                    } else if (emiter.id != emiter.room.host.id) {
+                        socket.emit("error", "NoPermissions");
                     } else {
-                        socket.emit("error","PlayerNotInARoom");
+                        if (emiter.room) {
+                            room.start()
+                            .then(error => {
+                                if(error) {
+                                    socket.emit("error", error);
+                                }
+                            });
+                        } else {
+                            socket.emit("error", "PlayerNotInARoom");
+                        }
                     }
                 }
+
             });
 
             // ----
@@ -263,22 +293,37 @@ export default class GameServer {
             // If the room is empty, delete it
             if (room.players.size == 0) {
                 room.remove();
+            } else {
+                // If the player is the czar, change the czar
+                room.rotateCzar();
             }
 
             roomCh.emit("RoomPlayerDisconnection", playerJSON);
         });
 
-        room.on("RoomRemoved", (roomJSON) => {
-            LoggingSystem.singleton.log("[" + this.constructor.name + "]","Room deleted: " + roomJSON.roomId);
-            roomCh.emit("RoomRemoved", roomJSON);
-            this.rooms.delete(roomId);
-            this.io.of("/").adapter.on(roomId).disconnectSockets();
+        room.on("LobbyAddCardpackSuccess", (pack_info) => {
+            roomCh.emit("LobbyAddCardpackSuccess", pack_info);
         });
 
-        room.on("RoomStart", () => {
-            LoggingSystem.singleton.log("[" + this.constructor.name + "]","Room started: " + roomJSON.roomId);
-            roomCh.emit("RoomStart");
+        room.on("LobbyRemoveCardpackSuccess", (cardpack_id) => {
+            roomCh.emit("LobbyAddCardpackSuccess", cardpack_id);
         });
+
+        room.on("RoomRemoved", (roomJSON) => {
+            LoggingSystem.singleton.log("[" + this.constructor.name + "]", "Room deleted: " + roomJSON.roomId);
+            roomCh.emit("RoomRemoved", roomJSON);
+            this.rooms.delete(roomId);
+            this.io.of("/").in(roomId).disconnectSockets();
+        });
+
+        room.on("RoomStart", (roomJSON) => {
+            LoggingSystem.singleton.log("[" + this.constructor.name + "]", "Room started: " + roomJSON.roomId);
+            roomCh.emit("RoomStart", roomJSON);
+        });
+
+        room.on("error", (error) => {
+            roomCh.emit("error", error);
+        })
 
     }
 }

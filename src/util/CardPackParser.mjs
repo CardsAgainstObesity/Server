@@ -1,11 +1,10 @@
 function stdLangCode(lang) {
-    if (["es", "español", "spanish", "espanol"].includes(lang)) return "es";
-    else if (["en", "english", "ingles"].includes(lang)) return "en";
+    if (["es", "español", "spanish", "espanol"].includes(lang.toLowerCase())) return "es";
+    else if (["en", "english", "ingles"].includes(lang.toLowerCase())) return "en";
 }
 
 
 import csv from 'csvtojson';
-
 export default class CardPackParser {
 
     /**
@@ -17,8 +16,15 @@ export default class CardPackParser {
      * @param {String} black_csv Raw csv text
      */
     constructor(pack, white_csv, black_csv) {
-        this.__result = {};
         this.__pack = pack;
+        this.__result = {
+            "pack_info": {
+                "id": pack.id,
+                "author":pack.author,
+                "name": pack.name
+            },
+            "cards": {}
+        }
         this.__valid = false;
 
         this.__white_csv = white_csv;
@@ -26,6 +32,10 @@ export default class CardPackParser {
 
     }
 
+    /**
+     * 
+     * @returns {Promise<import('../entity/Cardpack.mjs').CardpackType>}
+     */
     parse() {
         return new Promise((resolve,reject) => {
             csv()
@@ -34,10 +44,39 @@ export default class CardPackParser {
                 csv()
                 .fromString(this.__black_csv)
                 .then(csvRowBlack => {
-                    console.log(csvRowBlack,csvRowWhite);
-                    resolve(csvRowBlack);
+                    for (let lang of Object.keys(csvRowBlack[0])){
+                        let language = stdLangCode(lang);
+                        if(this.__result["cards"][language] == undefined) {
+                            this.__result["cards"][language] = {
+                                "white":[],
+                                "black":[]
+                            };
+                        }
+
+                        csvRowBlack.forEach(row => {
+                            this.__result.cards[language].black.push(row[lang]);
+                        });
+                    }
+
+                    for (let lang of Object.keys(csvRowWhite[0])){
+                        let language = stdLangCode(lang);
+                        if(this.__result["cards"][language] == undefined) {
+                            this.__result["cards"][language] = {
+                                "white":[],
+                                "black":[]
+                            };
+                        }
+
+                        csvRowWhite.forEach(row => {
+                            this.__result.cards[language].white.push(row[lang]);
+                        });
+                    }
+
+                    resolve(this.__result);
                 })
+                .catch(reject);
             })
+            .catch(reject);
         });
     }
 
