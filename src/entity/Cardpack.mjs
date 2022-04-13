@@ -1,11 +1,32 @@
 import fs from 'fs';
 import path from 'path';
+import BlackCard from './BlackCard.mjs';
+import Card from './Card.mjs';
 const default_cardpacks = {
     "base": "./resources/cardpacks/base_game/pack.json"
 }
 
 /**
  * @typedef {"base"} DefaultCardpackId
+ */
+
+
+/**
+ * @typedef CardDeck
+ * @property {Card[]} white
+ * @property {BlackCard[]} black
+ */
+
+/**
+ * @typedef WhiteAndBlackCards
+ * @property {CardTextType[]} white
+ * @property {CardTextType[]} black 
+ */
+
+/**
+ * @typedef CardTextType
+ * @property {String} en
+ * @property {String} es
  */
 
 /**
@@ -20,13 +41,7 @@ const default_cardpacks = {
 /**
  * @typedef CardpackType
  * @property {PackInfoType} pack_info
- * @property {Object} cards
- * @property {Object} cards.en
- * @property {String[]} cards.en.white
- * @property {String[]} cards.en.black 
- * @property {Object} cards.es
- * @property {String[]} cards.es.white
- * @property {String[]} cards.es.black 
+ * @property {WhiteAndBlackCards} cards
  */
 
 export class Cardpack {

@@ -217,7 +217,7 @@ export default class GameServer {
                         socket.emit("error", "NoPermissions");
                     } else {
                         if (emiter.room) {
-                            if(!emiter.room.removeCardPack(cardpack_id)) {
+                            if (!emiter.room.removeCardPack(cardpack_id)) {
                                 socket.emit("error", "CardpackNotRemoved");
                             }
                         } else {
@@ -243,17 +243,92 @@ export default class GameServer {
                     } else {
                         if (emiter.room) {
                             room.start()
-                            .then(error => {
-                                if(error) {
-                                    socket.emit("error", error);
-                                }
-                            });
+                                .then(error => {
+                                    if (error) {
+                                        socket.emit("error", error);
+                                    }
+                                });
                         } else {
                             socket.emit("error", "PlayerNotInARoom");
                         }
                     }
                 }
 
+            });
+
+            // ----
+            // Czar wants to start voting
+            // ----
+            socket.on("RoomStartVotingRequest", (room_id) => {
+                let emiter_id = socket.id;
+                let room = this.rooms.get(room_id);
+                if (!room || !(room instanceof Room)) {
+                    socket.emit("error", "InvalidEventArgs");
+                } else {
+                    let emiter = room.players.get(emiter_id);
+                    if (!emiter || !(emiter instanceof Player)) {
+                        socket.emit("error", "InvalidEventArgs");
+                    } else if (emiter.id != emiter.room.czar.id) {
+                        socket.emit("error", "NoPermissions");
+                    } else {
+                        if (emiter.room) {
+                            // Remove selected cards from player's decks
+                            room.startVoting();
+                        } else {
+                            socket.emit("error", "PlayerNotInARoom");
+                        }
+                    }
+                }
+            });
+
+            // ----
+            // Player is ready
+            // ----
+            socket.on("PlayerIsReady", (card_ids) => {
+                if (!player.ready) {
+                    let err = false;
+                    let room = player.room;
+                    if (room && room.blackCard) {
+
+                        let bCard = room.blackCard;
+                        if (card_ids.length == bCard.slots) {
+                            for (let i = 0, len = card_ids.lenght; i < len && !err; i++) {
+                                let id = card_ids[i];
+                                if (!player.deck.has(id)) {
+                                    socket.emit("error", "PlayerDoesntOwnThatCard");
+                                    err = true;
+                                }
+                                else {
+                                    player.selectedCards.push(player.deck.get(id));
+                                }
+                            }
+
+                            if (!err) {
+                                player.ready = true;
+                                socket.to(room.roomId).emit("AnnouncePlayerIsReady", player.toJSON());
+                            }
+                            else {
+                                player.selectedCards = [];
+                            }
+                        }
+                    } else {
+                        socket.emit("error", "PlayerNotInARoom");
+                    }
+                }
+            });
+
+            // ----
+            // Player is not ready
+            // ----
+            socket.on("PlayerIsNotReady", () => {
+                if (player.ready) {
+                    player.ready = false;
+                    player.selectedCards = [];
+                }
+                let room = player.room;
+                if (room) {
+                    socket.to(room.roomId).emit("AnnouncePlayerIsNotReady", player.toJSON())
+                }
             });
 
             // ----
@@ -306,7 +381,7 @@ export default class GameServer {
         });
 
         room.on("LobbyRemoveCardpackSuccess", (cardpack_id) => {
-            roomCh.emit("LobbyAddCardpackSuccess", cardpack_id);
+            roomCh.emit("LobbyRemoveCardpackSuccess", cardpack_id);
         });
 
         room.on("RoomRemoved", (roomJSON) => {
@@ -323,7 +398,24 @@ export default class GameServer {
 
         room.on("error", (error) => {
             roomCh.emit("error", error);
-        })
+        });
+
+        room.on("RoomCardsDealed", () => {
+            room.players.forEach(player => {
+                let socket = this.io.of("/").sockets.get(player.id);
+                if (socket) {
+                    socket.emit("PlayerDeckUpdated", Array.from(player.deck.values()));
+                }
+            });
+        });
+
+        room.on("RoomBlackCardChanged",(bCard) => {
+            roomCh.emit("RoomBlackCardChanged", bCard);
+        });
+
+        room.on("RoomStartVoting", (cards) => {
+            roomCh.emit("RoomStartVoting", cards);
+        });
 
     }
 }

@@ -1,3 +1,5 @@
+import BlackCard from "./BlackCard.mjs";
+import Card from "./Card.mjs";
 import EventHandler from "./EventHandler.mjs";
 import Lobby from "./Lobby.mjs";
 import Player from "./Player.mjs";
@@ -23,7 +25,7 @@ function getPlayerIndex(player, playerList) {
  */
 
 /**
- * @typedef {"LobbyRemoveCardpackSuccess" | "LobbyAddCardpackSuccess" | "RoomStart" | "RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged"} GameEvent
+ * @typedef {"RoomBlackCardChanged" | "RoomCardsDealed" | "LobbyRemoveCardpackSuccess" | "LobbyAddCardpackSuccess" | "RoomStart" | "RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged"} GameEvent
  */
 
 export default class Room extends EventHandler {
@@ -43,7 +45,24 @@ export default class Room extends EventHandler {
         this.__maxPlayers = 8;
 
         this.__lobby = new Lobby();
-        this.__cards;
+        this.__blackCard = undefined;
+        this.__cards = undefined;
+
+    }
+
+    /**
+     * @returns {import("./Cardpack.mjs").CardDeck}
+     */
+    get cards() {
+        return this.__cards;
+    }
+
+
+    /**
+     * @returns {BlackCard}
+     */
+    get blackCard() {
+        return this.__blackCard;
     }
 
     /**
@@ -111,11 +130,29 @@ export default class Room extends EventHandler {
         this.emit("RoomCzarChanged", player.toJSON());
     }
 
+    /**
+     * Sets the next czar
+     */
     rotateCzar() {
         let playerList = Array.from(this.players.values());
         let index = getPlayerIndex(this.czar, playerList);
         let nextCzar = playerList[(index + 1) % playerList.length];
         this.setCzar(nextCzar);
+    }
+
+    setBlackCard(bCard) {
+        this.__blackCard = bCard;
+        this.emit("RoomBlackCardChanged", bCard);
+    }
+
+    /**
+     * Sets the next black card
+     */
+    nextBlackCard() {
+        let bCard = this.cards.black.pop();
+        if(bCard != undefined) {
+            this.setBlackCard(bCard);
+        }
     }
 
     /**
@@ -216,7 +253,7 @@ export default class Room extends EventHandler {
     }
 
     /**
-     * @param {import("./Cardpack.mjs").DefaultCardpackName} packId 
+     * @param {import("./Cardpack.mjs").DefaultCardpackId} packId 
      * @returns {boolean} True if pack was removed, else false
      */
     removeCardPack(packId) {
@@ -226,6 +263,58 @@ export default class Room extends EventHandler {
             this.emit("LobbyRemoveCardpackSuccess", packId);
             return true;
         } else return false;
+    }
+
+    /**
+     * 
+     * @param {number} amount Amount of cards to give to each player 
+     */
+    dealCards(amount) {
+        if(this.status == "lobby" || this.cards.white.length == 0) return;
+        
+        this.players.forEach(player => {
+            let card = this.cards.white.pop();
+            for(let i = 0; i < amount && card != undefined; i++) {
+                player.deck.set(card.id,card);
+            }
+        });
+        
+        this.emit("RoomCardsDealed");
+    }
+
+    /**
+     * Changes the game status to voting
+     * and prepares everything for voting
+     */
+    startVoting() {
+
+        let cards = [];
+        let err = false;
+        
+        let playersArr = Array.from(this.players.values());
+        for(let i = 0, len = playersArr; i < len && !err; i++) {
+            let player = playersArr[i];
+            let ready = player.ready;
+            if(!ready) err = true;
+            else {
+                let selectedCards = {
+                    "player_id": player.id,
+                    "cards" : []
+                };
+                
+                player.selectedCards.forEach(card => {
+                    selectedCards.cards.push(card);
+                    player.deck.delete(card.id);
+                });
+
+                cards.push(selectedCards);
+            }
+        }
+        
+        if(!err) {
+            this.emit("RoomStartVoting", cards);
+            this.setStatus("voting");
+        }
     }
 
     /**

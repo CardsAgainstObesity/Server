@@ -1,3 +1,5 @@
+import BlackCard from "./BlackCard.mjs";
+import Card from "./Card.mjs";
 import { Cardpack } from "./Cardpack.mjs";
 
 export default class Lobby {
@@ -7,7 +9,7 @@ export default class Lobby {
 
 
     /**
-     * @return {Map<String,Cardpack>}
+     * @return {Map<String,import("./Cardpack.mjs").CardpackType>}
      */
     get cardPacks() {
         return this.__cardPacks;
@@ -22,7 +24,7 @@ export default class Lobby {
             Cardpack
                 .from(packId)
                 .then(pack => {
-                    if(this.__cardPacks.has(pack.pack_info.id)) {
+                    if (this.__cardPacks.has(pack.pack_info.id)) {
                         reject(false);
                     } else {
                         this.__cardPacks.set(pack.pack_info.id, pack);
@@ -41,7 +43,7 @@ export default class Lobby {
 
     /**
      * 
-     * @returns {Promise<CardpackType>}
+     * @returns {Promise<import("./Cardpack.mjs").CardpackType>}
      */
     joinCardpacks() {
         return new Promise((resolve, reject) => {
@@ -54,15 +56,18 @@ export default class Lobby {
                         "en": ""
                     }
                 },
-                "cards": {}
+                "cards": {
+                    "white": [],
+                    "black": []
+                }
             };
             this.cardPacks.forEach(cardpack => {
                 let cards = cardpack.cards;
-                let langs = Object.keys(cards);
-                langs.forEach(lang => {
-                    if (!result.cards[lang]) result.cards[lang] = { "white": [], "black": [] };
-                    cards[lang].white.forEach(card => { result.cards[lang].white.push(card); });
-                    cards[lang].black.forEach(card => { result.cards[lang].black.push(card); });
+                cards.white.forEach(card => {
+                    result.cards.white.push(new Card(card));
+                });
+                cards.black.forEach(card => {
+                    result.cards.black.push(new BlackCard(card.text, card.slots));
                 });
             });
             resolve(result);

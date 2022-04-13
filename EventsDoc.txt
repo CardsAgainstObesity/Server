@@ -10,6 +10,14 @@
     * Args: Object roomJSON
 + PlayerChangeName
     * Description: Player changed name
++ PlayerDeckUpdated
+    * Description: Player deck changed
++ AnnouncePlayerIsReady
+    * Description: Announces to everyone that a player is ready
+    * Args: Object playerJSON
++ AnnouncePlayerIsNotReady
+    * Description: Announces to everyone that a player is ready
+    * Args: Object playerJSON
 
 -- Server/Room --
 + RoomStatusChanged
@@ -43,6 +51,14 @@
 + LobbyRemoveCardpackSuccess
     * Description: Removed a cardpack to the lobby
     * Args: String cardpack_id
++ RoomCardsDealed
+    * Description: Room has given cards to every player
++ RoomBlackCardChanged
+    * Description: Room black card changed 
+    * Args: BlackCard bCard
++ RoomStartVoting
+    * Description: Room is now in voting status
+    * Args: Player's cards with id
 
 -- Socket ( client ) --
 + RoomConnectionRequest
@@ -66,6 +82,16 @@
     * Description: Request to start the game
     * CONDITION: Player id == Room host id
     * Args: String room_id
++ PlayerIsReady
+    * Description: Player is ready
+    * CONDITION: Player has that card in the deck
+    * Args: number[] card_id 
++ PlayerIsNotReady
+    * Description: Player is not ready
++ RoomStartVotingRequest
+    * Description: Request the room to change status to voting
+    * CONDITION: Player id == Room czar id
+    * Args: String room_id
 
 
 Error types:
@@ -76,3 +102,4 @@ Error types:
 + InvalidCardpack
 + NotEnoughPlayers
 + NotEnoughCards
++ PlayerDoesntOwnThatCard

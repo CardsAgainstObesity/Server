@@ -20,10 +20,13 @@ export default class CardPackParser {
         this.__result = {
             "pack_info": {
                 "id": pack.id,
-                "author":pack.author,
+                "author": pack.author,
                 "name": pack.name
             },
-            "cards": {}
+            "cards": {
+                "white":[],
+                "black":[]
+            }
         }
         this.__valid = false;
 
@@ -37,46 +40,40 @@ export default class CardPackParser {
      * @returns {Promise<import('../entity/Cardpack.mjs').CardpackType>}
      */
     parse() {
-        return new Promise((resolve,reject) => {
+        return new Promise((resolve, reject) => {
             csv()
-            .fromString(this.__white_csv)
-            .then(csvRowWhite => {
-                csv()
-                .fromString(this.__black_csv)
-                .then(csvRowBlack => {
-                    for (let lang of Object.keys(csvRowBlack[0])){
-                        let language = stdLangCode(lang);
-                        if(this.__result["cards"][language] == undefined) {
-                            this.__result["cards"][language] = {
-                                "white":[],
-                                "black":[]
-                            };
-                        }
+                .fromString(this.__white_csv)
+                .then(csvRowWhite => {
+                    csv()
+                        .fromString(this.__black_csv)
+                        .then(csvRowBlack => {
+                            csvRowBlack.forEach((row) => {
+                                let card = {
+                                    "slots": row["slots"] || 1,
+                                    "text" : {}
+                                };
+                                for (let lang of Object.keys(csvRowWhite[0])) {
+                                    let language = stdLangCode(lang);
+                                    card.text[language] = row[lang];
+                                }
+                                this.__result.cards.black.push(card);
+                            });
 
-                        csvRowBlack.forEach(row => {
-                            this.__result.cards[language].black.push(row[lang]);
-                        });
-                    }
+                            csvRowWhite.forEach((row) => {
+                                let card = {};
+                                for (let lang of Object.keys(csvRowWhite[0])) {
+                                    let language = stdLangCode(lang);
+                                    card[language] = row[lang];
+                                }
+                                this.__result.cards.white.push(card);
+                            });
 
-                    for (let lang of Object.keys(csvRowWhite[0])){
-                        let language = stdLangCode(lang);
-                        if(this.__result["cards"][language] == undefined) {
-                            this.__result["cards"][language] = {
-                                "white":[],
-                                "black":[]
-                            };
-                        }
 
-                        csvRowWhite.forEach(row => {
-                            this.__result.cards[language].white.push(row[lang]);
-                        });
-                    }
-
-                    resolve(this.__result);
+                            resolve(this.__result);
+                        })
+                        .catch(reject);
                 })
                 .catch(reject);
-            })
-            .catch(reject);
         });
     }
 
@@ -96,8 +93,8 @@ export default class CardPackParser {
      * @param {"en" | "es"} lang Card text language 
      * @param {"black" | "white"} type Card type 
      */
-    getCards(lang,type) {
-        if(!type) {
+    getCards(lang, type) {
+        if (!type) {
             return this.__result[lang];
         } else {
             return this.__result[lang][type];

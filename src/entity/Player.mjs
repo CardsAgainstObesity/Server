@@ -1,3 +1,4 @@
+import Card from "./Card.mjs";
 import Room from "./Room.mjs";
 
 export default class Player {
@@ -6,6 +7,9 @@ export default class Player {
         this.__obesity = 0;
         this.__room;
         this.__name;
+        this.__deck = new Map();
+        this.__selectedCards = [];
+        this.__ready = false;
     }   
 
     /**
@@ -45,12 +49,40 @@ export default class Player {
     }
 
     /**
+     * @returns {Map<String,Card>}
+     */
+    get deck() {
+        return this.__deck;
+    }
+
+    /**
+     * @returns {boolean}
+     */
+    get ready() {
+        return this.__ready;
+    }
+
+    set ready(value) {
+        this.__ready = value;
+    }
+
+    /**
+     * @returns {Card[]}
+     */
+    get selectedCards() {
+        return this.__selectedCards;
+    }
+
+    /**
      * If the player is in a room, leaves it
      */
     leaveRoom() {
         if(this.room) {
             this.room.removePlayer(this);
             this.__room = undefined;
+            this.__deck = new Map();
+            this.__ready = false;
+            this.__selectedCards = [];
         }
     }
 
