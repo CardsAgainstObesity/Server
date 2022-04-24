@@ -6,7 +6,7 @@ import Player from "./Player.mjs";
 
 const MIN_WHITE_CARDS_AMOUNT = 30;
 const MIN_BLACK_CARDS_AMOUNT = 30;
-const MIN_PLAYERS_AMOUNT = 2;
+const MIN_PLAYERS_AMOUNT = 1; // temporal
 
 /**
  * 
@@ -215,9 +215,11 @@ export default class Room extends EventHandler {
             this.lobby
                 .joinCardpacks()
                 .then(cardpack => {
-                    console.log(cardpack)
-                    let white_am = cardpack.cards["en"] == undefined ? 0 : cardpack.cards["en"]["white"].length;
-                    let black_am = cardpack.cards["en"] == undefined ? 0 : cardpack.cards["en"]["black"].length;
+                    console.log(cardpack);
+                    console.log("White", cardpack.cards.white.length);
+                    console.log("Black", cardpack.cards.black.length);
+                    let white_am = cardpack.cards.white.length;
+                    let black_am = cardpack.cards.black.length;
                     if (this.players.size < MIN_PLAYERS_AMOUNT) {
                         resolve("NotEnoughPlayers");
                     }
@@ -225,7 +227,10 @@ export default class Room extends EventHandler {
                         this.__cards = cardpack.cards;
                         resolve(false);
                         this.emit("RoomStart", this.toJSON());
+                        // Temporal
                         this.setStatus("choosing");
+                        this.dealCards(5);
+                        this.setBlackCard(this.cards.black[0]);
                     } else {
                         resolve("NotEnoughCards");
                     }
@@ -275,6 +280,7 @@ export default class Room extends EventHandler {
         this.players.forEach(player => {
             let card = this.cards.white.pop();
             for(let i = 0; i < amount && card != undefined; i++) {
+                card = this.cards.white.pop();
                 player.deck.set(card.id,card);
             }
         });

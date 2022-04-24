@@ -8,935 +8,2025 @@
         }
     },
     "cards": {
-        "es": {
-            "white": [
-                "Barack Obama.",
-                "Txeroki.",
-                "Esperanza Aguirre.",
-                "Correrse en una piscina llena de lagrimas de niño.",
-                "Un sombrero muy guay.",
-                "Auschwitz.",
-                "Tirarse un pedo e irse.",
-                "Un pelo púbico desviado.",
-                "Pelotas.",
-                "Rito de apareamiento.",
-                "Olor a viejos.",
-                "Un terrorita gracioso.",
-                "Fuego amigo.",
-                "Frigo pie.",
-                "Keanu Reeves.",
-                "Carne de vaca loca.",
-                "Christopher Walken.",
-                "Sean Connery.",
-                "Sean Penn.",
-                "El huracán Katrina.",
-                "Racismo.",
-                "Travestis que dan el pego.",
-                "Tocamientos genitales.",
-                "El 11-M.",
-                "Esperar hasta el matrimonio.",
-                "El clítoris.",
-                "Tíos que no vuelven a llamar.",
-                "Toma dos tazas.",
-                "Una tortuga mordiendo la punta de tu pene.",
-                "Pedófilos.",
-                "Bono.",
-                "Michael Jackson.",
-                "Skeletor.",
-                "La canción del Tiburón.",
-                "Impotencia.",
-                "Natalie Portman.",
-                "El Big Bang.",
-                "Bromas sobre el Holocausto en un momento inoportuno.",
-                "Chupar un Pirulo.",
-                "Gansos.",
-                "¿Abejas? Los judíos.",
-                "Los gays.",
-                "SIDA.",
-                "Monaguillos.",
-                "La tuna.",
-                "Sobrecompensación.",
-                "Esas veces en las que te entra arena en la vagina.",
-                "Gary Coleman.",
-                "Una fiesta de cumpleaños decepcionante.",
-                "Intercambiar saludos.",
-                "Su Alteza Real, la Reina Isabel II.",
-                "Menstruación.",
-                "Tener un gatillazo en los preeliminares.",
-                "El Teletubby gay.",
-                "Propaganda homosexual.",
-                "Practicar un aborto usando una percha.",
-                "La Sagrada Biblia.",
-                "Cienciología.",
-                "Tom Cruise.",
-                "Todas las gambas que puedas comer por 4.99€.",
-                "Despertarse medio desnudo en el parking del McDonalds.",
-                "Ana Ros Quintana.",
-                "Ataques de dinosaurios.",
-                "Protector dental.",
-                "Condones de sabores.",
-                "Abstinencia.",
-                "Nazis.",
-                "América.",
-                "Calentamiento global.",
-                "Ciencia.",
-                "Chupa Chups.",
-                "Un aumento de pechos asimétrico.",
-                "Hacerlo por el culo.",
-                "Andar como un retrasado.",
-                "Pezones empitonados.",
-                "Desodorante Axe.",
-                "Paris Hilton.",
-                "Hara-Kiri.",
-                "Bond, James Bond.",
-                "Lamer algo y luego decir que es tuyo.",
-                "Comer hasta vomitar.",
-                "Autocanibalismo.",
-                "Piercings genitales.",
-                "Esa cosa que electrocuta tus abdominales.",
-                "Cagar en la sopa.",
-                "Comportarse como un gilipollas con los niños.",
-                "Pedofilia.",
-                "Alcoholismo.",
-                "Un feto.",
-                "Que entren a robar en tu casa y que violes a los ladrones.",
-                "Levadura.",
-                "Curar la homosexualidad con la oración.",
-                "Kanye West.",
-                "Pubertad.",
-                "200 gramos de heroína mexicana.",
-                "Agricultura.",
-                "Dinámicas de grupo.",
-                "El conejo de Nesquick.",
-                "Trolls.",
-                "Un mar de problemas.",
-                "Obesidad.",
-                "Meetic.es.",
-                "Caballerosidad.",
-                "Un halcón con una gorra en la cabeza.",
-                "Fabada Litoral.",
-                "Eduard Punset.",
-                "¡¡BATMAN!!!",
-                "El café más caro del Starbucks.",
-                "Una ensalada de Telepizza.",
-                "Estar en la llama.",
-                "Amigos que se comen todas tus patatas fritas.",
-                "Gente negra.",
-                "Niños y petas.",
-                "Hombres.",
-                "Frank de la Jungla.",
-                "El KKK.",
-                "Preguntas de selectividad basadas en la raza.",
-                "Polvorones.",
-                "Bukkake pixelado.",
-                "Lluvias doradas.",
-                "Comerse la Nocilla a cucharadas.",
-                "Tiger Woods.",
-                "El golpe de Estado del 23 de febrero.",
-                "Gandhi.",
-                "Un curandero.",
-                "Hacer pucheritos.",
-                "Limpieza étnica.",
-                "Phoskitos.",
-                "Mi colección de juguetes sexuales de alta tecnología.",
-                "Huevos de pterodáctilo.",
-                "Ronald Reagan.",
-                "Will Smith.",
-                "Dr. Martin Luther King, Jr.",
-                "Esclavitud.",
-                "Jagerbomb.",
-                "Fantasmas.",
-                "Selección natural.",
-                "Espinete.",
-                "Sufragio femenino.",
-                "Diseño inteligente.",
-                "Levantar el cuello de la camisa.",
-                "Las vias del metro.",
-                "Necrofilia.",
-                "Torsión testicular.",
-                "Lactancia.",
-                "Dulce, dulce venganza.",
-                "Minas terrestres.",
-                "Cabras comiendo latas.",
-                "Los discapacitados profundos.",
-                "Profesores sustitutos.",
-                "Los gitanos.",
-                "Elmo cosquillas.",
-                "Esta respuesta es post-moderna.",
-                "Dos enanos cagando en un cubo.",
-                "Mi alma.",
-                "Mis genitales.",
-                "Hacerlo con otra persona delante de tu novia.",
-                "Pasivo-agresividad.",
-                "DogChow.",
-                "Transporte de fluidos.",
-                "Combustión humana espontánea.",
-                "La marcha atrás.",
-                "Otra maldita película de vampiros.",
-                "El perro de Chocapic.",
-                "Justin Bieber.",
-                "Heath Ledger.",
-                "Tiempo para uno mismo.",
-                "Incesto.",
-                "Tensión sexual.",
-                "La sangre de Cristo.",
-                "Mahoma.",
-                "Emociones.",
-                "Viagra.",
-                "Ser rico.",
-                "Fantasías con leñadores.",
-                "Padres muertos.",
-                "Chupar algunas pollas para no ser reclutado.",
-                "Una pistola de agua llena de meado de gato.",
-                "Poluciones nocturnas.",
-                "Ser fabuloso.",
-                "Arnold Schwarzenegger.",
-                "Esbozar una sonrisa ante la mención de Camboya.",
-                "Motosierras en vez de manos.",
-                "Darth Vader.",
-                "Bob Esponja.",
-                "Atún en lata con extra de delfín.",
-                "Vikingos.",
-                "El corazón de un niño.",
-                "Lepra.",
-                "Britney Spears a los 55.",
-                "Un buen salchichón.",
-                "Asiáticos que no son muy buenos en mates.",
-                "Una gran expectativa sobre nada.",
-                "Una rascada clandestina de culo.",
-                "Polvo de ángel.",
-                "Decirle adiós a Dios.",
-                "Un agujero del culo blanqueado.",
-                "La placenta.",
-                "Yo nunca.",
-                "Familias gitanas.",
-                "Cartas Contra la Humanidad.",
-                "Empollones.",
-                "Destrucción mutua asegurada.",
-                "Miedo a los desconocidos.",
-                "Un bocata de albóndigas.",
-                "Idiotas con sus iPhones.",
-                "Declaración de los Derechos Humanos.",
-                "Preadolescentes.",
-                "Existencialistas.",
-                "Baltasar Garzón.",
-                "Esmegma.",
-                "Morir de disentería.",
-                "Los niños de la guerra.",
-                "El Papa.",
-                "William Shatner.",
-                "Envidia de pene.",
-                "Complejo de Edipo.",
-                "Soy amigo de tu padre en Facebook™️.",
-                "Genghis Khan.",
-                "Una tortura china.",
-                "Mi vida sexual.",
-                "Oompa Loompas.",
-                "Un giro de guión de M. Night Shyamalan.",
-                "Tercera base.",
-                "Dejar un mensaje de voz incómodo.",
-                "Hacerse un dedo.",
-                "José María Aznar.",
-                "Gente que huele sus propios calcetines.",
-                "Catapultas.",
-                "Semen de ballena.",
-                "Barón Rojo.",
-                "Los Pecos.",
-                "Comer sandía.",
-                "Un hombre de mediana edad en patines.",
-                "Artefactos explosivos caseros.",
-                "Estrógeno.",
-                "Una mujer negra descarada.",
-                "Peleas de pollos.",
-                "Manazas.",
-                "Lesbianas nazis borrachas que dan palizas.",
-                "(Estoy haciendo ejercicios vaginales ahora mismo.)",
-                "Porno alemán sadomasoquista.",
-                "Gloryholes.",
-                "¡Cachorritos!",
-                "Una paja triste.",
-                "Felación al volante.",
-                "La abuelita.",
-                "Tener la mandíbula inmobilizada.",
-                "Un micropene.",
-                "Sentir miedo de ti mismo.",
-                "Pájaros que no pueden volar.",
-                "Ropa interior comestible.",
-                "Un malentendido guarrete.",
-                "Herpes labial.",
-                "La trama de una película de Michael Bay.",
-                "Abdominales espectaculares.",
-                "Don Limpio, justo detrás de ti.",
-                "Sexo con señoras gordas.",
-                "Robert Downey, Jr.",
-                "Ir a una orgía sólo por la comida.",
-                "Zorritas.",
-                "Una explosión termonuclear.",
-                "Un molino lleno de cadáveres.",
-                "El Santiago Bernabeu.",
-                "Pezones que se escapan del vestido.",
-                "Música New Age.",
-                "Solos de saxofón.",
-                "Masturbación.",
-                "Prepucio.",
-                "Quitarte la camiseta.",
-                "Tamborileros.",
-                "Seducción.",
-                "Gente pobre.",
-                "Gente sin hogar.",
-                "Arcoiris y rayos de sol.",
-                "Una LAN party.",
-                "Follamigos.",
-                "Gancho de izquierda.",
-                "Limpiarle el culo.",
-                "Focusín.",
-                "Muestras gratuitas.",
-                "Gladiadores Americanos.",
-                "Mear una piedra del riñón.",
-                "Accidentes de caza.",
-                "Enfermedad de las vacas locas.",
-                "Bolsitas de té.",
-                "Paisanos sin culo.",
-                "El sur.",
-                "Meterse una buena raya.",
-                "Echar un vistazo.",
-                "Piruletas enormes.",
-                "Heineken.",
-                "Federico Jiménez Losantos.",
-                "Un canalillo generoso.",
-                "Chester Cheetah.",
-                "Aguafiestas.",
-                "Música turbo-folk de Europa del este.",
-                "Cagarse encima.",
-                "Viejos japoneses.",
-                "Gente blanca.",
-                "Una erección que dura más de cuatro horas.",
-                "Pavonearse.",
-                "Porno con tentáculos.",
-                "El perineo.",
-                "El Cascanueces.",
-                "Barriga en forma de culo.",
-                "“Twitteando”.",
-                "Amputados.",
-                "Patinaje artístico sobre hielo con personas del mismo sexo.",
-                "El equipo de gimnasia chino.",
-                "Labios vaginales enormes.",
-                "Una vida de tristeza.",
-                "Asaltar tumbas.",
-                "Ponerse la ropa interior al revés para no tener que lavarla.",
-                "Síndrome de colon irritable.",
-                "La paz mundial.",
-                "Centauros.",
-                "Bajas civiles.",
-                "La Macarena.",
-                "La carrera de actor de Shaquille O'Neal.",
-                "Judíos con el pelo a lo afro.",
-                "Gente cachonda.",
-                "El testículo perdido de Lance Armstrong.",
-                "Stephen Hawking diciendo guarradas.",
-                "Chicas que no deberían desmadrarse.",
-                "Italianos.",
-                "Mi relación de pareja.",
-                "Pilotos kamikaze.",
-                "Arcadas.",
-                "Represión.",
-                "Cortar cabelleras.",
-                "Trabajar como un chino.",
-                "Francisco Franco.",
-                "2 Girls 1 Cup.",
-                "Bolas chinas.",
-                "Concursos de belleza infantil.",
-                "Se ha escrito un crimen.",
-                "Fricción.",
-                "Violar a un conocido.",
-                "¡¡¡Sexo sorpresa!!!",
-                "Lanzamiento de enanos.",
-                "Una lobotomía hecha con un picahielos.",
-                "La vagina de Pilar Bardem.",
-                "Niños con correas.",
-                "Actitud.",
-                "Un camello de dibujos animados disfrutando el fresco sabor de un cigarrillo.",
-                "Acurrucarse con tu pareja.",
-                "Múltiples heridas por apuñalamiento.",
-                "Emborracharse con enjuague bucal.",
-                "Esnifar pegamento.",
-                "Hulk Hogan.",
-                "El gay que aparece en todas las series modernas.",
-                "Constantino Romero durmiendo en un colchón LoMonaco™️.",
-                "Bestialidad.",
-                "Colegios tradicionalmente negros.",
-                "Beber solo.",
-                "Niños con cáncer de culo.",
-                "Cagar y bautizarlo.",
-                "Mujeres en anuncios de yogurt.",
-                "Manos de pianista.",
-                "Whiskas Premium.",
-                "Un sorteo de bofetadas.",
-                "Hacer lo correcto.",
-                "World of Warcraft.",
-                "Desayunar con la reina.",
-                "Ocultar una erección.",
-                "Mearse un poquito.",
-                "Cuando te tiras un pedo y te cagas un poquito.",
-                "Hacer trampas en las Olimpiadas Especiales.",
-                "La estupidez del ser humano.",
-                "Desayunar un burrito con olor a culo.",
-                "Pedos vaginales.",
-                "Dar el 110%.",
-                "Robarle la novia a otro.",
-                "Enseñarle a un robot a amar.",
-                "Re-regalar.",
-                "Atracar un banco de esperma.",
-                "Alimentar a Montserrat Caballé.",
-                "Darse por culo debajo de las sabanas.",
-                "Un Tamagotchi™️ abandonado.",
-                "Un mongolo musculado.",
-                "Morir.",
-                "Comerse las galletas antes de la venta benéfica.",
-                "Comer directamente de la olla.",
-                "Hacer un reloj de arena.",
-                "Sexo oral no recíproco.",
-                "Guiñarle el ojo a los viejos.",
-                "Ligar en la clínica de aborción.",
-                "Cabrearte tanto que te empalmas.",
-                "Escuchar atentamente.",
-                "Bebés muertos.",
-                "Una carrera de sillas de ruedas hasta la muerte.",
-                "Un mono fumando un cigarrillo.",
-                "Demasiada gomina.",
-                "Un mimo teniendo un ataque al corazón.",
-                "Pacman comiendo corrida descontroládamente.",
-                "Un relato erótico de Harry Potter.",
-                "Peanut Butter Jelly Time.",
-                "Kim Jong-il."
-            ],
-            "black": [
-                "Bebo para olvidar ___.",
-                "___: bueno hasta la última gota.",
-                "¿Qué es este sonido?",
-                "¿A qué huele?",
-                "Durante el sexo, me gusta pensar en ___.",
-                "La medicina alternativa ahora usa las propiedades curativas de ___.",
-                "Mientras flipaba con ácido ___ se convirtió en ___.",
-                "Por culpa de un error de marketing El Corte Inglés ha dejado de vender ___.",
-                "¿Por qué estoy pegajoso?",
-                "Hoy el tio de Bricomanía construirá ___.",
-                "¿Qué me traje de Marruecos?",
-                "¿Qué ayuda a Obama a relajarse?",
-                "___. ¡Chócala!",
-                "Durante el comúnmente infravalorado Periodo Marrón de Picasso, hizo cientos de pinturas de ___.",
-                "It’s a trap!",
-                "¿Qué es lo que más le gusta a Aznar?",
-                "¡A que no puedes comer sólo uno!",
-                "La guerra sirve para ___.",
-                "¿Qué es lo que no te gustaría encontrar en un plato de comida china?",
-                "¿Cuál es el próximo juguete del HappyMeal™️?",
-                "Este año, en vez de carbón, Papa Noel traerá ___ a los niños malos.",
-                "¿Cómo mantengo estable mi relación de pareja?",
-                "Cuando sea Presidente, crearé el ministerio de ___.",
-                "¿Cuál es mi poder secreto?",
-                "EE.UU. Ha empezado a enviar ___ a los niños de Afganistán",
-                "Ojalá no hubiese perdido el manual de ___.",
-                "¿Por qué no puedo dormir por las noches?",
-                "Cuando esté en la cárcel, meteré ___ de contrabando.",
-                "¿Qué toma Vin Diesel para cenar?",
-                "El paraíso está lleno de___.",
-                "¿Qué es lo que hay que hacer para llevarte a la cama?",
-                "Cuando sea millonario, levantaré una estatua de 20 metros en conmemoración de ___.",
-                "¿Qué encontraría tu abuela perturbador pero extrañamente encantador?",
-                "En la nueva película original de Disney Channel, Hannah Montana se enfrenta por primera vez con ___.",
-                "¿Cuál es el vicio secreto de Batman?",
-                "¿Qué me llevaría en un viaje al pasado para convencer a la gente de que soy un poderoso mago?",
-                "¿Cuál es mi anti-droga?",
-                "La Liga de Fútbol ha prohibido ___ por dar a los jugadores una ventaja injusta.",
-                "¿___? ¡Hay una aplicación para eso!",
-                "¿Qué me produce gases incontrolados?",
-                "Así es, yo maté a ___. ¿Que cómo lo hice? ___.",
-                "Y el premio de la academia por ___ es para ___.",
-                "En mi próximo truco, sacaré ___ de ___.",
-                "Canal Historia presenta: ___, la historia de ___.",
-                "¿Cuál es la próxima pareja de superhéroes?",
-                "Haz un haiku.",
-                "¿Qué es lo más crujiente?",
-                "¿A qué huelen las personas mayores?",
-                "___: probado en niños, aprobado por las madres.",
-                "¿Qué mejora con los años?",
-                "Lo siento, acabo de ___.",
-                "A los blancos les gusta ___.",
-                "La vida era difícil para los cavernícolas antes de ___.",
-                "¿Quién ha robado las galletas del tarro de las galletas?",
-                "¿Qué es lo más emo?",
-                "Antes de matarle, Señor Bond, me gustaría enseñarle ___.",
-                "La excursión al campo fue completamente arruinada por ___.",
-                "¿Qué es el mejor amigo de una chica?",
-                "Los estudios demuestran que las ratas de laboratorio resuelven laberintos un 50% más rápido tras ser expuestas a ___.",
-                "¿Qué me han estado ocultando mis padres?"
-            ]
-        },
-        "en": {
-            "white": [
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                ""
-            ],
-            "black": [
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                ""
-            ]
-        }
+        "white": [
+            {
+                "es": "Barack Obama.",
+                "en": ""
+            },
+            {
+                "es": "Txeroki.",
+                "en": ""
+            },
+            {
+                "es": "Esperanza Aguirre.",
+                "en": ""
+            },
+            {
+                "es": "Correrse en una piscina llena de lagrimas de niño.",
+                "en": ""
+            },
+            {
+                "es": "Un sombrero muy guay.",
+                "en": ""
+            },
+            {
+                "es": "Auschwitz.",
+                "en": ""
+            },
+            {
+                "es": "Tirarse un pedo e irse.",
+                "en": ""
+            },
+            {
+                "es": "Un pelo púbico desviado.",
+                "en": ""
+            },
+            {
+                "es": "Pelotas.",
+                "en": ""
+            },
+            {
+                "es": "Rito de apareamiento.",
+                "en": ""
+            },
+            {
+                "es": "Olor a viejos.",
+                "en": ""
+            },
+            {
+                "es": "Un terrorita gracioso.",
+                "en": ""
+            },
+            {
+                "es": "Fuego amigo.",
+                "en": ""
+            },
+            {
+                "es": "Frigo pie.",
+                "en": ""
+            },
+            {
+                "es": "Keanu Reeves.",
+                "en": ""
+            },
+            {
+                "es": "Carne de vaca loca.",
+                "en": ""
+            },
+            {
+                "es": "Christopher Walken.",
+                "en": ""
+            },
+            {
+                "es": "Sean Connery.",
+                "en": ""
+            },
+            {
+                "es": "Sean Penn.",
+                "en": ""
+            },
+            {
+                "es": "El huracán Katrina.",
+                "en": ""
+            },
+            {
+                "es": "Racismo.",
+                "en": ""
+            },
+            {
+                "es": "Travestis que dan el pego.",
+                "en": ""
+            },
+            {
+                "es": "Tocamientos genitales.",
+                "en": ""
+            },
+            {
+                "es": "El 11-M.",
+                "en": ""
+            },
+            {
+                "es": "Esperar hasta el matrimonio.",
+                "en": ""
+            },
+            {
+                "es": "El clítoris.",
+                "en": ""
+            },
+            {
+                "es": "Tíos que no vuelven a llamar.",
+                "en": ""
+            },
+            {
+                "es": "Toma dos tazas.",
+                "en": ""
+            },
+            {
+                "es": "Una tortuga mordiendo la punta de tu pene.",
+                "en": ""
+            },
+            {
+                "es": "Pedófilos.",
+                "en": ""
+            },
+            {
+                "es": "Bono.",
+                "en": ""
+            },
+            {
+                "es": "Michael Jackson.",
+                "en": ""
+            },
+            {
+                "es": "Skeletor.",
+                "en": ""
+            },
+            {
+                "es": "La canción del Tiburón.",
+                "en": ""
+            },
+            {
+                "es": "Impotencia.",
+                "en": ""
+            },
+            {
+                "es": "Natalie Portman.",
+                "en": ""
+            },
+            {
+                "es": "El Big Bang.",
+                "en": ""
+            },
+            {
+                "es": "Bromas sobre el Holocausto en un momento inoportuno.",
+                "en": ""
+            },
+            {
+                "es": "Chupar un Pirulo.",
+                "en": ""
+            },
+            {
+                "es": "Gansos.",
+                "en": ""
+            },
+            {
+                "es": "¿Abejas? Los judíos.",
+                "en": ""
+            },
+            {
+                "es": "Los gays.",
+                "en": ""
+            },
+            {
+                "es": "SIDA.",
+                "en": ""
+            },
+            {
+                "es": "Monaguillos.",
+                "en": ""
+            },
+            {
+                "es": "La tuna.",
+                "en": ""
+            },
+            {
+                "es": "Sobrecompensación.",
+                "en": ""
+            },
+            {
+                "es": "Esas veces en las que te entra arena en la vagina.",
+                "en": ""
+            },
+            {
+                "es": "Gary Coleman.",
+                "en": ""
+            },
+            {
+                "es": "Una fiesta de cumpleaños decepcionante.",
+                "en": ""
+            },
+            {
+                "es": "Intercambiar saludos.",
+                "en": ""
+            },
+            {
+                "es": "Su Alteza Real, la Reina Isabel II.",
+                "en": ""
+            },
+            {
+                "es": "Menstruación.",
+                "en": ""
+            },
+            {
+                "es": "Tener un gatillazo en los preeliminares.",
+                "en": ""
+            },
+            {
+                "es": "El Teletubby gay.",
+                "en": ""
+            },
+            {
+                "es": "Propaganda homosexual.",
+                "en": ""
+            },
+            {
+                "es": "Practicar un aborto usando una percha.",
+                "en": ""
+            },
+            {
+                "es": "La Sagrada Biblia.",
+                "en": ""
+            },
+            {
+                "es": "Cienciología.",
+                "en": ""
+            },
+            {
+                "es": "Tom Cruise.",
+                "en": ""
+            },
+            {
+                "es": "Todas las gambas que puedas comer por 4.99€.",
+                "en": ""
+            },
+            {
+                "es": "Despertarse medio desnudo en el parking del McDonalds.",
+                "en": ""
+            },
+            {
+                "es": "Ana Ros Quintana.",
+                "en": ""
+            },
+            {
+                "es": "Ataques de dinosaurios.",
+                "en": ""
+            },
+            {
+                "es": "Protector dental.",
+                "en": ""
+            },
+            {
+                "es": "Condones de sabores.",
+                "en": ""
+            },
+            {
+                "es": "Abstinencia.",
+                "en": ""
+            },
+            {
+                "es": "Nazis.",
+                "en": ""
+            },
+            {
+                "es": "América.",
+                "en": ""
+            },
+            {
+                "es": "Calentamiento global.",
+                "en": ""
+            },
+            {
+                "es": "Ciencia.",
+                "en": ""
+            },
+            {
+                "es": "Chupa Chups.",
+                "en": ""
+            },
+            {
+                "es": "Un aumento de pechos asimétrico.",
+                "en": ""
+            },
+            {
+                "es": "Hacerlo por el culo.",
+                "en": ""
+            },
+            {
+                "es": "Andar como un retrasado.",
+                "en": ""
+            },
+            {
+                "es": "Pezones empitonados.",
+                "en": ""
+            },
+            {
+                "es": "Desodorante Axe.",
+                "en": ""
+            },
+            {
+                "es": "Paris Hilton.",
+                "en": ""
+            },
+            {
+                "es": "Hara-Kiri.",
+                "en": ""
+            },
+            {
+                "es": "Bond, James Bond.",
+                "en": ""
+            },
+            {
+                "es": "Lamer algo y luego decir que es tuyo.",
+                "en": ""
+            },
+            {
+                "es": "Comer hasta vomitar.",
+                "en": ""
+            },
+            {
+                "es": "Autocanibalismo.",
+                "en": ""
+            },
+            {
+                "es": "Piercings genitales.",
+                "en": ""
+            },
+            {
+                "es": "Esa cosa que electrocuta tus abdominales.",
+                "en": ""
+            },
+            {
+                "es": "Cagar en la sopa.",
+                "en": ""
+            },
+            {
+                "es": "Comportarse como un gilipollas con los niños.",
+                "en": ""
+            },
+            {
+                "es": "Pedofilia.",
+                "en": ""
+            },
+            {
+                "es": "Alcoholismo.",
+                "en": ""
+            },
+            {
+                "es": "Un feto.",
+                "en": ""
+            },
+            {
+                "es": "Que entren a robar en tu casa y que violes a los ladrones.",
+                "en": ""
+            },
+            {
+                "es": "Levadura.",
+                "en": ""
+            },
+            {
+                "es": "Curar la homosexualidad con la oración.",
+                "en": ""
+            },
+            {
+                "es": "Kanye West.",
+                "en": ""
+            },
+            {
+                "es": "Pubertad.",
+                "en": ""
+            },
+            {
+                "es": "200 gramos de heroína mexicana.",
+                "en": ""
+            },
+            {
+                "es": "Agricultura.",
+                "en": ""
+            },
+            {
+                "es": "Dinámicas de grupo.",
+                "en": ""
+            },
+            {
+                "es": "El conejo de Nesquick.",
+                "en": ""
+            },
+            {
+                "es": "Trolls.",
+                "en": ""
+            },
+            {
+                "es": "Un mar de problemas.",
+                "en": ""
+            },
+            {
+                "es": "Obesidad.",
+                "en": ""
+            },
+            {
+                "es": "Meetic.es.",
+                "en": ""
+            },
+            {
+                "es": "Caballerosidad.",
+                "en": ""
+            },
+            {
+                "es": "Un halcón con una gorra en la cabeza.",
+                "en": ""
+            },
+            {
+                "es": "Fabada Litoral.",
+                "en": ""
+            },
+            {
+                "es": "Eduard Punset.",
+                "en": ""
+            },
+            {
+                "es": "¡¡BATMAN!!!",
+                "en": ""
+            },
+            {
+                "es": "El café más caro del Starbucks.",
+                "en": ""
+            },
+            {
+                "es": "Una ensalada de Telepizza.",
+                "en": ""
+            },
+            {
+                "es": "Estar en la llama.",
+                "en": ""
+            },
+            {
+                "es": "Amigos que se comen todas tus patatas fritas.",
+                "en": ""
+            },
+            {
+                "es": "Gente negra.",
+                "en": ""
+            },
+            {
+                "es": "Niños y petas.",
+                "en": ""
+            },
+            {
+                "es": "Hombres.",
+                "en": ""
+            },
+            {
+                "es": "Frank de la Jungla.",
+                "en": ""
+            },
+            {
+                "es": "El KKK.",
+                "en": ""
+            },
+            {
+                "es": "Preguntas de selectividad basadas en la raza.",
+                "en": ""
+            },
+            {
+                "es": "Polvorones.",
+                "en": ""
+            },
+            {
+                "es": "Bukkake pixelado.",
+                "en": ""
+            },
+            {
+                "es": "Lluvias doradas.",
+                "en": ""
+            },
+            {
+                "es": "Comerse la Nocilla a cucharadas.",
+                "en": ""
+            },
+            {
+                "es": "Tiger Woods.",
+                "en": ""
+            },
+            {
+                "es": "El golpe de Estado del 23 de febrero.",
+                "en": ""
+            },
+            {
+                "es": "Gandhi.",
+                "en": ""
+            },
+            {
+                "es": "Un curandero.",
+                "en": ""
+            },
+            {
+                "es": "Hacer pucheritos.",
+                "en": ""
+            },
+            {
+                "es": "Limpieza étnica.",
+                "en": ""
+            },
+            {
+                "es": "Phoskitos.",
+                "en": ""
+            },
+            {
+                "es": "Mi colección de juguetes sexuales de alta tecnología.",
+                "en": ""
+            },
+            {
+                "es": "Huevos de pterodáctilo.",
+                "en": ""
+            },
+            {
+                "es": "Ronald Reagan.",
+                "en": ""
+            },
+            {
+                "es": "Will Smith.",
+                "en": ""
+            },
+            {
+                "es": "Dr. Martin Luther King, Jr.",
+                "en": ""
+            },
+            {
+                "es": "Esclavitud.",
+                "en": ""
+            },
+            {
+                "es": "Jagerbomb.",
+                "en": ""
+            },
+            {
+                "es": "Fantasmas.",
+                "en": ""
+            },
+            {
+                "es": "Selección natural.",
+                "en": ""
+            },
+            {
+                "es": "Espinete.",
+                "en": ""
+            },
+            {
+                "es": "Sufragio femenino.",
+                "en": ""
+            },
+            {
+                "es": "Diseño inteligente.",
+                "en": ""
+            },
+            {
+                "es": "Levantar el cuello de la camisa.",
+                "en": ""
+            },
+            {
+                "es": "Las vias del metro.",
+                "en": ""
+            },
+            {
+                "es": "Necrofilia.",
+                "en": ""
+            },
+            {
+                "es": "Torsión testicular.",
+                "en": ""
+            },
+            {
+                "es": "Lactancia.",
+                "en": ""
+            },
+            {
+                "es": "Dulce, dulce venganza.",
+                "en": ""
+            },
+            {
+                "es": "Minas terrestres.",
+                "en": ""
+            },
+            {
+                "es": "Cabras comiendo latas.",
+                "en": ""
+            },
+            {
+                "es": "Los discapacitados profundos.",
+                "en": ""
+            },
+            {
+                "es": "Profesores sustitutos.",
+                "en": ""
+            },
+            {
+                "es": "Los gitanos.",
+                "en": ""
+            },
+            {
+                "es": "Elmo cosquillas.",
+                "en": ""
+            },
+            {
+                "es": "Esta respuesta es post-moderna.",
+                "en": ""
+            },
+            {
+                "es": "Dos enanos cagando en un cubo.",
+                "en": ""
+            },
+            {
+                "es": "Mi alma.",
+                "en": ""
+            },
+            {
+                "es": "Mis genitales.",
+                "en": ""
+            },
+            {
+                "es": "Hacerlo con otra persona delante de tu novia.",
+                "en": ""
+            },
+            {
+                "es": "Pasivo-agresividad.",
+                "en": ""
+            },
+            {
+                "es": "DogChow.",
+                "en": ""
+            },
+            {
+                "es": "Transporte de fluidos.",
+                "en": ""
+            },
+            {
+                "es": "Combustión humana espontánea.",
+                "en": ""
+            },
+            {
+                "es": "La marcha atrás.",
+                "en": ""
+            },
+            {
+                "es": "Otra maldita película de vampiros.",
+                "en": ""
+            },
+            {
+                "es": "El perro de Chocapic.",
+                "en": ""
+            },
+            {
+                "es": "Justin Bieber.",
+                "en": ""
+            },
+            {
+                "es": "Heath Ledger.",
+                "en": ""
+            },
+            {
+                "es": "Tiempo para uno mismo.",
+                "en": ""
+            },
+            {
+                "es": "Incesto.",
+                "en": ""
+            },
+            {
+                "es": "Tensión sexual.",
+                "en": ""
+            },
+            {
+                "es": "La sangre de Cristo.",
+                "en": ""
+            },
+            {
+                "es": "Mahoma.",
+                "en": ""
+            },
+            {
+                "es": "Emociones.",
+                "en": ""
+            },
+            {
+                "es": "Viagra.",
+                "en": ""
+            },
+            {
+                "es": "Ser rico.",
+                "en": ""
+            },
+            {
+                "es": "Fantasías con leñadores.",
+                "en": ""
+            },
+            {
+                "es": "Padres muertos.",
+                "en": ""
+            },
+            {
+                "es": "Chupar algunas pollas para no ser reclutado.",
+                "en": ""
+            },
+            {
+                "es": "Una pistola de agua llena de meado de gato.",
+                "en": ""
+            },
+            {
+                "es": "Poluciones nocturnas.",
+                "en": ""
+            },
+            {
+                "es": "Ser fabuloso.",
+                "en": ""
+            },
+            {
+                "es": "Arnold Schwarzenegger.",
+                "en": ""
+            },
+            {
+                "es": "Esbozar una sonrisa ante la mención de Camboya.",
+                "en": ""
+            },
+            {
+                "es": "Motosierras en vez de manos.",
+                "en": ""
+            },
+            {
+                "es": "Darth Vader.",
+                "en": ""
+            },
+            {
+                "es": "Bob Esponja.",
+                "en": ""
+            },
+            {
+                "es": "Atún en lata con extra de delfín.",
+                "en": ""
+            },
+            {
+                "es": "Vikingos.",
+                "en": ""
+            },
+            {
+                "es": "El corazón de un niño.",
+                "en": ""
+            },
+            {
+                "es": "Lepra.",
+                "en": ""
+            },
+            {
+                "es": "Britney Spears a los 55.",
+                "en": ""
+            },
+            {
+                "es": "Un buen salchichón.",
+                "en": ""
+            },
+            {
+                "es": "Asiáticos que no son muy buenos en mates.",
+                "en": ""
+            },
+            {
+                "es": "Una gran expectativa sobre nada.",
+                "en": ""
+            },
+            {
+                "es": "Una rascada clandestina de culo.",
+                "en": ""
+            },
+            {
+                "es": "Polvo de ángel.",
+                "en": ""
+            },
+            {
+                "es": "Decirle adiós a Dios.",
+                "en": ""
+            },
+            {
+                "es": "Un agujero del culo blanqueado.",
+                "en": ""
+            },
+            {
+                "es": "La placenta.",
+                "en": ""
+            },
+            {
+                "es": "Yo nunca.",
+                "en": ""
+            },
+            {
+                "es": "Familias gitanas.",
+                "en": ""
+            },
+            {
+                "es": "Cartas Contra la Humanidad.",
+                "en": ""
+            },
+            {
+                "es": "Empollones.",
+                "en": ""
+            },
+            {
+                "es": "Destrucción mutua asegurada.",
+                "en": ""
+            },
+            {
+                "es": "Miedo a los desconocidos.",
+                "en": ""
+            },
+            {
+                "es": "Un bocata de albóndigas.",
+                "en": ""
+            },
+            {
+                "es": "Idiotas con sus iPhones.",
+                "en": ""
+            },
+            {
+                "es": "Declaración de los Derechos Humanos.",
+                "en": ""
+            },
+            {
+                "es": "Preadolescentes.",
+                "en": ""
+            },
+            {
+                "es": "Existencialistas.",
+                "en": ""
+            },
+            {
+                "es": "Baltasar Garzón.",
+                "en": ""
+            },
+            {
+                "es": "Esmegma.",
+                "en": ""
+            },
+            {
+                "es": "Morir de disentería.",
+                "en": ""
+            },
+            {
+                "es": "Los niños de la guerra.",
+                "en": ""
+            },
+            {
+                "es": "El Papa.",
+                "en": ""
+            },
+            {
+                "es": "William Shatner.",
+                "en": ""
+            },
+            {
+                "es": "Envidia de pene.",
+                "en": ""
+            },
+            {
+                "es": "Complejo de Edipo.",
+                "en": ""
+            },
+            {
+                "es": "Soy amigo de tu padre en Facebook™️.",
+                "en": ""
+            },
+            {
+                "es": "Genghis Khan.",
+                "en": ""
+            },
+            {
+                "es": "Una tortura china.",
+                "en": ""
+            },
+            {
+                "es": "Mi vida sexual.",
+                "en": ""
+            },
+            {
+                "es": "Oompa Loompas.",
+                "en": ""
+            },
+            {
+                "es": "Un giro de guión de M. Night Shyamalan.",
+                "en": ""
+            },
+            {
+                "es": "Tercera base.",
+                "en": ""
+            },
+            {
+                "es": "Dejar un mensaje de voz incómodo.",
+                "en": ""
+            },
+            {
+                "es": "Hacerse un dedo.",
+                "en": ""
+            },
+            {
+                "es": "José María Aznar.",
+                "en": ""
+            },
+            {
+                "es": "Gente que huele sus propios calcetines.",
+                "en": ""
+            },
+            {
+                "es": "Catapultas.",
+                "en": ""
+            },
+            {
+                "es": "Semen de ballena.",
+                "en": ""
+            },
+            {
+                "es": "Barón Rojo.",
+                "en": ""
+            },
+            {
+                "es": "Los Pecos.",
+                "en": ""
+            },
+            {
+                "es": "Comer sandía.",
+                "en": ""
+            },
+            {
+                "es": "Un hombre de mediana edad en patines.",
+                "en": ""
+            },
+            {
+                "es": "Artefactos explosivos caseros.",
+                "en": ""
+            },
+            {
+                "es": "Estrógeno.",
+                "en": ""
+            },
+            {
+                "es": "Una mujer negra descarada.",
+                "en": ""
+            },
+            {
+                "es": "Peleas de pollos.",
+                "en": ""
+            },
+            {
+                "es": "Manazas.",
+                "en": ""
+            },
+            {
+                "es": "Lesbianas nazis borrachas que dan palizas.",
+                "en": ""
+            },
+            {
+                "es": "(Estoy haciendo ejercicios vaginales ahora mismo.)",
+                "en": ""
+            },
+            {
+                "es": "Porno alemán sadomasoquista.",
+                "en": ""
+            },
+            {
+                "es": "Gloryholes.",
+                "en": ""
+            },
+            {
+                "es": "¡Cachorritos!",
+                "en": ""
+            },
+            {
+                "es": "Una paja triste.",
+                "en": ""
+            },
+            {
+                "es": "Felación al volante.",
+                "en": ""
+            },
+            {
+                "es": "La abuelita.",
+                "en": ""
+            },
+            {
+                "es": "Tener la mandíbula inmobilizada.",
+                "en": ""
+            },
+            {
+                "es": "Un micropene.",
+                "en": ""
+            },
+            {
+                "es": "Sentir miedo de ti mismo.",
+                "en": ""
+            },
+            {
+                "es": "Pájaros que no pueden volar.",
+                "en": ""
+            },
+            {
+                "es": "Ropa interior comestible.",
+                "en": ""
+            },
+            {
+                "es": "Un malentendido guarrete.",
+                "en": ""
+            },
+            {
+                "es": "Herpes labial.",
+                "en": ""
+            },
+            {
+                "es": "La trama de una película de Michael Bay.",
+                "en": ""
+            },
+            {
+                "es": "Abdominales espectaculares.",
+                "en": ""
+            },
+            {
+                "es": "Don Limpio, justo detrás de ti.",
+                "en": ""
+            },
+            {
+                "es": "Sexo con señoras gordas.",
+                "en": ""
+            },
+            {
+                "es": "Robert Downey, Jr.",
+                "en": ""
+            },
+            {
+                "es": "Ir a una orgía sólo por la comida.",
+                "en": ""
+            },
+            {
+                "es": "Zorritas.",
+                "en": ""
+            },
+            {
+                "es": "Una explosión termonuclear.",
+                "en": ""
+            },
+            {
+                "es": "Un molino lleno de cadáveres.",
+                "en": ""
+            },
+            {
+                "es": "El Santiago Bernabeu.",
+                "en": ""
+            },
+            {
+                "es": "Pezones que se escapan del vestido.",
+                "en": ""
+            },
+            {
+                "es": "Música New Age.",
+                "en": ""
+            },
+            {
+                "es": "Solos de saxofón.",
+                "en": ""
+            },
+            {
+                "es": "Masturbación.",
+                "en": ""
+            },
+            {
+                "es": "Prepucio.",
+                "en": ""
+            },
+            {
+                "es": "Quitarte la camiseta.",
+                "en": ""
+            },
+            {
+                "es": "Tamborileros.",
+                "en": ""
+            },
+            {
+                "es": "Seducción.",
+                "en": ""
+            },
+            {
+                "es": "Gente pobre.",
+                "en": ""
+            },
+            {
+                "es": "Gente sin hogar.",
+                "en": ""
+            },
+            {
+                "es": "Arcoiris y rayos de sol.",
+                "en": ""
+            },
+            {
+                "es": "Una LAN party.",
+                "en": ""
+            },
+            {
+                "es": "Follamigos.",
+                "en": ""
+            },
+            {
+                "es": "Gancho de izquierda.",
+                "en": ""
+            },
+            {
+                "es": "Limpiarle el culo.",
+                "en": ""
+            },
+            {
+                "es": "Focusín.",
+                "en": ""
+            },
+            {
+                "es": "Muestras gratuitas.",
+                "en": ""
+            },
+            {
+                "es": "Gladiadores Americanos.",
+                "en": ""
+            },
+            {
+                "es": "Mear una piedra del riñón.",
+                "en": ""
+            },
+            {
+                "es": "Accidentes de caza.",
+                "en": ""
+            },
+            {
+                "es": "Enfermedad de las vacas locas.",
+                "en": ""
+            },
+            {
+                "es": "Bolsitas de té.",
+                "en": ""
+            },
+            {
+                "es": "Paisanos sin culo.",
+                "en": ""
+            },
+            {
+                "es": "El sur.",
+                "en": ""
+            },
+            {
+                "es": "Meterse una buena raya.",
+                "en": ""
+            },
+            {
+                "es": "Echar un vistazo.",
+                "en": ""
+            },
+            {
+                "es": "Piruletas enormes.",
+                "en": ""
+            },
+            {
+                "es": "Heineken.",
+                "en": ""
+            },
+            {
+                "es": "Federico Jiménez Losantos.",
+                "en": ""
+            },
+            {
+                "es": "Un canalillo generoso.",
+                "en": ""
+            },
+            {
+                "es": "Chester Cheetah.",
+                "en": ""
+            },
+            {
+                "es": "Aguafiestas.",
+                "en": ""
+            },
+            {
+                "es": "Música turbo-folk de Europa del este.",
+                "en": ""
+            },
+            {
+                "es": "Cagarse encima.",
+                "en": ""
+            },
+            {
+                "es": "Viejos japoneses.",
+                "en": ""
+            },
+            {
+                "es": "Gente blanca.",
+                "en": ""
+            },
+            {
+                "es": "Una erección que dura más de cuatro horas.",
+                "en": ""
+            },
+            {
+                "es": "Pavonearse.",
+                "en": ""
+            },
+            {
+                "es": "Porno con tentáculos.",
+                "en": ""
+            },
+            {
+                "es": "El perineo.",
+                "en": ""
+            },
+            {
+                "es": "El Cascanueces.",
+                "en": ""
+            },
+            {
+                "es": "Barriga en forma de culo.",
+                "en": ""
+            },
+            {
+                "es": "“Twitteando”.",
+                "en": ""
+            },
+            {
+                "es": "Amputados.",
+                "en": ""
+            },
+            {
+                "es": "Patinaje artístico sobre hielo con personas del mismo sexo.",
+                "en": ""
+            },
+            {
+                "es": "El equipo de gimnasia chino.",
+                "en": ""
+            },
+            {
+                "es": "Labios vaginales enormes.",
+                "en": ""
+            },
+            {
+                "es": "Una vida de tristeza.",
+                "en": ""
+            },
+            {
+                "es": "Asaltar tumbas.",
+                "en": ""
+            },
+            {
+                "es": "Ponerse la ropa interior al revés para no tener que lavarla.",
+                "en": ""
+            },
+            {
+                "es": "Síndrome de colon irritable.",
+                "en": ""
+            },
+            {
+                "es": "La paz mundial.",
+                "en": ""
+            },
+            {
+                "es": "Centauros.",
+                "en": ""
+            },
+            {
+                "es": "Bajas civiles.",
+                "en": ""
+            },
+            {
+                "es": "La Macarena.",
+                "en": ""
+            },
+            {
+                "es": "La carrera de actor de Shaquille O'Neal.",
+                "en": ""
+            },
+            {
+                "es": "Judíos con el pelo a lo afro.",
+                "en": ""
+            },
+            {
+                "es": "Gente cachonda.",
+                "en": ""
+            },
+            {
+                "es": "El testículo perdido de Lance Armstrong.",
+                "en": ""
+            },
+            {
+                "es": "Stephen Hawking diciendo guarradas.",
+                "en": ""
+            },
+            {
+                "es": "Chicas que no deberían desmadrarse.",
+                "en": ""
+            },
+            {
+                "es": "Italianos.",
+                "en": ""
+            },
+            {
+                "es": "Mi relación de pareja.",
+                "en": ""
+            },
+            {
+                "es": "Pilotos kamikaze.",
+                "en": ""
+            },
+            {
+                "es": "Arcadas.",
+                "en": ""
+            },
+            {
+                "es": "Represión.",
+                "en": ""
+            },
+            {
+                "es": "Cortar cabelleras.",
+                "en": ""
+            },
+            {
+                "es": "Trabajar como un chino.",
+                "en": ""
+            },
+            {
+                "es": "Francisco Franco.",
+                "en": ""
+            },
+            {
+                "es": "2 Girls 1 Cup.",
+                "en": ""
+            },
+            {
+                "es": "Bolas chinas.",
+                "en": ""
+            },
+            {
+                "es": "Concursos de belleza infantil.",
+                "en": ""
+            },
+            {
+                "es": "Se ha escrito un crimen.",
+                "en": ""
+            },
+            {
+                "es": "Fricción.",
+                "en": ""
+            },
+            {
+                "es": "Violar a un conocido.",
+                "en": ""
+            },
+            {
+                "es": "¡¡¡Sexo sorpresa!!!",
+                "en": ""
+            },
+            {
+                "es": "Lanzamiento de enanos.",
+                "en": ""
+            },
+            {
+                "es": "Una lobotomía hecha con un picahielos.",
+                "en": ""
+            },
+            {
+                "es": "La vagina de Pilar Bardem.",
+                "en": ""
+            },
+            {
+                "es": "Niños con correas.",
+                "en": ""
+            },
+            {
+                "es": "Actitud.",
+                "en": ""
+            },
+            {
+                "es": "Un camello de dibujos animados disfrutando el fresco sabor de un cigarrillo.",
+                "en": ""
+            },
+            {
+                "es": "Acurrucarse con tu pareja.",
+                "en": ""
+            },
+            {
+                "es": "Múltiples heridas por apuñalamiento.",
+                "en": ""
+            },
+            {
+                "es": "Emborracharse con enjuague bucal.",
+                "en": ""
+            },
+            {
+                "es": "Esnifar pegamento.",
+                "en": ""
+            },
+            {
+                "es": "Hulk Hogan.",
+                "en": ""
+            },
+            {
+                "es": "El gay que aparece en todas las series modernas.",
+                "en": ""
+            },
+            {
+                "es": "Constantino Romero durmiendo en un colchón LoMonaco™️.",
+                "en": ""
+            },
+            {
+                "es": "Bestialidad.",
+                "en": ""
+            },
+            {
+                "es": "Colegios tradicionalmente negros.",
+                "en": ""
+            },
+            {
+                "es": "Beber solo.",
+                "en": ""
+            },
+            {
+                "es": "Niños con cáncer de culo.",
+                "en": ""
+            },
+            {
+                "es": "Cagar y bautizarlo.",
+                "en": ""
+            },
+            {
+                "es": "Mujeres en anuncios de yogurt.",
+                "en": ""
+            },
+            {
+                "es": "Manos de pianista.",
+                "en": ""
+            },
+            {
+                "es": "Whiskas Premium.",
+                "en": ""
+            },
+            {
+                "es": "Un sorteo de bofetadas.",
+                "en": ""
+            },
+            {
+                "es": "Hacer lo correcto.",
+                "en": ""
+            },
+            {
+                "es": "World of Warcraft.",
+                "en": ""
+            },
+            {
+                "es": "Desayunar con la reina.",
+                "en": ""
+            },
+            {
+                "es": "Ocultar una erección.",
+                "en": ""
+            },
+            {
+                "es": "Mearse un poquito.",
+                "en": ""
+            },
+            {
+                "es": "Cuando te tiras un pedo y te cagas un poquito.",
+                "en": ""
+            },
+            {
+                "es": "Hacer trampas en las Olimpiadas Especiales.",
+                "en": ""
+            },
+            {
+                "es": "La estupidez del ser humano.",
+                "en": ""
+            },
+            {
+                "es": "Desayunar un burrito con olor a culo.",
+                "en": ""
+            },
+            {
+                "es": "Pedos vaginales.",
+                "en": ""
+            },
+            {
+                "es": "Dar el 110%.",
+                "en": ""
+            },
+            {
+                "es": "Robarle la novia a otro.",
+                "en": ""
+            },
+            {
+                "es": "Enseñarle a un robot a amar.",
+                "en": ""
+            },
+            {
+                "es": "Re-regalar.",
+                "en": ""
+            },
+            {
+                "es": "Atracar un banco de esperma.",
+                "en": ""
+            },
+            {
+                "es": "Alimentar a Montserrat Caballé.",
+                "en": ""
+            },
+            {
+                "es": "Darse por culo debajo de las sabanas.",
+                "en": ""
+            },
+            {
+                "es": "Un Tamagotchi™️ abandonado.",
+                "en": ""
+            },
+            {
+                "es": "Un mongolo musculado.",
+                "en": ""
+            },
+            {
+                "es": "Morir.",
+                "en": ""
+            },
+            {
+                "es": "Comerse las galletas antes de la venta benéfica.",
+                "en": ""
+            },
+            {
+                "es": "Comer directamente de la olla.",
+                "en": ""
+            },
+            {
+                "es": "Hacer un reloj de arena.",
+                "en": ""
+            },
+            {
+                "es": "Sexo oral no recíproco.",
+                "en": ""
+            },
+            {
+                "es": "Guiñarle el ojo a los viejos.",
+                "en": ""
+            },
+            {
+                "es": "Ligar en la clínica de aborción.",
+                "en": ""
+            },
+            {
+                "es": "Cabrearte tanto que te empalmas.",
+                "en": ""
+            },
+            {
+                "es": "Escuchar atentamente.",
+                "en": ""
+            },
+            {
+                "es": "Bebés muertos.",
+                "en": ""
+            },
+            {
+                "es": "Una carrera de sillas de ruedas hasta la muerte.",
+                "en": ""
+            },
+            {
+                "es": "Un mono fumando un cigarrillo.",
+                "en": ""
+            },
+            {
+                "es": "Demasiada gomina.",
+                "en": ""
+            },
+            {
+                "es": "Un mimo teniendo un ataque al corazón.",
+                "en": ""
+            },
+            {
+                "es": "Pacman comiendo corrida descontroládamente.",
+                "en": ""
+            },
+            {
+                "es": "Un relato erótico de Harry Potter.",
+                "en": ""
+            },
+            {
+                "es": "Peanut Butter Jelly Time.",
+                "en": ""
+            },
+            {
+                "es": "Kim Jong-il.",
+                "en": ""
+            }
+        ],
+        "black": [
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Bebo para olvidar ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "___: bueno hasta la última gota.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Qué es este sonido?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿A qué huele?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Durante el sexo, me gusta pensar en ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "La medicina alternativa ahora usa las propiedades curativas de ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Mientras flipaba con ácido ___ se convirtió en ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Por culpa de un error de marketing El Corte Inglés ha dejado de vender ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Por qué estoy pegajoso?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Hoy el tio de Bricomanía construirá ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Qué me traje de Marruecos?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Qué ayuda a Obama a relajarse?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "___. ¡Chócala!",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Durante el comúnmente infravalorado Periodo Marrón de Picasso, hizo cientos de pinturas de ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "It’s a trap!",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Qué es lo que más le gusta a Aznar?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¡A que no puedes comer sólo uno!",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "La guerra sirve para ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Qué es lo que no te gustaría encontrar en un plato de comida china?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Cuál es el próximo juguete del HappyMeal™️?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Este año, en vez de carbón, Papa Noel traerá ___ a los niños malos.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Cómo mantengo estable mi relación de pareja?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Cuando sea Presidente, crearé el ministerio de ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Cuál es mi poder secreto?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "EE.UU. Ha empezado a enviar ___ a los niños de Afganistán",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Ojalá no hubiese perdido el manual de ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Por qué no puedo dormir por las noches?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Cuando esté en la cárcel, meteré ___ de contrabando.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Qué toma Vin Diesel para cenar?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "El paraíso está lleno de___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Qué es lo que hay que hacer para llevarte a la cama?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Cuando sea millonario, levantaré una estatua de 20 metros en conmemoración de ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Qué encontraría tu abuela perturbador pero extrañamente encantador?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "En la nueva película original de Disney Channel, Hannah Montana se enfrenta por primera vez con ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Cuál es el vicio secreto de Batman?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Qué me llevaría en un viaje al pasado para convencer a la gente de que soy un poderoso mago?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Cuál es mi anti-droga?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "La Liga de Fútbol ha prohibido ___ por dar a los jugadores una ventaja injusta.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿___? ¡Hay una aplicación para eso!",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Qué me produce gases incontrolados?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Así es, yo maté a ___. ¿Que cómo lo hice? ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Y el premio de la academia por ___ es para ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "En mi próximo truco, sacaré ___ de ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Canal Historia presenta: ___, la historia de ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Cuál es la próxima pareja de superhéroes?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Haz un haiku.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Qué es lo más crujiente?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿A qué huelen las personas mayores?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "___: probado en niños, aprobado por las madres.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Qué mejora con los años?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Lo siento, acabo de ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "A los blancos les gusta ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "La vida era difícil para los cavernícolas antes de ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Quién ha robado las galletas del tarro de las galletas?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Qué es lo más emo?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Antes de matarle, Señor Bond, me gustaría enseñarle ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "La excursión al campo fue completamente arruinada por ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Qué es el mejor amigo de una chica?",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "Los estudios demuestran que las ratas de laboratorio resuelven laberintos un 50% más rápido tras ser expuestas a ___.",
+                    "en": ""
+                }
+            },
+            {
+                "slots": 1,
+                "text": {
+                    "es": "¿Qué me han estado ocultando mis padres?",
+                    "en": ""
+                }
+            }
+        ]
     }
 }

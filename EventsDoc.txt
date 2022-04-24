@@ -12,6 +12,7 @@
     * Description: Player changed name
 + PlayerDeckUpdated
     * Description: Player deck changed
+    * Args: [cards]
 + AnnouncePlayerIsReady
     * Description: Announces to everyone that a player is ready
     * Args: Object playerJSON

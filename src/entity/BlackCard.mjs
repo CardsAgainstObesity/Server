@@ -17,4 +17,12 @@ export default class BlackCard extends Card {
     get slots() {
         return this.__slots;
     }
+
+    toJSON() {
+        return {
+            "id": this.id,
+            "text": this.text,
+            "slots": this.slots
+        }
+    }
 }
