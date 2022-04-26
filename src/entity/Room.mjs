@@ -150,7 +150,7 @@ export default class Room extends EventHandler {
      */
     nextBlackCard() {
         let bCard = this.cards.black.pop();
-        if(bCard != undefined) {
+        if (bCard != undefined) {
             this.setBlackCard(bCard);
         }
     }
@@ -209,33 +209,34 @@ export default class Room extends EventHandler {
      * @returns {Promise<"NotEnoughCards" | "NotEnoughPlayers">} Resolves to false if the room started successfully, else resolves to error message
      */
     start() {
-        if (this.status != "lobby") return;
         // Get the final cardpacks
         return new Promise((resolve, reject) => {
-            this.lobby
-                .joinCardpacks()
-                .then(cardpack => {
-                    console.log(cardpack);
-                    console.log("White", cardpack.cards.white.length);
-                    console.log("Black", cardpack.cards.black.length);
-                    let white_am = cardpack.cards.white.length;
-                    let black_am = cardpack.cards.black.length;
-                    if (this.players.size < MIN_PLAYERS_AMOUNT) {
-                        resolve("NotEnoughPlayers");
-                    }
-                    else if (white_am >= MIN_WHITE_CARDS_AMOUNT && black_am >= MIN_BLACK_CARDS_AMOUNT) {
-                        this.__cards = cardpack.cards;
-                        resolve(false);
-                        this.emit("RoomStart", this.toJSON());
-                        // Temporal
-                        this.setStatus("choosing");
-                        this.dealCards(5);
-                        this.setBlackCard(this.cards.black[0]);
-                    } else {
-                        resolve("NotEnoughCards");
-                    }
-                })
-                .catch(console.error)
+            if (this.status != "lobby") resolve("RoomAlreadyStarted");
+            else {
+                this.lobby
+                    .joinCardpacks()
+                    .then(cardpack => {
+                        console.log(cardpack);
+                        console.log("White", cardpack.cards.white.length);
+                        console.log("Black", cardpack.cards.black.length);
+                        let white_am = cardpack.cards.white.length;
+                        let black_am = cardpack.cards.black.length;
+                        if (this.players.size < MIN_PLAYERS_AMOUNT) {
+                            resolve("NotEnoughPlayers");
+                        }
+                        else if (white_am >= MIN_WHITE_CARDS_AMOUNT && black_am >= MIN_BLACK_CARDS_AMOUNT) {
+                            this.__cards = cardpack.cards;
+                            resolve(false);
+                            this.emit("RoomStart", this.toJSON());
+                            // Temporal
+                            this.setStatus("choosing");
+                            this.dealCards(5);
+                            this.setBlackCard(this.cards.black[0]);
+                        } else {
+                            resolve("NotEnoughCards");
+                        }
+                    });
+            }
         });
     }
 
@@ -275,16 +276,16 @@ export default class Room extends EventHandler {
      * @param {number} amount Amount of cards to give to each player 
      */
     dealCards(amount) {
-        if(this.status == "lobby" || this.cards.white.length == 0) return;
-        
+        if (this.status == "lobby" || this.cards.white.length == 0) return;
+
         this.players.forEach(player => {
             let card = this.cards.white.pop();
-            for(let i = 0; i < amount && card != undefined; i++) {
+            for (let i = 0; i < amount && card != undefined; i++) {
                 card = this.cards.white.pop();
-                player.deck.set(card.id,card);
+                player.deck.set(card.id, card);
             }
         });
-        
+
         this.emit("RoomCardsDealed");
     }
 
@@ -296,18 +297,18 @@ export default class Room extends EventHandler {
 
         let cards = [];
         let err = false;
-        
+
         let playersArr = Array.from(this.players.values());
-        for(let i = 0, len = playersArr; i < len && !err; i++) {
+        for (let i = 0, len = playersArr.length; i < len && !err; i++) {
             let player = playersArr[i];
             let ready = player.ready;
-            if(!ready) err = true;
+            if (!ready) err = true;
             else {
                 let selectedCards = {
                     "player_id": player.id,
-                    "cards" : []
+                    "cards": []
                 };
-                
+
                 player.selectedCards.forEach(card => {
                     selectedCards.cards.push(card);
                     player.deck.delete(card.id);
@@ -316,8 +317,8 @@ export default class Room extends EventHandler {
                 cards.push(selectedCards);
             }
         }
-        
-        if(!err) {
+
+        if (!err) {
             this.emit("RoomStartVoting", cards);
             this.setStatus("voting");
         }

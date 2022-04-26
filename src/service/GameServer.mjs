@@ -271,11 +271,21 @@ export default class GameServer {
                     } else if (emiter.id != emiter.room.czar.id) {
                         socket.emit("error", "NoPermissions");
                     } else {
-                        if (emiter.room) {
-                            // Remove selected cards from player's decks
-                            room.startVoting();
-                        } else {
+                        if (!emiter.room) {
                             socket.emit("error", "PlayerNotInARoom");
+                        } else {
+
+                            let allReady = true;
+                            for(let player of emiter.room.players.values()) {
+                                if(!player.ready) {allReady = false; break;}
+                            }
+
+                            if (!allReady) {
+                                socket.emit("error", "PlayersNotReady");
+                            } else {
+                                // Remove selected cards from player's decks
+                                room.startVoting();
+                            }
                         }
                     }
                 }
@@ -292,7 +302,7 @@ export default class GameServer {
 
                         let bCard = room.blackCard;
                         if (card_ids.length == bCard.slots) {
-                            for (let i = 0, len = card_ids.lenght; i < len && !err; i++) {
+                            for (let i = 0, len = card_ids.length; i < len && !err; i++) {
                                 let id = card_ids[i];
                                 if (!player.deck.has(id)) {
                                     socket.emit("error", "PlayerDoesntOwnThatCard");
@@ -308,8 +318,11 @@ export default class GameServer {
                                 socket.to(room.roomId).emit("AnnouncePlayerIsReady", player.toJSON());
                             }
                             else {
-                                player.selectedCards = [];
+                                player.selectedCards.length = 0;
                             }
+                        }
+                        else {
+                            socket.emit("error", "InvalidAmountOfSelectedCards");
                         }
                     } else {
                         socket.emit("error", "PlayerNotInARoom");
@@ -323,10 +336,10 @@ export default class GameServer {
             socket.on("PlayerIsNotReady", () => {
                 if (player.ready) {
                     player.ready = false;
-                    player.selectedCards = [];
+                    player.selectedCards.length = 0;
                 }
                 let room = player.room;
-                if (room) {
+                if (room && room.blackCard) {
                     socket.to(room.roomId).emit("AnnouncePlayerIsNotReady", player.toJSON())
                 }
             });
@@ -409,12 +422,18 @@ export default class GameServer {
             });
         });
 
-        room.on("RoomBlackCardChanged",(bCard) => {
+        room.on("RoomBlackCardChanged", (bCard) => {
             roomCh.emit("RoomBlackCardChanged", bCard);
         });
 
         room.on("RoomStartVoting", (cards) => {
             roomCh.emit("RoomStartVoting", cards);
+            room.players.forEach(player => {
+                let socket = this.io.of("/").sockets.get(player.id);
+                if (socket) {
+                    socket.emit("PlayerDeckUpdated", Array.from(player.deck.values()));
+                }
+            });
         });
 
     }
