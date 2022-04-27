@@ -2,6 +2,13 @@ import BlackCard from "./BlackCard.mjs";
 import Card from "./Card.mjs";
 import { Cardpack } from "./Cardpack.mjs";
 
+function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+}
+
 export default class Lobby {
     constructor() {
         this.__cardPacks = new Map();
@@ -47,6 +54,7 @@ export default class Lobby {
      */
     joinCardpacks() {
         return new Promise((resolve, reject) => {
+            let lastId = 0;
             let result = {
                 "pack_info": {
                     "id": "",
@@ -63,12 +71,21 @@ export default class Lobby {
             };
             this.cardPacks.forEach(cardpack => {
                 let cards = cardpack.cards;
+                // Temporal
+                shuffleArray(cards.black);
+                shuffleArray(cards.white);
+                
                 cards.white.forEach(card => {
-                    result.cards.white.push(new Card(card));
+                    result.cards.white.push(new Card(++lastId,card));
                 });
+
                 cards.black.forEach(card => {
-                    result.cards.black.push(new BlackCard(card.text, card.slots));
+                    result.cards.black.push(new BlackCard(++lastId,card.text, card.slots));
                 });
+
+
+
+
             });
             resolve(result);
         })

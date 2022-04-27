@@ -6,8 +6,8 @@ export default class BlackCard extends Card {
      * @param {import("./Cardpack.mjs").CardTextType} text 
      * @param {number} slots Number of white cards slots 
      */
-    constructor(text,slots) {
-        super(text);
+    constructor(id,text,slots) {
+        super(id,text);
         this.__slots = slots;
     }
 

@@ -43,6 +43,7 @@ export default class Room extends EventHandler {
         this.__goalObesity = 7;
         this.__createdBy = createdBy;
         this.__maxPlayers = 8;
+        this.__minPlayers = MIN_PLAYERS_AMOUNT;
 
         this.__lobby = new Lobby();
         this.__blackCard = undefined;
@@ -122,6 +123,13 @@ export default class Room extends EventHandler {
     }
 
     /**
+    * @returns {Number} Room's min players
+    */
+    get minPlayers() {
+        return this.__minPlayers;
+    }
+
+    /**
      * Changes the game czar
      * @param {Player} player New czar 
      */
@@ -161,7 +169,7 @@ export default class Room extends EventHandler {
      */
     setStatus(status) {
         this.__status = status;
-        this.emit("RoomStatusChanged", status);
+        this.emit("RoomStatusChanged", status); // Deprecated
     }
 
     /**
@@ -201,6 +209,7 @@ export default class Room extends EventHandler {
      */
     remove() {
         this.setStatus("finished");
+        this.players.forEach(p => p.leaveRoom());
         this.emit("RoomRemoved", this.toJSON());
     }
 
@@ -216,12 +225,9 @@ export default class Room extends EventHandler {
                 this.lobby
                     .joinCardpacks()
                     .then(cardpack => {
-                        console.log(cardpack);
-                        console.log("White", cardpack.cards.white.length);
-                        console.log("Black", cardpack.cards.black.length);
                         let white_am = cardpack.cards.white.length;
                         let black_am = cardpack.cards.black.length;
-                        if (this.players.size < MIN_PLAYERS_AMOUNT) {
+                        if (this.players.size < this.minPlayers) {
                             resolve("NotEnoughPlayers");
                         }
                         else if (white_am >= MIN_WHITE_CARDS_AMOUNT && black_am >= MIN_BLACK_CARDS_AMOUNT) {

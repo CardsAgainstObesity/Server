@@ -1,12 +1,10 @@
 export default class Card {
 
-    static lastId = 0;
-
     /**
      * @param {import("./Cardpack.mjs").CardTextType} text 
      */
-    constructor(text) {
-        this.__id = ++Card.lastId;
+    constructor(id,text) {
+        this.__id = id;
         this.__text = text;
     }
 

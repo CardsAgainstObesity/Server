@@ -5,6 +5,7 @@ import Room from "../entity/Room.mjs";
 import Player from "../entity/Player.mjs";
 
 import { createRequire } from "module";
+import { clear } from "console";
 const require = createRequire(import.meta.url);
 const random_name = require("../../resources/random/names.json");
 
@@ -276,8 +277,8 @@ export default class GameServer {
                         } else {
 
                             let allReady = true;
-                            for(let player of emiter.room.players.values()) {
-                                if(!player.ready) {allReady = false; break;}
+                            for (let player of emiter.room.players.values()) {
+                                if (!player.ready) { allReady = false; break; }
                             }
 
                             if (!allReady) {
@@ -380,6 +381,8 @@ export default class GameServer {
 
             // If the room is empty, delete it
             if (room.players.size == 0) {
+                room.remove();
+            } else if (room.players.size < room.minPlayers) {
                 room.remove();
             } else {
                 // If the player is the czar, change the czar
