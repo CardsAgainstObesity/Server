@@ -375,6 +375,18 @@ export default class GameServer {
                 }
             });
 
+            // ----
+            // Czar fliped a card
+            // ----
+            socket.on("RoomFlipCardRequest", (card_id) => {
+                if(player.room && player.room.status == "voting") {
+                    if(player.id == player.room.czar.id) {
+                        socket.to(player.room.roomId).emit("RoomFlipCard", card_id);
+                    } else {
+                        socket.emit("error","NoPermissions");
+                    }
+                } 
+            });
 
             // ----
             // Socket disconnected

@@ -19,6 +19,10 @@
 + AnnouncePlayerIsNotReady
     * Description: Announces to everyone that a player is ready
     * Args: Object playerJSON
++ RoomFlipCard
+    * Description: The czar fliped a card 
+    * Args: String card_id
+
 
 -- Server/Room --
 + RoomStatusChanged
@@ -108,6 +112,10 @@
 + RoomGoBackToLobbyRequest
     * Description: When the game ended, the last Czar can send players to lobby
     * CONDITION: Player id == Room czar id
++ RoomFlipCardRequest
+    * Description: Czar requests to flip a card 
+    * CONDITION: Player id == Room czar id
+
 
 Error types:
 + UknownRoom
