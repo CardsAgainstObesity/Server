@@ -7,6 +7,8 @@ import Player from "./Player.mjs";
 const MIN_WHITE_CARDS_AMOUNT = 30;
 const MIN_BLACK_CARDS_AMOUNT = 30;
 const MIN_PLAYERS_AMOUNT = 1; // temporal
+const TIME_TO_LOBBY = 10; // 10s
+
 
 /**
  * 
@@ -25,7 +27,7 @@ function getPlayerIndex(player, playerList) {
  */
 
 /**
- * @typedef {"RoomBlackCardChanged" | "RoomCardsDealed" | "LobbyRemoveCardpackSuccess" | "LobbyAddCardpackSuccess" | "RoomStart" | "RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged"} GameEvent
+ * @typedef {"AnnouncePlayerIsReady" | "AnnouncePlayerIsNotReady" | "RoomGameFinished" | "AnnounceRoomSelectWinner" | "RoomBlackCardChanged" | "RoomCardsDealed" | "LobbyRemoveCardpackSuccess" | "LobbyAddCardpackSuccess" | "RoomStart" | "RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged"} GameEvent
  */
 
 export default class Room extends EventHandler {
@@ -169,7 +171,7 @@ export default class Room extends EventHandler {
      */
     setStatus(status) {
         this.__status = status;
-        this.emit("RoomStatusChanged", status); // Deprecated
+        // this.emit("RoomStatusChanged", status); // Deprecated
     }
 
     /**
@@ -247,6 +249,27 @@ export default class Room extends EventHandler {
     }
 
     /**
+     * Sets a player as ready.
+     * @param {Player} player 
+     */
+    playerReady(player) {
+        if(this.status != "choosing") {
+            return;
+        } 
+        player.ready = true;
+        this.emit("AnnouncePlayerIsReady", player);
+    }
+
+    playerNotReady(player) {
+        if(this.status != "choosing") {
+            return;
+        } 
+        player.ready = false;
+        player.selectedCards.length = 0;
+        this.emit("AnnouncePlayerIsNotReady", player)
+    }
+
+    /**
      * @param {import("./Cardpack.mjs").DefaultCardpackId} packId
      * @returns {Promise<import("./Cardpack.mjs").PackInfoType>} 
      */
@@ -304,6 +327,10 @@ export default class Room extends EventHandler {
         let cards = [];
         let err = false;
 
+        if(this.status != "choosing") {
+            return;
+        } 
+
         let playersArr = Array.from(this.players.values());
         for (let i = 0, len = playersArr.length; i < len && !err; i++) {
             let player = playersArr[i];
@@ -327,6 +354,35 @@ export default class Room extends EventHandler {
         if (!err) {
             this.emit("RoomStartVoting", cards);
             this.setStatus("voting");
+        }
+    }
+
+    selectWinner(player_id) {
+        if(this.status != "voting") {
+            return;
+        } 
+        let pWinner = this.players.get(player_id);
+        if (pWinner && this.status == "voting") {
+            pWinner.obesity++;
+            this.emit("AnnounceRoomSelectWinner", pWinner.toJSON());
+
+            if(pWinner.obesity >= this.goalObesity) {
+                this.setStatus("finished");
+                this.emit("RoomGameFinished", pWinner.toJSON());
+            }
+        }
+    }
+
+    backToLobby() {
+        if(this.status == "finished") {
+
+            // Prepare new lobby
+            this.__lobby = new Lobby();
+            this.__blackCard = undefined;
+            this.__cards = undefined;
+            
+            this.setStatus("lobby");
+            this.emit("RoomGoBackToLobby");
         }
     }
 

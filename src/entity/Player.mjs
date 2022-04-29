@@ -26,6 +26,10 @@ export default class Player {
         return this.__obesity;
     }
 
+    set obesity(value) {
+        this.__obesity = value;
+    }
+
     /**
      * @returns {Room} The room the player is in
      */
@@ -95,7 +99,8 @@ export default class Player {
         return {
             "id": this.id,
             "obesity" : this.obesity,
-            "name": this.name
+            "name": this.name,
+            "ready": this.ready
         }
     }
 }

@@ -60,6 +60,14 @@
 + RoomStartVoting
     * Description: Room is now in voting status
     * Args: Player's cards with id
++ AnnounceRoomSelectWinner
+    * Description: The czar selected a winner for this round
+    * Args: Object playerJSON
++ RoomGameFinished
+    * Description: The game ended with a winner 
+    * Args: Object playerJSON
++ RoomGoBackToLobby 
+    * Description: Czar "requested" players to go back to lobby
 
 -- Socket ( client ) --
 + RoomConnectionRequest
@@ -93,7 +101,13 @@
     * Description: Request the room to change status to voting
     * CONDITION: Player id == Room czar id
     * Args: String room_id
-
++ RoomSelectWinnerRequest
+    * Description: Czar submits a player selection as winner of the round
+    * CONDITION: Player id == Room czar id
+    * Args: String player_id
++ RoomGoBackToLobbyRequest
+    * Description: When the game ended, the last Czar can send players to lobby
+    * CONDITION: Player id == Room czar id
 
 Error types:
 + UknownRoom
@@ -104,3 +118,7 @@ Error types:
 + NotEnoughPlayers
 + NotEnoughCards
 + PlayerDoesntOwnThatCard
++ PlayerNotInARoom
++ PlayersNotReady
++ InvalidEventArgs
++ NoPermissions

@@ -1,11 +1,10 @@
-import { Server } from "socket.io";
 import http from 'http';
-import LoggingSystem from "../util/LoggingSystem.mjs";
-import Room from "../entity/Room.mjs";
-import Player from "../entity/Player.mjs";
-
 import { createRequire } from "module";
-import { clear } from "console";
+import { Server } from "socket.io";
+import Player from "../entity/Player.mjs";
+import Room from "../entity/Room.mjs";
+import LoggingSystem from "../util/LoggingSystem.mjs";
+
 const require = createRequire(import.meta.url);
 const random_name = require("../../resources/random/names.json");
 
@@ -179,10 +178,10 @@ export default class GameServer {
             socket.on("LobbyAddCardpackRequest", (args) => {
                 let emiter_id = socket.id;
                 let cardpack_id = args["cardpack_id"];
-                let room_id = args["room_id"];
-                let room = this.rooms.get(room_id);
+                //let room_id = args["room_id"];
+                let room = player.room; // this.rooms.get(room_id);
                 if (!room || !(room instanceof Room)) {
-                    socket.emit("error", "InvalidEventArgs");
+                    socket.emit("error", "PlayerNotInARoom");
                 } else {
                     let emiter = room.players.get(emiter_id);
                     if ((!emiter || !cardpack_id) || !(emiter instanceof Player)) {
@@ -206,10 +205,10 @@ export default class GameServer {
             socket.on("LobbyRemoveCardpackRequest", (args) => {
                 let emiter_id = socket.id;
                 let cardpack_id = args["cardpack_id"];
-                let room_id = args["room_id"];
-                let room = this.rooms.get(room_id);
+                // let room_id = args["room_id"];
+                let room = player.room; // this.rooms.get(room_id);
                 if (!room || !(room instanceof Room)) {
-                    socket.emit("error", "InvalidEventArgs");
+                    socket.emit("error", "PlayerNotInARoom");
                 } else {
                     let emiter = room.players.get(emiter_id);
                     if ((!emiter || !cardpack_id) || !(emiter instanceof Player)) {
@@ -221,8 +220,6 @@ export default class GameServer {
                             if (!emiter.room.removeCardPack(cardpack_id)) {
                                 socket.emit("error", "CardpackNotRemoved");
                             }
-                        } else {
-                            socket.emit("error", "PlayerNotInARoom");
                         }
                     }
                 }
@@ -232,9 +229,9 @@ export default class GameServer {
             // ----
             socket.on("RoomStartRequest", (room_id) => {
                 let emiter_id = socket.id;
-                let room = this.rooms.get(room_id);
+                let room = player.room; // this.rooms.get(room_id);
                 if (!room || !(room instanceof Room)) {
-                    socket.emit("error", "InvalidEventArgs");
+                    socket.emit("error", "PlayerNotInARoom");
                 } else {
                     let emiter = room.players.get(emiter_id);
                     if (!emiter || !(emiter instanceof Player)) {
@@ -249,8 +246,6 @@ export default class GameServer {
                                         socket.emit("error", error);
                                     }
                                 });
-                        } else {
-                            socket.emit("error", "PlayerNotInARoom");
                         }
                     }
                 }
@@ -258,11 +253,61 @@ export default class GameServer {
             });
 
             // ----
-            // Czar wants to start voting
+            // Player is ready ( prepare selected cards )
+            // ----
+            socket.on("PlayerIsReady", (card_ids) => {
+                if (!player.ready) {
+                    let err = false;
+                    let room = player.room;
+                    if (room && room.blackCard) {
+
+                        let bCard = room.blackCard;
+                        if (card_ids.length == bCard.slots) {
+                            for (let i = 0, len = card_ids.length; i < len && !err; i++) {
+                                let id = card_ids[i];
+                                if (!player.deck.has(id)) {
+                                    socket.emit("error", "PlayerDoesntOwnThatCard");
+                                    err = true;
+                                }
+                                else {
+                                    player.selectedCards.push(player.deck.get(id));
+                                }
+                            }
+
+                            if (!err) {
+                                room.playerReady(player);
+                                // socket.to(room.roomId).emit("AnnouncePlayerIsReady", player.toJSON());
+                            }
+                            else {
+                                player.selectedCards.length = 0;
+                            }
+                        }
+                        else {
+                            socket.emit("error", "InvalidAmountOfSelectedCards");
+                        }
+                    } else {
+                        socket.emit("error", "PlayerNotInARoom");
+                    }
+                }
+            });
+
+            // ----
+            // Player is not ready
+            // ----
+            socket.on("PlayerIsNotReady", () => {
+                let room = player.room;
+                if (room && room.blackCard) {
+                    room.playerNotReady(player);
+                    // socket.to(room.roomId).emit("AnnouncePlayerIsNotReady", player.toJSON())
+                }
+            });
+
+            // ----
+            // Czar wants to start voting ( all players must be ready ) 
             // ----
             socket.on("RoomStartVotingRequest", (room_id) => {
                 let emiter_id = socket.id;
-                let room = this.rooms.get(room_id);
+                let room = player.room; // this.rooms.get(room_id);
                 if (!room || !(room instanceof Room)) {
                     socket.emit("error", "InvalidEventArgs");
                 } else {
@@ -293,57 +338,43 @@ export default class GameServer {
             });
 
             // ----
-            // Player is ready
+            // Czar selected winner 
             // ----
-            socket.on("PlayerIsReady", (card_ids) => {
-                if (!player.ready) {
-                    let err = false;
+            socket.on("RoomSelectWinnerRequest", (player_id) => {
+                var id = parseInt(player_id);
+                if (isNaN(id)) {
+                    socket.emit("error", "InvalidEventArgs");
+                } else {
                     let room = player.room;
-                    if (room && room.blackCard) {
-
-                        let bCard = room.blackCard;
-                        if (card_ids.length == bCard.slots) {
-                            for (let i = 0, len = card_ids.length; i < len && !err; i++) {
-                                let id = card_ids[i];
-                                if (!player.deck.has(id)) {
-                                    socket.emit("error", "PlayerDoesntOwnThatCard");
-                                    err = true;
-                                }
-                                else {
-                                    player.selectedCards.push(player.deck.get(id));
-                                }
-                            }
-
-                            if (!err) {
-                                player.ready = true;
-                                socket.to(room.roomId).emit("AnnouncePlayerIsReady", player.toJSON());
-                            }
-                            else {
-                                player.selectedCards.length = 0;
-                            }
-                        }
-                        else {
-                            socket.emit("error", "InvalidAmountOfSelectedCards");
-                        }
-                    } else {
+                    if (!room) {
                         socket.emit("error", "PlayerNotInARoom");
+                    } else if (player.id != room.czar.id) {
+                        socket.emit("error", "NoPermissions");
+                    } else {
+                        let pWinner = room.players.get(player_id);
+                        if (!pWinner) {
+                            socket.emit("error", "InvalidEventArgs");
+                        } else {
+                            room.selectWinner(player_id);
+                        }
                     }
                 }
             });
 
             // ----
-            // Player is not ready
+            // After the game ended, the last Czar can send players to lobby
             // ----
-            socket.on("PlayerIsNotReady", () => {
-                if (player.ready) {
-                    player.ready = false;
-                    player.selectedCards.length = 0;
-                }
+            socket.on("RoomGoBackToLobbyRequest", () => {
                 let room = player.room;
-                if (room && room.blackCard) {
-                    socket.to(room.roomId).emit("AnnouncePlayerIsNotReady", player.toJSON())
+                if (!room) {
+                    socket.emit("error", "PlayerNotInARoom");
+                } else if (player.id != room.czar.id) {
+                    socket.emit("error", "NoPermissions");
+                } else {
+                    room.backToLobby();
                 }
             });
+
 
             // ----
             // Socket disconnected
@@ -365,9 +396,11 @@ export default class GameServer {
         let roomId = room.roomId;
         let roomCh = this.io.to(roomId);
 
+        /*
         room.on("RoomStatusChanged", (status) => {
             roomCh.emit("RoomStatusChanged", status);
         });
+        */
 
         room.on("RoomCzarChanged", (playerJSON) => {
             roomCh.emit("RoomCzarChanged", playerJSON);
@@ -438,6 +471,30 @@ export default class GameServer {
                 }
             });
         });
+
+        room.on("AnnounceRoomSelectWinner", (player) => {
+            roomCh.emit("AnnounceRoomSelectWinner", player);
+        });
+
+        room.on("RoomGameFinished", (winner) => {
+            roomCh.emit("RoomGameFinished", winner);
+        });
+        
+        room.on("AnnouncePlayerIsNotReady", player => {
+            roomCh.emit("AnnouncePlayerIsNotReady", player.toJSON());
+        });
+
+        room.on("AnnouncePlayerIsReady", player => {
+            roomCh.emit("AnnouncePlayerIsReady", player.toJSON());
+            let allReady = true;
+            for (let player of room.players.values()) {
+                if (!player.ready) { allReady = false; break; }
+            }
+
+            if(allReady) {
+                room.startVoting();
+            }
+        })
 
     }
 }
