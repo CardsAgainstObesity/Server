@@ -27,7 +27,7 @@ function getPlayerIndex(player, playerList) {
  */
 
 /**
- * @typedef {"AnnouncePlayerIsReady" | "AnnouncePlayerIsNotReady" | "RoomGameFinished" | "AnnounceRoomSelectWinner" | "RoomBlackCardChanged" | "RoomCardsDealed" | "LobbyRemoveCardpackSuccess" | "LobbyAddCardpackSuccess" | "RoomStart" | "RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged"} GameEvent
+ * @typedef {"RoomGoBackToLobby" | "AnnouncePlayerIsReady" | "AnnouncePlayerIsNotReady" | "RoomGameFinished" | "AnnounceRoomSelectWinner" | "RoomBlackCardChanged" | "RoomCardsDealed" | "LobbyRemoveCardpackSuccess" | "LobbyAddCardpackSuccess" | "RoomStart" | "RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged"} GameEvent
  */
 
 export default class Room extends EventHandler {

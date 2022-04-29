@@ -341,22 +341,17 @@ export default class GameServer {
             // Czar selected winner 
             // ----
             socket.on("RoomSelectWinnerRequest", (player_id) => {
-                var id = parseInt(player_id);
-                if (isNaN(id)) {
-                    socket.emit("error", "InvalidEventArgs");
+                let room = player.room;
+                if (!room) {
+                    socket.emit("error", "PlayerNotInARoom");
+                } else if (player.id != room.czar.id) {
+                    socket.emit("error", "NoPermissions");
                 } else {
-                    let room = player.room;
-                    if (!room) {
-                        socket.emit("error", "PlayerNotInARoom");
-                    } else if (player.id != room.czar.id) {
-                        socket.emit("error", "NoPermissions");
+                    let pWinner = room.players.get(player_id);
+                    if (!pWinner) {
+                        socket.emit("error", "InvalidEventArgs");
                     } else {
-                        let pWinner = room.players.get(player_id);
-                        if (!pWinner) {
-                            socket.emit("error", "InvalidEventArgs");
-                        } else {
-                            room.selectWinner(player_id);
-                        }
+                        room.selectWinner(player_id);
                     }
                 }
             });
@@ -379,13 +374,13 @@ export default class GameServer {
             // Czar fliped a card
             // ----
             socket.on("RoomFlipCardRequest", (player_id) => {
-                if(player.room && player.room.status == "voting") {
-                    if(player.id == player.room.czar.id) {
+                if (player.room && player.room.status == "voting") {
+                    if (player.id == player.room.czar.id) {
                         socket.to(player.room.roomId).emit("RoomFlipCard", player_id);
                     } else {
-                        socket.emit("error","NoPermissions");
+                        socket.emit("error", "NoPermissions");
                     }
-                } 
+                }
             });
 
             // ----
@@ -491,7 +486,7 @@ export default class GameServer {
         room.on("RoomGameFinished", (winner) => {
             roomCh.emit("RoomGameFinished", winner);
         });
-        
+
         room.on("AnnouncePlayerIsNotReady", player => {
             roomCh.emit("AnnouncePlayerIsNotReady", player.toJSON());
         });
@@ -503,10 +498,14 @@ export default class GameServer {
                 if (!player.ready) { allReady = false; break; }
             }
 
-            if(allReady) {
+            if (allReady) {
                 room.startVoting();
             }
-        })
+        });
+
+        room.on("RoomGoBackToLobby", () =>{
+            roomCh.emit("RoomGoBackToLobby");
+        });
 
     }
 }
