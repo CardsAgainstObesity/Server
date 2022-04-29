@@ -113,7 +113,7 @@
     * Description: When the game ended, the last Czar can send players to lobby
     * CONDITION: Player id == Room czar id
 + RoomFlipCardRequest
-    * Description: Czar requests to flip a card 
+    * Description: Czar requests to flip all cards from a player
     * CONDITION: Player id == Room czar id
 
 

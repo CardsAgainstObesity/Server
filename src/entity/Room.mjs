@@ -339,7 +339,8 @@ export default class Room extends EventHandler {
             else {
                 let selectedCards = {
                     "player_id": player.id,
-                    "cards": []
+                    "cards": [],
+                    "flipped": false
                 };
 
                 player.selectedCards.forEach(card => {
