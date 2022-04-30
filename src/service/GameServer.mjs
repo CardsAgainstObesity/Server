@@ -133,7 +133,7 @@ export default class GameServer {
                 } catch (err) {
                     if (err instanceof RateLimiterRes) {
                         // User being ratelimited ( by IP )
-                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                        socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
                         console.error(err);
                     }
@@ -177,7 +177,7 @@ export default class GameServer {
                 } catch (err) {
                     if (err instanceof RateLimiterRes) {
                         // User being ratelimited ( by IP )
-                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                        socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
                         console.error(err);
                     }
@@ -211,7 +211,7 @@ export default class GameServer {
                 catch (err) {
                     if (err instanceof RateLimiterRes) {
                         // User being ratelimited ( by IP )
-                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                        socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
                         console.error(err);
                     }
@@ -251,7 +251,7 @@ export default class GameServer {
                 } catch (err) {
                     if (err instanceof RateLimiterRes) {
                         // User being ratelimited ( by IP )
-                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                        socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
                         console.error(err);
                     }
@@ -288,7 +288,7 @@ export default class GameServer {
                 } catch (err) {
                     if (err instanceof RateLimiterRes) {
                         // User being ratelimited ( by IP )
-                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                        socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
                         console.error(err);
                     }
@@ -326,7 +326,7 @@ export default class GameServer {
                 catch (err) {
                     if (err instanceof RateLimiterRes) {
                         // User being ratelimited ( by IP )
-                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                        socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
                         console.error(err);
                     }
@@ -377,7 +377,7 @@ export default class GameServer {
                 catch (err) {
                     if (err instanceof RateLimiterRes) {
                         // User being ratelimited ( by IP )
-                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                        socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
                         console.error(err);
                     }
@@ -400,7 +400,7 @@ export default class GameServer {
                 catch (err) {
                     if (err instanceof RateLimiterRes) {
                         // User being ratelimited ( by IP )
-                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                        socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
                         console.error(err);
                     }
@@ -447,7 +447,7 @@ export default class GameServer {
                 catch (err) {
                     if (err instanceof RateLimiterRes) {
                         // User being ratelimited ( by IP )
-                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                        socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
                         console.error(err);
                     }
@@ -478,7 +478,7 @@ export default class GameServer {
                 catch (err) {
                     if (err instanceof RateLimiterRes) {
                         // User being ratelimited ( by IP )
-                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                        socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
                         console.error(err);
                     }
@@ -504,7 +504,7 @@ export default class GameServer {
                 catch (err) {
                     if (err instanceof RateLimiterRes) {
                         // User being ratelimited ( by IP )
-                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                        socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
                         console.error(err);
                     }
@@ -529,7 +529,7 @@ export default class GameServer {
                 catch (err) {
                     if (err instanceof RateLimiterRes) {
                         // User being ratelimited ( by IP )
-                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                        socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
                         console.error(err);
                     }
