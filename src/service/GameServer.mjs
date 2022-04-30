@@ -4,6 +4,7 @@ import { Server } from "socket.io";
 import Player from "../entity/Player.mjs";
 import Room from "../entity/Room.mjs";
 import LoggingSystem from "../util/LoggingSystem.mjs";
+import { RateLimiterMemory, RateLimiterRes } from 'rate-limiter-flexible';
 
 const require = createRequire(import.meta.url);
 const random_name = require("../../resources/random/names.json");
@@ -75,6 +76,15 @@ export default class GameServer {
      */
     __setup() {
 
+        // Setup rate-limit
+        const rateLimiter = new RateLimiterMemory(
+            {
+                points: 5,
+                duration: 1
+            }
+        );
+
+
         this.io.on("connection", (socket) => {
 
             // Create a player for the client
@@ -82,39 +92,51 @@ export default class GameServer {
             // ----
             // Room creation
             // ----
-            socket.on("RoomCreationRequest", (id) => {
-                let roomId = id ? id.replace(" ", "").slice(0, 10) : Date.now().toString(36).substr(2);
-                LoggingSystem.singleton.log("[" + this.constructor.name + "]", "Created room: " + roomId);
-                // Check if already room exists in the server
-                let roomExists = this.rooms.has(roomId);
-                if (!roomExists) {
-                    let room = new Room(roomId, player);
-                    // Add room to sever
-                    this.rooms.set(roomId, room);
-                    // Bind room events to server
-                    this.__roomSetup(room);
-                    // First make sure to leave every room
-                    socket.rooms.forEach(room => {
-                        socket.leave(room);
-                    });
-                    // Add socket to the sockets room
-                    socket.join(roomId);
-                    // Leave room if any
-                    player.leaveRoom();
-                    // Check if there is space in the room
-                    if (room.players.size < room.maxPlayers) {
-                        // Send room creation success reply
-                        socket.emit("RoomCreationSuccess", room.toJSON());
-                        // Join room
-                        room.addPlayer(player);
+            socket.on("RoomCreationRequest", async (id) => {
+                try {
+                    await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
+
+                    let roomId = id ? id.replace(" ", "").slice(0, 10) : Date.now().toString(36).substr(2);
+                    LoggingSystem.singleton.log("[" + this.constructor.name + "]", "Created room: " + roomId);
+                    // Check if already room exists in the server
+                    let roomExists = this.rooms.has(roomId);
+                    if (!roomExists) {
+                        let room = new Room(roomId, player);
+                        // Add room to sever
+                        this.rooms.set(roomId, room);
+                        // Bind room events to server
+                        this.__roomSetup(room);
+                        // First make sure to leave every room
+                        socket.rooms.forEach(room => {
+                            socket.leave(room);
+                        });
+                        // Add socket to the sockets room
+                        socket.join(roomId);
+                        // Leave room if any
+                        player.leaveRoom();
+                        // Check if there is space in the room
+                        if (room.players.size < room.maxPlayers) {
+                            // Send room creation success reply
+                            socket.emit("RoomCreationSuccess", room.toJSON());
+                            // Join room
+                            room.addPlayer(player);
+                        } else {
+                            // Send connection error reply
+                            socket.emit("error", "RoomCapacityExceed");
+                        }
+
                     } else {
-                        // Send connection error reply
-                        socket.emit("error", "RoomCapacityExceed");
+                        // Send creation error reply
+                        socket.emit("error", "RoomAlreadyExists");
                     }
 
-                } else {
-                    // Send creation error reply
-                    socket.emit("error", "RoomAlreadyExists");
+                } catch (err) {
+                    if (err instanceof RateLimiterRes) {
+                        // User being ratelimited ( by IP )
+                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                    } else {
+                        console.error(err);
+                    }
                 }
             });
 
@@ -122,171 +144,242 @@ export default class GameServer {
             // ---- 
             // Room connection
             // ----
-            socket.on("RoomConnectionRequest", roomId => {
-                // Check if room exists in the server
-                let roomExists = this.rooms.has(roomId);
-                if (roomExists) {
-                    let room = this.rooms.get(roomId);
-                    // First make sure to leave every room
-                    socket.rooms.forEach(room => {
-                        socket.leave(room);
-                    });
-                    // Add socket to the sockets room
-                    socket.join(roomId);
-                    // Leave room if any
-                    player.leaveRoom();
-                    // Check if there is space in the room
-                    if (room.players.size < room.maxPlayers) {
-                        // Send connection success reply
-                        socket.emit("RoomConnectionSuccess", room.toJSON());
-                        // Join room
-                        room.addPlayer(player);
+            socket.on("RoomConnectionRequest", async (roomId) => {
+                try {
+                    await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
+
+                    // Check if room exists in the server
+                    let roomExists = this.rooms.has(roomId);
+                    if (roomExists) {
+                        let room = this.rooms.get(roomId);
+                        // First make sure to leave every room
+                        socket.rooms.forEach(room => {
+                            socket.leave(room);
+                        });
+                        // Add socket to the sockets room
+                        socket.join(roomId);
+                        // Leave room if any
+                        player.leaveRoom();
+                        // Check if there is space in the room
+                        if (room.players.size < room.maxPlayers) {
+                            // Send connection success reply
+                            socket.emit("RoomConnectionSuccess", room.toJSON());
+                            // Join room
+                            room.addPlayer(player);
+                        } else {
+                            // Send connection error reply
+                            socket.emit("error", "RoomCapacityExceed");
+                        }
                     } else {
                         // Send connection error reply
-                        socket.emit("error", "RoomCapacityExceed");
+                        socket.emit("error", "UknownRoom");
                     }
-                } else {
-                    // Send connection error reply
-                    socket.emit("error", "UknownRoom");
+                } catch (err) {
+                    if (err instanceof RateLimiterRes) {
+                        // User being ratelimited ( by IP )
+                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                    } else {
+                        console.error(err);
+                    }
                 }
             });
 
             // ----
             // Name change
             // ----
-            socket.on("RequestPlayerChangeName", (name) => {
+            socket.on("RequestPlayerChangeName",async (name) => {
+                try {
+                    await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
 
-                let newName;
 
-                if (!name || name == "") {
-                    // Get random name
-                    newName = random_name[Math.floor(Math.random() * random_name.length)];
-                } else {
-                    newName = name.slice(0, 25);
+                    let newName;
+
+                    if (!name || name == "") {
+                        // Get random name
+                        newName = random_name[Math.floor(Math.random() * random_name.length)];
+                    } else {
+                        newName = name.slice(0, 25);
+                    }
+
+                    player.name = newName;
+                    if (player.room && player.room.status == "lobby") {
+                        let roomId = player.room.id;
+                        socket.to(roomId).emit("PlayerChangeName", player.toJSON());
+                    }
+
                 }
-
-                player.name = newName;
-                if (player.room && player.room.status == "lobby") {
-                    let roomId = player.room.id;
-                    socket.to(roomId).emit("PlayerChangeName", player.toJSON());
+                catch (err) {
+                    if (err instanceof RateLimiterRes) {
+                        // User being ratelimited ( by IP )
+                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                    } else {
+                        console.error(err);
+                    }
                 }
             });
 
             // ----
             // Add cardpack 
             // ----
-            socket.on("LobbyAddCardpackRequest", (args) => {
-                let emiter_id = socket.id;
-                let cardpack_id = args["cardpack_id"];
-                //let room_id = args["room_id"];
-                let room = player.room; // this.rooms.get(room_id);
-                if (!room || !(room instanceof Room)) {
-                    socket.emit("error", "PlayerNotInARoom");
-                } else {
-                    let emiter = room.players.get(emiter_id);
-                    if ((!emiter || !cardpack_id) || !(emiter instanceof Player)) {
-                        socket.emit("error", "InvalidEventArgs");
-                    } else if (emiter.id != emiter.room.host.id) {
-                        socket.emit("error", "NoPermissions");
+            socket.on("LobbyAddCardpackRequest",async (args) => {
+                try {
+                    await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
+
+
+                    let emiter_id = socket.id;
+                    let cardpack_id = args["cardpack_id"];
+                    //let room_id = args["room_id"];
+                    let room = player.room; // this.rooms.get(room_id);
+                    if (!room || !(room instanceof Room)) {
+                        socket.emit("error", "PlayerNotInARoom");
                     } else {
-                        emiter.room.addCardPack(cardpack_id)
-                            .then(cardpack => {
-                                if (!cardpack) socket.emit("error", "InvalidCardpack");
-                            })
-                            .catch(() => {
-                                socket.emit("error", "CardpackAlreadyAdded");
-                            });
+                        let emiter = room.players.get(emiter_id);
+                        if ((!emiter || !cardpack_id) || !(emiter instanceof Player)) {
+                            socket.emit("error", "InvalidEventArgs");
+                        } else if (emiter.id != emiter.room.host.id) {
+                            socket.emit("error", "NoPermissions");
+                        } else {
+                            emiter.room.addCardPack(cardpack_id)
+                                .then(cardpack => {
+                                    if (!cardpack) socket.emit("error", "InvalidCardpack");
+                                })
+                                .catch(() => {
+                                    socket.emit("error", "CardpackAlreadyAdded");
+                                });
+                        }
+                    }
+                } catch (err) {
+                    if (err instanceof RateLimiterRes) {
+                        // User being ratelimited ( by IP )
+                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                    } else {
+                        console.error(err);
                     }
                 }
             });
             // ----
             // Remove cardpack 
             // ----
-            socket.on("LobbyRemoveCardpackRequest", (args) => {
-                let emiter_id = socket.id;
-                let cardpack_id = args["cardpack_id"];
-                // let room_id = args["room_id"];
-                let room = player.room; // this.rooms.get(room_id);
-                if (!room || !(room instanceof Room)) {
-                    socket.emit("error", "PlayerNotInARoom");
-                } else {
-                    let emiter = room.players.get(emiter_id);
-                    if ((!emiter || !cardpack_id) || !(emiter instanceof Player)) {
-                        socket.emit("error", "InvalidEventArgs");
-                    } else if (emiter.id != emiter.room.host.id) {
-                        socket.emit("error", "NoPermissions");
+            socket.on("LobbyRemoveCardpackRequest",async (args) => {
+                try {
+                    await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
+
+
+                    let emiter_id = socket.id;
+                    let cardpack_id = args["cardpack_id"];
+                    // let room_id = args["room_id"];
+                    let room = player.room; // this.rooms.get(room_id);
+                    if (!room || !(room instanceof Room)) {
+                        socket.emit("error", "PlayerNotInARoom");
                     } else {
-                        if (emiter.room) {
-                            if (!emiter.room.removeCardPack(cardpack_id)) {
-                                socket.emit("error", "CardpackNotRemoved");
+                        let emiter = room.players.get(emiter_id);
+                        if ((!emiter || !cardpack_id) || !(emiter instanceof Player)) {
+                            socket.emit("error", "InvalidEventArgs");
+                        } else if (emiter.id != emiter.room.host.id) {
+                            socket.emit("error", "NoPermissions");
+                        } else {
+                            if (emiter.room) {
+                                if (!emiter.room.removeCardPack(cardpack_id)) {
+                                    socket.emit("error", "CardpackNotRemoved");
+                                }
                             }
                         }
+                    }
+                } catch (err) {
+                    if (err instanceof RateLimiterRes) {
+                        // User being ratelimited ( by IP )
+                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                    } else {
+                        console.error(err);
                     }
                 }
             });
             // ----
             // Start the game
             // ----
-            socket.on("RoomStartRequest", (room_id) => {
-                let emiter_id = socket.id;
-                let room = player.room; // this.rooms.get(room_id);
-                if (!room || !(room instanceof Room)) {
-                    socket.emit("error", "PlayerNotInARoom");
-                } else {
-                    let emiter = room.players.get(emiter_id);
-                    if (!emiter || !(emiter instanceof Player)) {
-                        socket.emit("error", "InvalidEventArgs");
-                    } else if (emiter.id != emiter.room.host.id) {
-                        socket.emit("error", "NoPermissions");
+            socket.on("RoomStartRequest",async (room_id) => {
+                try {
+                    await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
+
+                    let emiter_id = socket.id;
+                    let room = player.room; // this.rooms.get(room_id);
+                    if (!room || !(room instanceof Room)) {
+                        socket.emit("error", "PlayerNotInARoom");
                     } else {
-                        if (emiter.room) {
-                            room.start()
-                                .then(error => {
-                                    if (error) {
-                                        socket.emit("error", error);
-                                    }
-                                });
+                        let emiter = room.players.get(emiter_id);
+                        if (!emiter || !(emiter instanceof Player)) {
+                            socket.emit("error", "InvalidEventArgs");
+                        } else if (emiter.id != emiter.room.host.id) {
+                            socket.emit("error", "NoPermissions");
+                        } else {
+                            if (emiter.room) {
+                                room.start()
+                                    .then(error => {
+                                        if (error) {
+                                            socket.emit("error", error);
+                                        }
+                                    });
+                            }
                         }
                     }
                 }
-
+                catch (err) {
+                    if (err instanceof RateLimiterRes) {
+                        // User being ratelimited ( by IP )
+                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                    } else {
+                        console.error(err);
+                    }
+                }
             });
 
             // ----
             // Player is ready ( prepare selected cards )
             // ----
-            socket.on("PlayerIsReady", (card_ids) => {
-                if (!player.ready) {
-                    let err = false;
-                    let room = player.room;
-                    if (room && room.blackCard) {
+            socket.on("PlayerIsReady",async (card_ids) => {
+                try {
+                    await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
 
-                        let bCard = room.blackCard;
-                        if (card_ids.length == bCard.slots) {
-                            for (let i = 0, len = card_ids.length; i < len && !err; i++) {
-                                let id = card_ids[i];
-                                if (!player.deck.has(id)) {
-                                    socket.emit("error", "PlayerDoesntOwnThatCard");
-                                    err = true;
+                    if (!player.ready) {
+                        let err = false;
+                        let room = player.room;
+                        if (room && room.blackCard) {
+
+                            let bCard = room.blackCard;
+                            if (card_ids.length == bCard.slots) {
+                                for (let i = 0, len = card_ids.length; i < len && !err; i++) {
+                                    let id = card_ids[i];
+                                    if (!player.deck.has(id)) {
+                                        socket.emit("error", "PlayerDoesntOwnThatCard");
+                                        err = true;
+                                    }
+                                    else {
+                                        player.selectedCards.push(player.deck.get(id));
+                                    }
+                                }
+
+                                if (!err) {
+                                    room.playerReady(player);
+                                    // socket.to(room.roomId).emit("AnnouncePlayerIsReady", player.toJSON());
                                 }
                                 else {
-                                    player.selectedCards.push(player.deck.get(id));
+                                    player.selectedCards.length = 0;
                                 }
                             }
-
-                            if (!err) {
-                                room.playerReady(player);
-                                // socket.to(room.roomId).emit("AnnouncePlayerIsReady", player.toJSON());
-                            }
                             else {
-                                player.selectedCards.length = 0;
+                                socket.emit("error", "InvalidAmountOfSelectedCards");
                             }
+                        } else {
+                            socket.emit("error", "PlayerNotInARoom");
                         }
-                        else {
-                            socket.emit("error", "InvalidAmountOfSelectedCards");
-                        }
+                    }
+                }
+                catch (err) {
+                    if (err instanceof RateLimiterRes) {
+                        // User being ratelimited ( by IP )
+                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
                     } else {
-                        socket.emit("error", "PlayerNotInARoom");
+                        console.error(err);
                     }
                 }
             });
@@ -294,45 +387,69 @@ export default class GameServer {
             // ----
             // Player is not ready
             // ----
-            socket.on("PlayerIsNotReady", () => {
-                let room = player.room;
-                if (room && room.blackCard) {
-                    room.playerNotReady(player);
-                    // socket.to(room.roomId).emit("AnnouncePlayerIsNotReady", player.toJSON())
+            socket.on("PlayerIsNotReady",async () => {
+                try {
+                    await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
+
+                    let room = player.room;
+                    if (room && room.blackCard) {
+                        room.playerNotReady(player);
+                        // socket.to(room.roomId).emit("AnnouncePlayerIsNotReady", player.toJSON())
+                    }
+                }
+                catch (err) {
+                    if (err instanceof RateLimiterRes) {
+                        // User being ratelimited ( by IP )
+                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                    } else {
+                        console.error(err);
+                    }
                 }
             });
 
             // ----
             // Czar wants to start voting ( all players must be ready ) 
             // ----
-            socket.on("RoomStartVotingRequest", (room_id) => {
-                let emiter_id = socket.id;
-                let room = player.room; // this.rooms.get(room_id);
-                if (!room || !(room instanceof Room)) {
-                    socket.emit("error", "InvalidEventArgs");
-                } else {
-                    let emiter = room.players.get(emiter_id);
-                    if (!emiter || !(emiter instanceof Player)) {
+            socket.on("RoomStartVotingRequest",async (room_id) => {
+                try {
+                    await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
+
+                    let emiter_id = socket.id;
+                    let room = player.room; // this.rooms.get(room_id);
+                    if (!room || !(room instanceof Room)) {
                         socket.emit("error", "InvalidEventArgs");
-                    } else if (emiter.id != emiter.room.czar.id) {
-                        socket.emit("error", "NoPermissions");
                     } else {
-                        if (!emiter.room) {
-                            socket.emit("error", "PlayerNotInARoom");
+                        let emiter = room.players.get(emiter_id);
+                        if (!emiter || !(emiter instanceof Player)) {
+                            socket.emit("error", "InvalidEventArgs");
+                        } else if (emiter.id != emiter.room.czar.id) {
+                            socket.emit("error", "NoPermissions");
                         } else {
-
-                            let allReady = true;
-                            for (let player of emiter.room.players.values()) {
-                                if (!player.ready) { allReady = false; break; }
-                            }
-
-                            if (!allReady) {
-                                socket.emit("error", "PlayersNotReady");
+                            if (!emiter.room) {
+                                socket.emit("error", "PlayerNotInARoom");
                             } else {
-                                // Remove selected cards from player's decks
-                                room.startVoting();
+
+                                let allReady = true;
+                                for (let player of emiter.room.players.values()) {
+                                    if (!player.ready) { allReady = false; break; }
+                                }
+
+                                if (!allReady) {
+                                    socket.emit("error", "PlayersNotReady");
+                                } else {
+                                    // Remove selected cards from player's decks
+                                    room.startVoting();
+                                }
                             }
                         }
+                    }
+                }
+                catch (err) {
+                    if (err instanceof RateLimiterRes) {
+                        // User being ratelimited ( by IP )
+                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                    } else {
+                        console.error(err);
                     }
                 }
             });
@@ -340,18 +457,30 @@ export default class GameServer {
             // ----
             // Czar selected winner 
             // ----
-            socket.on("RoomSelectWinnerRequest", (player_id) => {
-                let room = player.room;
-                if (!room) {
-                    socket.emit("error", "PlayerNotInARoom");
-                } else if (player.id != room.czar.id) {
-                    socket.emit("error", "NoPermissions");
-                } else {
-                    let pWinner = room.players.get(player_id);
-                    if (!pWinner) {
-                        socket.emit("error", "InvalidEventArgs");
+            socket.on("RoomSelectWinnerRequest",async (player_id) => {
+                try {
+                    await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
+
+                    let room = player.room;
+                    if (!room) {
+                        socket.emit("error", "PlayerNotInARoom");
+                    } else if (player.id != room.czar.id) {
+                        socket.emit("error", "NoPermissions");
                     } else {
-                        room.selectWinner(player_id);
+                        let pWinner = room.players.get(player_id);
+                        if (!pWinner) {
+                            socket.emit("error", "InvalidEventArgs");
+                        } else {
+                            room.selectWinner(player_id);
+                        }
+                    }
+                }
+                catch (err) {
+                    if (err instanceof RateLimiterRes) {
+                        // User being ratelimited ( by IP )
+                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                    } else {
+                        console.error(err);
                     }
                 }
             });
@@ -359,26 +488,50 @@ export default class GameServer {
             // ----
             // After the game ended, the last Czar can send players to lobby
             // ----
-            socket.on("RoomGoBackToLobbyRequest", () => {
-                let room = player.room;
-                if (!room) {
-                    socket.emit("error", "PlayerNotInARoom");
-                } else if (player.id != room.czar.id) {
-                    socket.emit("error", "NoPermissions");
-                } else {
-                    room.backToLobby();
+            socket.on("RoomGoBackToLobbyRequest",async () => {
+                try {
+                    await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
+
+                    let room = player.room;
+                    if (!room) {
+                        socket.emit("error", "PlayerNotInARoom");
+                    } else if (player.id != room.czar.id) {
+                        socket.emit("error", "NoPermissions");
+                    } else {
+                        room.backToLobby();
+                    }
+                }
+                catch (err) {
+                    if (err instanceof RateLimiterRes) {
+                        // User being ratelimited ( by IP )
+                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
+                    } else {
+                        console.error(err);
+                    }
                 }
             });
 
             // ----
             // Czar fliped a card
             // ----
-            socket.on("RoomFlipCardRequest", (player_id) => {
-                if (player.room && player.room.status == "voting") {
-                    if (player.id == player.room.czar.id) {
-                        socket.to(player.room.roomId).emit("RoomFlipCard", player_id);
+            socket.on("RoomFlipCardRequest",async (player_id) => {
+                try {
+                    await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
+
+                    if (player.room && player.room.status == "voting") {
+                        if (player.id == player.room.czar.id) {
+                            socket.to(player.room.roomId).emit("RoomFlipCard", player_id);
+                        } else {
+                            socket.emit("error", "NoPermissions");
+                        }
+                    }
+                }
+                catch (err) {
+                    if (err instanceof RateLimiterRes) {
+                        // User being ratelimited ( by IP )
+                        socket.emit("RateLimited", { 'retry': rejRes.msBeforeNext });
                     } else {
-                        socket.emit("error", "NoPermissions");
+                        console.error(err);
                     }
                 }
             });
@@ -503,7 +656,7 @@ export default class GameServer {
             }
         });
 
-        room.on("RoomGoBackToLobby", () =>{
+        room.on("RoomGoBackToLobby", () => {
             roomCh.emit("RoomGoBackToLobby");
         });
 
