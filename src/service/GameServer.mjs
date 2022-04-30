@@ -172,7 +172,7 @@ export default class GameServer {
                         }
                     } else {
                         // Send connection error reply
-                        socket.emit("error", "UknownRoom");
+                        socket.emit("error", "UnknownRoom");
                     }
                 } catch (err) {
                     if (err instanceof RateLimiterRes) {
@@ -181,7 +181,7 @@ export default class GameServer {
                     } else {
                         console.error(err);
                     }
-                }
+                } 
             });
 
             // ----
