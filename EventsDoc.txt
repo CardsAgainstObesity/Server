@@ -118,7 +118,7 @@
 
 
 Error types:
-+ UknownRoom
++ UnknownRoom
 + RoomCapacityExceed
 + RoomAlreadyExists
 + CardpackAlreadyAdded

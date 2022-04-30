@@ -147,7 +147,7 @@ export default class GameServer {
                     }
                 } else {
                     // Send connection error reply
-                    socket.emit("error", "UknownRoom");
+                    socket.emit("error", "UnknownRoom");
                 }
             });
 
