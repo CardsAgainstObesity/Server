@@ -344,6 +344,9 @@ export default class GameServer {
                         let err = false;
                         let room = player.room;
                         if (room && room.blackCard) {
+                            
+                            // TODO : Clear code
+                            if(player.id == room.czar.id) return;
 
                             let bCard = room.blackCard;
                             if (card_ids.length == bCard.slots) {
@@ -431,7 +434,7 @@ export default class GameServer {
 
                                 let allReady = true;
                                 for (let player of emiter.room.players.values()) {
-                                    if (!player.ready) { allReady = false; break; }
+                                    if (!player.ready && (room.czar.id != player.id)) { allReady = false; break; }
                                 }
 
                                 if (!allReady) {

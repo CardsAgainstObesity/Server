@@ -253,20 +253,20 @@ export default class Room extends EventHandler {
      * @param {Player} player 
      */
     playerReady(player) {
-        if(this.status != "choosing") {
+        if (this.status != "choosing") {
             return;
-        } 
+        }
         player.ready = true;
         this.emit("AnnouncePlayerIsReady", player);
     }
 
     playerNotReady(player) {
-        if(this.status != "choosing") {
+        if (this.status != "choosing") {
             return;
-        } 
+        }
         player.ready = false;
         player.selectedCards.length = 0;
-        this.emit("AnnouncePlayerIsNotReady", player)
+        this.emit("AnnouncePlayerIsNotReady", player);
     }
 
     /**
@@ -327,29 +327,35 @@ export default class Room extends EventHandler {
         let cards = [];
         let err = false;
 
-        if(this.status != "choosing") {
+        if (this.status != "choosing") {
             return;
-        } 
+        }
 
         let playersArr = Array.from(this.players.values());
         for (let i = 0, len = playersArr.length; i < len && !err; i++) {
             let player = playersArr[i];
-            let ready = player.ready;
-            if (!ready) err = true;
-            else {
-                let selectedCards = {
-                    "player_id": player.id,
-                    "cards": [],
-                    "flipped": false
-                };
-
-                player.selectedCards.forEach(card => {
-                    selectedCards.cards.push(card);
-                    player.deck.delete(card.id);
-                });
-
-                cards.push(selectedCards);
+            if (this.czar.id == player.id) {
+                //  Czar can't select any card, simply ignore the czar
             }
+            else {
+                let ready = player.ready;
+                if (!ready) err = true;
+                else {
+                    let selectedCards = {
+                        "player_id": player.id,
+                        "cards": [],
+                        "flipped": false
+                    };
+
+                    player.selectedCards.forEach(card => {
+                        selectedCards.cards.push(card);
+                        player.deck.delete(card.id);
+                    });
+
+                    cards.push(selectedCards);
+                }
+            }
+
         }
 
         if (!err) {
@@ -359,15 +365,15 @@ export default class Room extends EventHandler {
     }
 
     selectWinner(player_id) {
-        if(this.status != "voting") {
+        if (this.status != "voting") {
             return;
-        } 
+        }
         let pWinner = this.players.get(player_id);
         if (pWinner && this.status == "voting") {
             pWinner.obesity++;
             this.emit("AnnounceRoomSelectWinner", pWinner.toJSON());
 
-            if(pWinner.obesity >= this.goalObesity) {
+            if (pWinner.obesity >= this.goalObesity) {
                 this.setStatus("finished");
                 this.emit("RoomGameFinished", pWinner.toJSON());
             }
@@ -375,22 +381,20 @@ export default class Room extends EventHandler {
     }
 
     backToLobby() {
-        if(this.status == "finished") {
+        if (this.status == "finished") {
 
             // Prepare new lobby
             this.__lobby = new Lobby();
             this.__blackCard = undefined;
             this.__cards = undefined;
-            
+
             this.setStatus("lobby");
             this.emit("RoomGoBackToLobby");
         }
     }
 
-    backToChoosing()
-    {
-        if(this.status == "voting")
-        {
+    backToChoosing() {
+        if (this.status == "voting") {
             this.setStatus("choosing");
             this.emit("RoomStartChoosing");
         }
