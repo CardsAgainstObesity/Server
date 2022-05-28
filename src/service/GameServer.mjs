@@ -486,6 +486,32 @@ export default class GameServer {
             });
 
             // ----
+            // Czar request players to go back to choosing screen
+            // ----
+            socket.on("RoomStartChoosingRequest", async () => {
+                try {
+                    await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
+
+                    let room = player.room;
+                    if (!room) {
+                        socket.emit("error", "PlayerNotInARoom");
+                    } else if (player.id != room.czar.id) {
+                        socket.emit("error", "NoPermissions");
+                    } else {
+                        room.backToChoosing();
+                    }
+                }
+                catch (err) {
+                    if (err instanceof RateLimiterRes) {
+                        // User being ratelimited ( by IP )
+                        socket.emit("RateLimited", { 'retry': err.msBeforeNext });
+                    } else {
+                        console.error(err);
+                    }
+                }
+            });
+
+            // ----
             // After the game ended, the last Czar can send players to lobby
             // ----
             socket.on("RoomGoBackToLobbyRequest",async () => {
@@ -659,6 +685,10 @@ export default class GameServer {
         room.on("RoomGoBackToLobby", () => {
             roomCh.emit("RoomGoBackToLobby");
         });
+
+        room.on("RoomStartChoosing", () => {
+            roomCh.emit("RoomStartChoosing");
+        })
 
     }
 }

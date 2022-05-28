@@ -27,7 +27,7 @@ function getPlayerIndex(player, playerList) {
  */
 
 /**
- * @typedef {"RoomGoBackToLobby" | "AnnouncePlayerIsReady" | "AnnouncePlayerIsNotReady" | "RoomGameFinished" | "AnnounceRoomSelectWinner" | "RoomBlackCardChanged" | "RoomCardsDealed" | "LobbyRemoveCardpackSuccess" | "LobbyAddCardpackSuccess" | "RoomStart" | "RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged"} GameEvent
+ * @typedef {"RoomStartChoosing" | "RoomGoBackToLobby" | "AnnouncePlayerIsReady" | "AnnouncePlayerIsNotReady" | "RoomGameFinished" | "AnnounceRoomSelectWinner" | "RoomBlackCardChanged" | "RoomCardsDealed" | "LobbyRemoveCardpackSuccess" | "LobbyAddCardpackSuccess" | "RoomStart" | "RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged"} GameEvent
  */
 
 export default class Room extends EventHandler {
@@ -384,6 +384,15 @@ export default class Room extends EventHandler {
             
             this.setStatus("lobby");
             this.emit("RoomGoBackToLobby");
+        }
+    }
+
+    backToChoosing()
+    {
+        if(this.status == "voting")
+        {
+            this.setStatus("choosing");
+            this.emit("RoomStartChoosing");
         }
     }
 
