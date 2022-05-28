@@ -72,6 +72,8 @@
     * Args: Object playerJSON
 + RoomGoBackToLobby 
     * Description: Czar "requested" players to go back to lobby
++ RoomStartChoosing
+    * Description: Changes back to the choosing screen    
 
 -- Socket ( client ) --
 + RoomConnectionRequest
@@ -111,6 +113,9 @@
     * Args: String player_id
 + RoomGoBackToLobbyRequest
     * Description: When the game ended, the last Czar can send players to lobby
+    * CONDITION: Player id == Room czar id
++ RoomStartChoosingRequest
+    * Description: Changes back to the choosing screen
     * CONDITION: Player id == Room czar id
 + RoomFlipCardRequest
     * Description: Czar requests to flip all cards from a player
