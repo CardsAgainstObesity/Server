@@ -80,7 +80,7 @@ export default class GameServer {
         const rateLimiter = new RateLimiterMemory(
             {
                 points: 5,
-                duration: 1
+                duration: 2
             }
         );
 
@@ -677,7 +677,7 @@ export default class GameServer {
             roomCh.emit("AnnouncePlayerIsReady", player.toJSON());
             let allReady = true;
             for (let player of room.players.values()) {
-                if (!player.ready) { allReady = false; break; }
+                if (!player.ready && (room.czar.id != player.id)) { allReady = false; break; }
             }
 
             if (allReady) {
