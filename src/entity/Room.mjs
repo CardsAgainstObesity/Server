@@ -16,10 +16,14 @@ const TIME_TO_LOBBY = 10; // 10s
  * @param {Player[]} playerList 
  */
 function getPlayerIndex(player, playerList) {
+    let returnValue = -1;
     playerList.forEach((p, index) => {
-        if (p.id == player.id) return index;
+        if (p.id == player.id) {
+            returnValue = index;
+            return;
+        }
     });
-    return -1;
+    return returnValue;
 }
 
 /**
@@ -144,9 +148,9 @@ export default class Room extends EventHandler {
      * Sets the next czar
      */
     rotateCzar() {
-        let playerList = Array.from(this.players.values());
-        let index = getPlayerIndex(this.czar, playerList);
-        let nextCzar = playerList[(index + 1) % playerList.length];
+        const playerList = Array.from(this.players.values());
+        const index = getPlayerIndex(this.czar, playerList);
+        const nextCzar = playerList[(index + 1) % playerList.length];
         this.setCzar(nextCzar);
     }
 
@@ -395,6 +399,9 @@ export default class Room extends EventHandler {
 
     backToChoosing() {
         if (this.status == "voting") {
+            // TODO: Dar cartas nuevas ANTES de cambiar la carta negra (la carta negra tiene la propiedad slots, aka: numero de cartas blancas)
+            this.rotateCzar();
+            this.nextBlackCard();
             this.setStatus("choosing");
             this.emit("RoomStartChoosing");
         }
