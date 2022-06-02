@@ -17,12 +17,15 @@ const TIME_TO_LOBBY = 10; // 10s
  */
 function getPlayerIndex(player, playerList) {
     let returnValue = -1;
-    playerList.forEach((p, index) => {
+    let found = false;
+    for(let index = 0, len = playerList.length; index < len && !found; index++)
+    {
+        let p = playerList[index];
         if (p.id == player.id) {
             returnValue = index;
-            return;
+            found = true;
         }
-    });
+    }
     return returnValue;
 }
 
@@ -399,9 +402,17 @@ export default class Room extends EventHandler {
 
     backToChoosing() {
         if (this.status == "voting") {
-            // TODO: Dar cartas nuevas ANTES de cambiar la carta negra (la carta negra tiene la propiedad slots, aka: numero de cartas blancas)
+
+            // Deal the same amount of cards used for the previous black card
+            let currentSlots = this.blackCard.slots;
+            this.dealCards(currentSlots);
+
+            // Rotate the czar
             this.rotateCzar();
+
+            // Set the next black card
             this.nextBlackCard();
+            
             this.setStatus("choosing");
             this.emit("RoomStartChoosing");
         }

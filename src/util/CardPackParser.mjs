@@ -1,6 +1,21 @@
 function stdLangCode(lang) {
-    if (["es", "español", "spanish", "espanol"].includes(lang.toLowerCase())) return "es";
-    else if (["en", "english", "ingles"].includes(lang.toLowerCase())) return "en";
+    let langCode;
+    switch (lang.toLowerCase()) {
+        case "es":
+        case "español":
+        case "spanish":
+        case "espanol":
+            langCode = "es";
+            break;
+        case "en":
+        case "english":
+            langCode = "en";
+            break;
+        default:
+            langCode = undefined;
+            break;
+    }
+    return langCode;
 }
 
 
@@ -24,8 +39,8 @@ export default class CardPackParser {
                 "name": pack.name
             },
             "cards": {
-                "white":[],
-                "black":[]
+                "white": [],
+                "black": []
             }
         }
         this.__valid = false;
@@ -50,20 +65,26 @@ export default class CardPackParser {
                             csvRowBlack.forEach((row) => {
                                 let card = {
                                     "slots": row["slots"] || 1,
-                                    "text" : {}
+                                    "text": {}
                                 };
                                 for (let lang of Object.keys(csvRowWhite[0])) {
                                     let language = stdLangCode(lang);
-                                    card.text[language] = row[lang];
+                                    if (language != undefined) {
+                                        card.text[language] = row[lang];
+                                    }
                                 }
                                 this.__result.cards.black.push(card);
                             });
 
                             csvRowWhite.forEach((row) => {
-                                let card = {};
+                                let card = {
+                                    "text": {}
+                                };
                                 for (let lang of Object.keys(csvRowWhite[0])) {
                                     let language = stdLangCode(lang);
-                                    card[language] = row[lang];
+                                    if (language != undefined) {
+                                        card.text[language] = row[lang];
+                                    }
                                 }
                                 this.__result.cards.white.push(card);
                             });

@@ -18,9 +18,20 @@ const default_cardpacks = {
  */
 
 /**
+ * @typedef WhiteCardType
+ * @property {CardTextType} text
+ */
+
+/**
+ * @typedef BlackCardType
+ * @property {CardTextType} text
+ * @property {number} slots
+ */
+
+/**
  * @typedef WhiteAndBlackCards
- * @property {CardTextType[]} white
- * @property {CardTextType[]} black 
+ * @property {WhiteCardType[]} white
+ * @property {BlackCardType[]} black 
  */
 
 /**

@@ -76,15 +76,12 @@ export default class Lobby {
                 shuffleArray(cards.white);
                 
                 cards.white.forEach(card => {
-                    result.cards.white.push(new Card(++lastId,card));
+                    result.cards.white.push(new Card(++lastId,card.text));
                 });
 
                 cards.black.forEach(card => {
                     result.cards.black.push(new BlackCard(++lastId,card.text, card.slots));
                 });
-
-
-
 
             });
             resolve(result);
