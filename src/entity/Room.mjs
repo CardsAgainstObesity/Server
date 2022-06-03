@@ -356,12 +356,12 @@ export default class Room extends EventHandler {
                         "cards": [],
                         "flipped": false
                     };
-
-                    player.selectedCards.forEach(card => {
+                    while(player.selectedCards.length > 0)
+                    {
+                        let card = player.selectedCards.pop();
                         selectedCards.cards.push(card);
                         player.deck.delete(card.id);
-                    });
-
+                    }
                     cards.push(selectedCards);
                 }
             }
@@ -415,6 +415,11 @@ export default class Room extends EventHandler {
 
             // Set the next black card
             this.nextBlackCard();
+
+            // Empty selected cards
+            this.players.forEach(player => {
+                player.selectedCards.length = 0;
+            });
             
             this.setStatus("choosing");
             this.emit("RoomStartChoosing");

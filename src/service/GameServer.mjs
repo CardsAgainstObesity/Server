@@ -344,7 +344,7 @@ export default class GameServer {
                         let err = false;
                         let room = player.room;
                         if (room && room.blackCard) {
-                            
+                            player.selectedCards.length = 0;
                             // TODO : Clear code
                             if(player.id == room.czar.id) return;
 
