@@ -245,7 +245,7 @@ export default class Room extends EventHandler {
                             this.emit("RoomStart", this.toJSON());
                             // Temporal
                             this.setStatus("choosing");
-                            this.dealCards(5);
+                            this.dealCards(5, true);
                             this.setBlackCard(this.cards.black[0]);
                         } else {
                             resolve("NotEnoughCards");
@@ -310,12 +310,13 @@ export default class Room extends EventHandler {
     /**
      * 
      * @param {number} amount Amount of cards to give to each player 
+     * @param {boolean} force Ignore give cards to everyone including the czar
      */
-    dealCards(amount) {
+    dealCards(amount, force) {
         if (this.status == "lobby" || this.cards.white.length == 0) return;
 
         this.players.forEach(player => {
-            if (player.id != this.czar.id) {
+            if (player.id != this.czar.id || force) {
                 let card = this.cards.white.pop();
                 for (let i = 0; i < amount && card != undefined; i++) {
                     card = this.cards.white.pop();
