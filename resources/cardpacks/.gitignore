@@ -1,0 +1,6 @@
+# Ignore everything
+*/
+
+# Except these paths
+!example_pack/
+!.gitignore

@@ -1,0 +1,8 @@
+{
+    "id":"example",
+    "author":"example",
+    "name" : {
+        "es": "Ejemplo",
+        "en": "Example"
+    }
+}

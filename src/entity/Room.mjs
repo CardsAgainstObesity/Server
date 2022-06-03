@@ -315,10 +315,12 @@ export default class Room extends EventHandler {
         if (this.status == "lobby" || this.cards.white.length == 0) return;
 
         this.players.forEach(player => {
-            let card = this.cards.white.pop();
-            for (let i = 0; i < amount && card != undefined; i++) {
-                card = this.cards.white.pop();
-                player.deck.set(card.id, card);
+            if (player.id != this.czar.id) {
+                let card = this.cards.white.pop();
+                for (let i = 0; i < amount && card != undefined; i++) {
+                    card = this.cards.white.pop();
+                    player.deck.set(card.id, card);
+                }
             }
         });
 
