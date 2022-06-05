@@ -1,5 +1,5 @@
 import fs from 'fs';
-import path from 'path';
+import path, { resolve } from 'path';
 import BlackCard from './BlackCard.mjs';
 import Card from './Card.mjs';
 const default_cardpacks = {
@@ -55,8 +55,58 @@ const default_cardpacks = {
  * @property {WhiteAndBlackCards} cards
  */
 
+async function isValidCardpack(path)
+{
+    let f1,f2;
+    const pathResolved = resolve(path);
+    const stat = await fs.promises.lstat(pathResolved);
+    f1 = stat.isDirectory();
+    if(f1)
+    {
+        let dircontent = await fs.promises.readdir(path);
+        f2 = dircontent.indexOf("pack.json") != -1;
+    }
+    if(f1 && f2) return true;
+    else return false;
+}
+
 export class Cardpack {
     constructor() { }
+
+    static cardpacks = undefined;
+
+    /**
+     * Returns available cardpacks on the server
+     * @returns {Promise<Object[]>}
+     */
+    static getCardpacks() {
+        return new Promise(async (res,rej) => {
+            if(this.cardpacks != undefined) 
+            {
+                res(this.cardpacks);
+            }
+            else
+            {
+                fs.readdir("./resources/cardpacks", async (err,files) => {
+                    if(err) rej(err);
+                    let cardpacks = {};
+                    for(let i = 0, len = files.length; i < len; i++)
+                    {
+                        let file = files[i];
+                        let path = resolve("./resources/cardpacks/" + file);
+                        let isValid = await isValidCardpack(path)
+                        if(isValid)
+                        {
+                            cardpacks[file] = path + "/pack.json";
+                        }
+                    }
+                    this.cardpacks = cardpacks;
+                    res(cardpacks);
+                });
+            }
+        });
+    }
+
 
     /**
      * @param {DefaultCardpackId} name Default pack name
@@ -65,7 +115,8 @@ export class Cardpack {
     static from(name) {
         return new Promise((resolve, reject) => {
             // Check if its a default cardpack
-            let cardpack = default_cardpacks[name];
+            let cardpack = this.cardpacks[name];
+            console.log(name);
             if (cardpack) {
                 fs.promises.readFile(path.resolve(cardpack), {
                     encoding: "utf8"

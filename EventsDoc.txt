@@ -22,6 +22,12 @@
 + RoomFlipCard
     * Description: The czar fliped a card 
     * Args: String card_id
++ AvailableCardPacks
+    * Description: Sends server's available cardpacks
+    * Args: Server's available cardpacks
++ RoomConnectionDenied
++ RoomConnectionSuccess
++ RoomConnectionRequestPrompt
 
 
 -- Server/Room --
@@ -120,7 +126,7 @@
 + RoomFlipCardRequest
     * Description: Czar requests to flip all cards from a player
     * CONDITION: Player id == Room czar id
-
++ RoomConnectionRequestPrompt
 
 Error types:
 + UnknownRoom

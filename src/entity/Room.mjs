@@ -18,8 +18,7 @@ const TIME_TO_LOBBY = 10; // 10s
 function getPlayerIndex(player, playerList) {
     let returnValue = -1;
     let found = false;
-    for(let index = 0, len = playerList.length; index < len && !found; index++)
-    {
+    for (let index = 0, len = playerList.length; index < len && !found; index++) {
         let p = playerList[index];
         if (p.id == player.id) {
             returnValue = index;
@@ -34,7 +33,7 @@ function getPlayerIndex(player, playerList) {
  */
 
 /**
- * @typedef {"RoomStartChoosing" | "RoomGoBackToLobby" | "AnnouncePlayerIsReady" | "AnnouncePlayerIsNotReady" | "RoomGameFinished" | "AnnounceRoomSelectWinner" | "RoomBlackCardChanged" | "RoomCardsDealed" | "LobbyRemoveCardpackSuccess" | "LobbyAddCardpackSuccess" | "RoomStart" | "RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged"} GameEvent
+ * @typedef {"RoomStartChoosing" | "RoomGoBackToLobby" | "AnnouncePlayerIsReady" | "AnnouncePlayerIsNotReady" | "RoomGameFinished" | "AnnounceRoomSelectWinner" | "RoomBlackCardChanged" | "RoomCardsDealed" | "RoomCardsDealedPlayer" | "LobbyRemoveCardpackSuccess" | "LobbyAddCardpackSuccess" | "RoomStart" | "RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged"} GameEvent
  */
 
 export default class Room extends EventHandler {
@@ -53,6 +52,7 @@ export default class Room extends EventHandler {
         this.__createdBy = createdBy;
         this.__maxPlayers = 8;
         this.__minPlayers = MIN_PLAYERS_AMOUNT;
+        this._firstHost = createdBy;
 
         this.__lobby = new Lobby();
         this.__blackCard = undefined;
@@ -114,7 +114,7 @@ export default class Room extends EventHandler {
      * @returns {Player}
      */
     get host() {
-        return this.__czar;
+        return this._firstHost ? this._firstHost : this.__czar;
     }
 
     /**
@@ -209,6 +209,7 @@ export default class Room extends EventHandler {
      * @param {Player} player 
      */
     removePlayer(player) {
+        if (player.id == this._firstHost.id) this._firstHost = undefined;
         this.players.delete(player.id);
         this.emit("RoomPlayerDisconnection", player.toJSON());
     }
@@ -329,6 +330,25 @@ export default class Room extends EventHandler {
     }
 
     /**
+    * @param {Player} player The player top whom the cards will be given
+    * @param {number} amount Amount of cards to give to each player 
+    * @param {boolean} force Ignore give cards to everyone including the czar
+    */
+    dealCardsPlayer(player, amount, force) {
+        if (!player || this.status == "lobby" || this.cards.white.length == 0) return;
+
+        if (player.id != this.czar.id || force) {
+            let card = this.cards.white.pop();
+            for (let i = 0; i < amount && card != undefined; i++) {
+                card = this.cards.white.pop();
+                player.deck.set(card.id, card);
+            }
+        }
+
+        this.emit("RoomCardsDealedPlayer", player);
+    }
+
+    /**
      * Changes the game status to voting
      * and prepares everything for voting
      */
@@ -356,8 +376,7 @@ export default class Room extends EventHandler {
                         "cards": [],
                         "flipped": false
                     };
-                    while(player.selectedCards.length > 0)
-                    {
+                    while (player.selectedCards.length > 0) {
                         let card = player.selectedCards.pop();
                         selectedCards.cards.push(card);
                         player.deck.delete(card.id);
@@ -420,7 +439,7 @@ export default class Room extends EventHandler {
             this.players.forEach(player => {
                 player.selectedCards.length = 0;
             });
-            
+
             this.setStatus("choosing");
             this.emit("RoomStartChoosing");
         }

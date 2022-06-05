@@ -6,6 +6,7 @@ import GameServer from './src/service/GameServer.mjs';
 import 'dotenv/config';
 import serveStatic from 'serve-static';
 import finalhandler from 'finalhandler';
+import { Cardpack } from "./src/entity/Cardpack.mjs";
 
 const require = createRequire(import.meta.url);
 const config = require("./config.json");

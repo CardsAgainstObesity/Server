@@ -5,6 +5,7 @@ import Player from "../entity/Player.mjs";
 import Room from "../entity/Room.mjs";
 import LoggingSystem from "../util/LoggingSystem.mjs";
 import { RateLimiterMemory, RateLimiterRes } from 'rate-limiter-flexible';
+import { Cardpack } from '../entity/Cardpack.mjs';
 
 const require = createRequire(import.meta.url);
 const random_name = require("../../resources/random/names.json");
@@ -89,6 +90,11 @@ export default class GameServer {
 
             // Create a player for the client
             let player = new Player(socket.id);
+            Cardpack.getCardpacks()
+            .then(cardpacks => {
+                socket.emit("AvailableCardPacks", Object.keys(cardpacks));
+                console.log(cardpacks);
+            });
             // ----
             // Room creation
             // ----
@@ -116,7 +122,7 @@ export default class GameServer {
                         player.leaveRoom();
                         // Check if there is space in the room
                         if (room.players.size < room.maxPlayers) {
-                            // Send room creation success reply
+                            // Send room creation success reply 
                             socket.emit("RoomCreationSuccess", room.toJSON());
                             // Join room
                             room.addPlayer(player);
@@ -162,10 +168,28 @@ export default class GameServer {
                         player.leaveRoom();
                         // Check if there is space in the room
                         if (room.players.size < room.maxPlayers) {
-                            // Send connection success reply
-                            socket.emit("RoomConnectionSuccess", room.toJSON());
-                            // Join room
-                            room.addPlayer(player);
+
+                            // If they are in the lobby then you can join
+                            if(room.status == "lobby")
+                            {
+                                // Send connection success reply
+                                socket.emit("RoomConnectionSuccess", room.toJSON());
+                                // Join room
+                                room.addPlayer(player);
+                            } else { // The room is not in the lobby anymore, ask the czar for permission
+                                let hostId = room.host.id;
+                                let host = this.io.of("/").sockets.get(hostId);
+                                host.emit("RoomConnectionRequestPrompt", (answer) => {
+                                    console.log(answer);
+                                    if(answer) {
+                                        socket.emit("RoomConnectionSuccess", room.toJSON());
+                                        room.addPlayer(player);
+                                        room.dealCardsPlayer(player,room,true);
+                                    }
+                                    else socket.emit("RoomConnectionDenied");
+                                });
+                            }
+
                         } else {
                             // Send connection error reply
                             socket.emit("error", "RoomCapacityExceed");
@@ -691,7 +715,12 @@ export default class GameServer {
 
         room.on("RoomStartChoosing", () => {
             roomCh.emit("RoomStartChoosing");
-        })
+        });
+
+        room.on("RoomCardsDealedPlayer", player => {
+                let socket = this.io.of("/").sockets.get(player.id);
+                if (socket) socket.emit("PlayerDeckUpdated", Array.from(player.deck.values()));
+        });
 
     }
 }
