@@ -218,7 +218,7 @@ export default class Room extends EventHandler {
      * @param {Player} player 
      */
     removePlayer(player) {
-        if (player.id == this._firstHost.id) this._firstHost = undefined;
+        if (this._firstHost && player.id == this._firstHost.id) this._firstHost = undefined;
         this.players.delete(player.id);
         this.emit("RoomPlayerDisconnection", player.toJSON());
     }
