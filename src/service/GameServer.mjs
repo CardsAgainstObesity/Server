@@ -203,7 +203,7 @@ export default class GameServer {
 
                     player.name = newName;
                     if (player.room && player.room.status == "lobby") {
-                        let roomId = player.room.id;
+                        let roomId = player.room.roomId;
                         socket.to(roomId).emit("PlayerChangeName", player.toJSON());
                     }
 
