@@ -227,7 +227,7 @@ export default class GameServer {
 
                     player.name = newName;
                     if (player.room && player.room.status == "lobby") {
-                        let roomId = player.room.id;
+                        let roomId = player.room.roomId;
                         socket.to(roomId).emit("PlayerChangeName", player.toJSON());
                     }
 
@@ -381,9 +381,10 @@ export default class GameServer {
                                         err = true;
                                     }
                                     else {
-                                        player.selectedCards.push(player.deck.get(id));
+                                        player.selectedCards.push(player.deck.get(id)); // This reverses the insertion order.
                                     }
                                 }
+                                player.selectedCards.reverse(); // And this fixes it.
 
                                 if (!err) {
                                     room.playerReady(player);

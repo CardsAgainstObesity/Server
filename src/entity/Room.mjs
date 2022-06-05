@@ -9,6 +9,15 @@ const MIN_BLACK_CARDS_AMOUNT = 30;
 const MIN_PLAYERS_AMOUNT = 1; // temporal
 const TIME_TO_LOBBY = 10; // 10s
 
+// DEBUG
+const DEBUG_BLACK_CARD = {
+    slots: 2,
+    text: {
+        en: "Text 1: \"___\". Text 2: \"___\".",
+        es: "Text 1: \"___\". Text 2: \"___\".",
+    }
+}
+
 
 /**
  * 
@@ -246,8 +255,9 @@ export default class Room extends EventHandler {
                             this.emit("RoomStart", this.toJSON());
                             // Temporal
                             this.setStatus("choosing");
-                            this.dealCards(5, true);
+                            this.dealCards(10, true);
                             this.setBlackCard(this.cards.black[0]);
+                            // this.setBlackCard(DEBUG_BLACK_CARD);
                         } else {
                             resolve("NotEnoughCards");
                         }
@@ -434,6 +444,7 @@ export default class Room extends EventHandler {
 
             // Set the next black card
             this.nextBlackCard();
+            // this.setBlackCard(DEBUG_BLACK_CARD);
 
             // Empty selected cards
             this.players.forEach(player => {
