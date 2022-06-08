@@ -102,4 +102,9 @@ export default class ReplayBuilder {
             });
     }
 
+    clearReplay() {
+        this._logs = {};
+        this._lastTimestamp = undefined;
+    }
+
 }

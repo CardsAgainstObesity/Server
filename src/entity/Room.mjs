@@ -448,15 +448,18 @@ export default class Room extends EventHandler {
         if (this.status == "finished") {
 
             this.createSnapshot(true);
-            this.prepareSnapshot();
+            // this.prepareSnapshot();
 
             // Prepare new lobby
             this.__lobby = new Lobby();
             this.__blackCard = undefined;
             this.__cards = undefined;
+            
+            this.__replay.clearReplay();
 
             this.setStatus("lobby");
             this.emit("RoomGoBackToLobby");
+
         }
     }
 
