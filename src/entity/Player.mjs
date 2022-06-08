@@ -100,7 +100,9 @@ export default class Player {
             "id": this.id,
             "obesity" : this.obesity,
             "name": this.name,
-            "ready": this.ready
+            "ready": this.ready,
+            "deck": Array.from(this.deck.values()).map(card => card.toJSON()),
+            "selectedCards" : this.selectedCards.map(card => card.toJSON())
         }
     }
 }

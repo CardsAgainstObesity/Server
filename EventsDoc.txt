@@ -31,9 +31,6 @@
 
 
 -- Server/Room --
-+ RoomStatusChanged
-    * Description: Room status changed
-    * Args: String status
 + RoomCzarChanged
     * Description: Room czar changed
     * Args: Object playerJSON

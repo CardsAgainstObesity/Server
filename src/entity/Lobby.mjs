@@ -14,6 +14,9 @@ export default class Lobby {
         this.__cardPacks = new Map();
     }
 
+    get cardPacksNames() {
+        return Array.from(this.__cardPacks.keys());
+    }
 
     /**
      * @return {Map<String,import("./Cardpack.mjs").CardpackType>}

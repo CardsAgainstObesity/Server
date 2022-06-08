@@ -116,7 +116,6 @@ export class Cardpack {
         return new Promise((resolve, reject) => {
             // Check if its a default cardpack
             let cardpack = this.cardpacks[name];
-            console.log(name);
             if (cardpack) {
                 fs.promises.readFile(path.resolve(cardpack), {
                     encoding: "utf8"

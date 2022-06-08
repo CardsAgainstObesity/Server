@@ -93,7 +93,6 @@ export default class GameServer {
             Cardpack.getCardpacks()
             .then(cardpacks => {
                 socket.emit("AvailableCardPacks", Object.keys(cardpacks));
-                console.log(cardpacks);
             });
             // ----
             // Room creation
@@ -609,12 +608,6 @@ export default class GameServer {
     __roomSetup(room) {
         let roomId = room.roomId;
         let roomCh = this.io.to(roomId);
-
-        /*
-        room.on("RoomStatusChanged", (status) => {
-            roomCh.emit("RoomStatusChanged", status);
-        });
-        */
 
         room.on("RoomCzarChanged", (playerJSON) => {
             roomCh.emit("RoomCzarChanged", playerJSON);

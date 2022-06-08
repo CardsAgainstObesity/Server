@@ -3,6 +3,7 @@ import Card from "./Card.mjs";
 import EventHandler from "./EventHandler.mjs";
 import Lobby from "./Lobby.mjs";
 import Player from "./Player.mjs";
+import ReplayBuilder from "./ReplayBuilder.mjs";
 
 const MIN_WHITE_CARDS_AMOUNT = 30;
 const MIN_BLACK_CARDS_AMOUNT = 30;
@@ -67,6 +68,12 @@ export default class Room extends EventHandler {
         this.__blackCard = undefined;
         this.__cards = undefined;
 
+        this.__replay = new ReplayBuilder(this);
+
+        this.__lastWinner = undefined;
+
+        this.prepareSnapshot();
+
     }
 
     /**
@@ -117,6 +124,10 @@ export default class Room extends EventHandler {
      */
     get czar() {
         return this.__czar;
+    }
+
+    get replay() {
+        return this.__replay.replay;
     }
 
     /**
@@ -187,7 +198,7 @@ export default class Room extends EventHandler {
      */
     setStatus(status) {
         this.__status = status;
-        // this.emit("RoomStatusChanged", status); // Deprecated
+        this.__replay.prepareSnapshot();
     }
 
     /**
@@ -230,6 +241,9 @@ export default class Room extends EventHandler {
         this.setStatus("finished");
         this.players.forEach(p => p.leaveRoom());
         this.emit("RoomRemoved", this.toJSON());
+
+        // TODO: How to dist the replay
+        this.__replay.saveReplay();
     }
 
     /**
@@ -237,6 +251,8 @@ export default class Room extends EventHandler {
      * @returns {Promise<"NotEnoughCards" | "NotEnoughPlayers">} Resolves to false if the room started successfully, else resolves to error message
      */
     start() {
+        this.createSnapshot(true);
+        this.prepareSnapshot();
         // Get the final cardpacks
         return new Promise((resolve, reject) => {
             if (this.status != "lobby") resolve("RoomAlreadyStarted");
@@ -335,7 +351,6 @@ export default class Room extends EventHandler {
                 }
             }
         });
-
         this.emit("RoomCardsDealed");
     }
 
@@ -363,13 +378,16 @@ export default class Room extends EventHandler {
      * and prepares everything for voting
      */
     startVoting() {
-
+        
         let cards = [];
         let err = false;
-
+        
         if (this.status != "choosing") {
             return;
         }
+
+        this.createSnapshot(true);
+        this.prepareSnapshot();
 
         let playersArr = Array.from(this.players.values());
         for (let i = 0, len = playersArr.length; i < len && !err; i++) {
@@ -407,13 +425,20 @@ export default class Room extends EventHandler {
         if (this.status != "voting") {
             return;
         }
+
         let pWinner = this.players.get(player_id);
         if (pWinner && this.status == "voting") {
             pWinner.obesity++;
+            this.__lastWinner = pWinner;
+
             this.emit("AnnounceRoomSelectWinner", pWinner.toJSON());
 
             if (pWinner.obesity >= this.goalObesity) {
                 this.setStatus("finished");
+
+                this.createSnapshot(true);
+                this.prepareSnapshot();
+
                 this.emit("RoomGameFinished", pWinner.toJSON());
             }
         }
@@ -421,6 +446,9 @@ export default class Room extends EventHandler {
 
     backToLobby() {
         if (this.status == "finished") {
+
+            this.createSnapshot(true);
+            this.prepareSnapshot();
 
             // Prepare new lobby
             this.__lobby = new Lobby();
@@ -434,6 +462,9 @@ export default class Room extends EventHandler {
 
     backToChoosing() {
         if (this.status == "voting") {
+
+            this.createSnapshot(true);
+            this.prepareSnapshot();
 
             // Deal the same amount of cards used for the previous black card
             let currentSlots = this.blackCard.slots;
@@ -454,6 +485,14 @@ export default class Room extends EventHandler {
             this.setStatus("choosing");
             this.emit("RoomStartChoosing");
         }
+    }
+
+    prepareSnapshot() {
+        this.__replay.prepareSnapshot();
+    }
+
+    createSnapshot(fillPrepared) {
+        this.__replay.createSnapshot(fillPrepared);
     }
 
     /**
