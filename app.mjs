@@ -1,6 +1,8 @@
 import { createRequire } from "module";
 import https from 'https';
 import express from 'express';
+import swaggerUi from "swagger-ui-express";
+import swaggerJSDoc from "swagger-jsdoc";
 import expressStaticGzip from "express-static-gzip";
 import { readFileSync } from 'fs';
 import LoggingSystem from './src/util/LoggingSystem.mjs';
@@ -19,16 +21,75 @@ const options = { // TODO: Set values in config.json
     passphrase: 'abcd',
 }
 
+const openapi_options = {
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'Cards Against Obesity',
+        version: '0.5.0',
+      },
+    },
+    apis: ['./app.mjs'],
+};
+
 const app = express();
 
 app.use("*", (req, res, next) => {
     // Log connections to the server
+    const method = req.method;
     const ip = req.socket.remoteAddress;
     const path = req['_parsedUrl'].pathname;
     const userAgent = req.headers["user-agent"];
 
-    LoggingSystem.singleton.log("[WEB]",`${ip} ${path} ${userAgent}`);
+    LoggingSystem.singleton.log("[WEB]",`${method} | ${ip} | ${path} | ${userAgent}`);
     next();
+});
+
+const swaggerSpec = swaggerJSDoc(openapi_options);
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+/**
+ * @openapi
+ * /helloworld:
+ *   get:
+ *     description: Welcome to swagger-jsdoc!
+ *     responses:
+ *       200:
+ *         description: Returns a mysterious string.
+ */
+app.get('/helloworld', (req, res) => {
+    res.send({ data: "Hello World!" });
+});
+
+/**
+ * @openapi
+ * /api/cardpack/{id}:
+ *   get:
+ *     summary: "Find cardpack by ID"
+ *     description: "Returns a single cardpack"
+ *     operationId: "getCardpackById"
+ *     produces:
+ *     - "application/json"
+ *     parameters:
+ *     - name: "id"
+ *       in: "path"
+ *       description: "ID of cardpack to return"
+ *       required: true
+ *       type: "string"
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *       "404":
+ *         description: "Cardpack not found"
+ */
+app.get("/api/cardpack/:id", (req, res) => {
+    res.send(
+        {
+            data: {
+                id: req.params.id
+            }
+        }
+    );
 });
 
 app.use("/", expressStaticGzip(FRONTEND_DIST));
