@@ -56,17 +56,16 @@ export default class GameServer {
             }
         });
 
-        
-        // Socket.IO admin panel
-        instrument(this.__io, {
-            namespaceName: "/admin", // Hay que poner en Server URL esto (es muy importante el "/admin"): https://SERVERHOST:8443/admin
-            auth: {
-                type: "basic",
-                username: "admin", // TODO: Meter esto en un archivo .env
-                password: "$2b$10$heqvAkYMez.Va6Et2uXInOnkCT6/uQj1brkrbyG3LpopDklcq7ZOS" // "changeit" encrypted with bcrypt
-                // TODO: CAMBIAR ESTO EN PRODUCCIÓN POR FAVOR
-            }
-        });
+        if (process.env.SOCKETIO_ADMIN_UI_ENABLED === "true") { // Socket.IO Admin UI
+            instrument(this.__io, {
+                namespaceName: "/admin", // Hay que poner en Server URL esto (es muy importante el "/admin"): https://SERVERHOST:8443/admin
+                auth: {
+                    type: "basic",
+                    username: process.env.SOCKETIO_ADMIN_UI_USER,
+                    password: process.env.SOCKETIO_ADMIN_UI_PASSWORD,
+                }
+            });
+        }
         
 
         // Send log message

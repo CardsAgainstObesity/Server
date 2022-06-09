@@ -1,5 +1,5 @@
-import { createRequire } from "module";
 import path from "path";
+import http from 'http';
 import https from 'https';
 import express from 'express';
 import swaggerUi from "swagger-ui-express";
@@ -11,12 +11,11 @@ import GameServer from './src/service/GameServer.mjs';
 import 'dotenv/config';
 import { Cardpack } from "./src/entity/Cardpack.mjs";
 
-const require = createRequire(import.meta.url);
-const config = require("./config.json");
 const FRONTEND_DIST = `${process.env.FRONTEND_PATH}/dist`;
+const SOCKETIO_DIST = "node_modules/@socket.io/admin-ui/ui/dist";
 
-// HTTP Server configuration
-const options = { // TODO: Set values in config.json
+// HTTPs Server configuration
+const options = { // TODO: Set values in .env
     key: readFileSync('src/openssl/key.pem'),
     cert: readFileSync('src/openssl/cert.pem'),
     passphrase: 'abcd',
@@ -95,24 +94,32 @@ app.get("/api/cardpack/:id", (req, res) => {
 
 app.use("/", expressStaticGzip(FRONTEND_DIST));
 
-// Socket.IO admin panel
-app.use("/", express.static("node_modules/@socket.io/admin-ui/ui/dist"));
-app.use("/admin", (req, res) => {
-    res.sendFile(path.resolve("node_modules/@socket.io/admin-ui/ui/dist/index.html"));
-});
+if (process.env.SOCKETIO_ADMIN_UI_ENABLED === "true") { // Socket.IO Admin UI
+    app.use("/", express.static(SOCKETIO_DIST));
+    app.use("/admin", (req, res) => {
+        res.sendFile(path.resolve(`${SOCKETIO_DIST}/index.html`));
+    });
+}
 
 app.get("*", (req, res) => {
     res.sendFile(`${FRONTEND_DIST}/index.html`);
 });
 
-let server = https.createServer(options, app);
+// Insecure
+const insecure_app = express();
+insecure_app.use("*", (req, res) => {
+    res.redirect(`https://${req.headers.host.replace(`:${process.env.PORT}`, "")}:${process.env.SECURE_PORT}${req.url}`);
+});
+const insecure_server = http.createServer(insecure_app);
+insecure_server.listen(process.env.PORT);
 
-// Start listening for requests on configured port
-server.listen(config.secure_port, () => {
-    let host = server.address().address + ":" + server.address().port;
+// Secure
+const secure_server = https.createServer(options, app);
+secure_server.listen(process.env.SECURE_PORT, () => {
+    let host = secure_server.address().address + ":" + secure_server.address().port;
     LoggingSystem.singleton.log("[WEB]", "Listening to " + host);
 });
 
 // Link GameServer to HTTP/1.1 server
 // TODO: Redirect HTTP to HTTPs
-GameServer.singleton.listen(server);
+GameServer.singleton.listen(secure_server);
