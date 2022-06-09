@@ -56,23 +56,18 @@ export default class GameServer {
             }
         });
 
-        /*
+        
         // Socket.IO admin panel
         instrument(this.__io, {
-            // Esto funciona
-            namespaceName: "/",
-            auth: false,
-
-            // Esto no funciona
-            // namespaceName: "/admin",
-            // auth: {
-            //     type: "basic",
-            //     username: "admin", // TODO: Meter esto en un archivo .env
-            //     password: "$2b$10$heqvAkYMez.Va6Et2uXInOnkCT6/uQj1brkrbyG3LpopDklcq7ZOS" // "changeit" encrypted with bcrypt
-            //     // TODO: CAMBIAR ESTO EN PRODUCCIÓN POR FAVOR
-            // }
+            namespaceName: "/admin", // Hay que poner en Server URL esto (es muy importante el "/admin"): https://SERVERHOST:8443/admin
+            auth: {
+                type: "basic",
+                username: "admin", // TODO: Meter esto en un archivo .env
+                password: "$2b$10$heqvAkYMez.Va6Et2uXInOnkCT6/uQj1brkrbyG3LpopDklcq7ZOS" // "changeit" encrypted with bcrypt
+                // TODO: CAMBIAR ESTO EN PRODUCCIÓN POR FAVOR
+            }
         });
-        */
+        
 
         // Send log message
         const host = server.address().address + ":" + server.address().port;
