@@ -1,4 +1,5 @@
 import { createRequire } from "module";
+import path from "path";
 import https from 'https';
 import express from 'express';
 import swaggerUi from "swagger-ui-express";
@@ -67,7 +68,7 @@ app.get('/helloworld', (req, res) => {
  *   get:
  *     summary: "Find cardpack by ID"
  *     description: "Returns a single cardpack"
- *     operationId: "getCardpackById"
+ *     operationId: "get_cardpack_by_id"
  *     produces:
  *     - "application/json"
  *     parameters:
@@ -93,6 +94,13 @@ app.get("/api/cardpack/:id", (req, res) => {
 });
 
 app.use("/", expressStaticGzip(FRONTEND_DIST));
+
+// Socket.IO admin panel
+app.use("/", express.static("node_modules/@socket.io/admin-ui/ui/dist"));
+app.use("/admin", (req, res) => {
+    res.sendFile(path.resolve("node_modules/@socket.io/admin-ui/ui/dist/index.html"));
+});
+
 app.get("*", (req, res) => {
     res.sendFile(`${FRONTEND_DIST}/index.html`);
 });

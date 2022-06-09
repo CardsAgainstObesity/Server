@@ -1,6 +1,7 @@
 import http from 'http';
 import { createRequire } from "module";
 import { Server } from "socket.io";
+import { instrument } from "@socket.io/admin-ui";
 import Player from "../entity/Player.mjs";
 import Room from "../entity/Room.mjs";
 import LoggingSystem from "../util/LoggingSystem.mjs";
@@ -54,6 +55,18 @@ export default class GameServer {
                 methods: ["GET", "POST"]
             }
         });
+
+        // Socket.IO admin panel
+        instrument(this.__io, {
+            namespaceName: "/",
+            auth: {
+                type: "basic",
+                username: "admin", // TODO: Meter esto en un archivo .env
+                password: "$2b$10$heqvAkYMez.Va6Et2uXInOnkCT6/uQj1brkrbyG3LpopDklcq7ZOS" // "changeit" encrypted with bcrypt
+                // TODO: CAMBIAR ESTO EN PRODUCCIÓN POR FAVOR
+            }
+        });
+
         // Send log message
         const host = server.address().address + ":" + server.address().port;
         LoggingSystem.singleton.log("[" + this.constructor.name + "]", "Listening to: " + host);
