@@ -52,20 +52,27 @@ export default class GameServer {
         this.__io = new Server(server, {
             cors: {
                 origin: "*", // TODO: CAMBIAR ESTO EN PRODUCCIÓN POR FAVOR
-                methods: ["GET", "POST"]
+                methods: ["GET", "POST"],
             }
         });
 
+        /*
         // Socket.IO admin panel
         instrument(this.__io, {
+            // Esto funciona
             namespaceName: "/",
-            auth: {
-                type: "basic",
-                username: "admin", // TODO: Meter esto en un archivo .env
-                password: "$2b$10$heqvAkYMez.Va6Et2uXInOnkCT6/uQj1brkrbyG3LpopDklcq7ZOS" // "changeit" encrypted with bcrypt
-                // TODO: CAMBIAR ESTO EN PRODUCCIÓN POR FAVOR
-            }
+            auth: false,
+
+            // Esto no funciona
+            // namespaceName: "/admin",
+            // auth: {
+            //     type: "basic",
+            //     username: "admin", // TODO: Meter esto en un archivo .env
+            //     password: "$2b$10$heqvAkYMez.Va6Et2uXInOnkCT6/uQj1brkrbyG3LpopDklcq7ZOS" // "changeit" encrypted with bcrypt
+            //     // TODO: CAMBIAR ESTO EN PRODUCCIÓN POR FAVOR
+            // }
         });
+        */
 
         // Send log message
         const host = server.address().address + ":" + server.address().port;
