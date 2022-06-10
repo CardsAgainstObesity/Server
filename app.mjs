@@ -34,6 +34,20 @@ const openapi_options = {
     apis: ['./app.mjs'],
 };
 
+const swagger_options = {
+    customCss: `
+        .swagger-ui .topbar {
+            display: none;
+        }
+
+        body {
+            
+            filter: invert(100%);
+            background-color: #111;
+        }
+        `,
+};
+
 const app = express();
 
 // Logger
@@ -56,20 +70,7 @@ const rateLimiter = new RateLimiterMemory(
 );
 
 const swaggerSpec = swaggerJSDoc(openapi_options);
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-/**
- * @openapi
- * /helloworld:
- *   get:
- *     description: Welcome to swagger-jsdoc!
- *     responses:
- *       200:
- *         description: Returns a mysterious string.
- */
-app.get('/helloworld', (req, res) => {
-    res.send({ data: "Hello World!" });
-});
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, swagger_options));
 
 /**
  * @openapi
