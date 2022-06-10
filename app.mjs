@@ -11,6 +11,7 @@ import GameServer from './src/service/GameServer.mjs';
 import 'dotenv/config';
 import { Cardpack } from "./src/entity/Cardpack.mjs";
 import { exit } from "process";
+import { RateLimiterMemory } from "rate-limiter-flexible";
 
 const FRONTEND_DIST = `${process.env.FRONTEND_PATH}/dist`;
 const SOCKETIO_DIST = "node_modules/@socket.io/admin-ui/ui/dist";
@@ -48,8 +49,8 @@ app.use("*", (req, res, next) => {
 
 const rateLimiter = new RateLimiterMemory(
     {
-        points: 5,
-        duration: 2
+        points: 3,
+        duration: 5
     }
 );
 
@@ -122,7 +123,7 @@ app.get("/api/cardpack/:id", async (req, res) => {
  *       "200":
  *         description: "Successful operation"
  */
-app.get("/api/cardpacks", (req, res) => {
+app.get("/api/cardpacks", async (req, res) => {
     try {
         await rateLimiter.consume(req.ip); // consume 1 point per event from IP
         res.send({
