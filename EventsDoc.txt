@@ -22,9 +22,6 @@
 + RoomFlipCard
     * Description: The czar fliped a card 
     * Args: String card_id
-+ AvailableCardPacks
-    * Description: Sends server's available cardpacks
-    * Args: Server's available cardpacks
 + RoomConnectionDenied
 + RoomConnectionSuccess
 + RoomConnectionRequestPrompt
