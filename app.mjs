@@ -11,7 +11,7 @@ import GameServer from './src/service/GameServer.mjs';
 import 'dotenv/config';
 import { Cardpack } from "./src/entity/Cardpack.mjs";
 import { exit } from "process";
-import { RateLimiterMemory } from "rate-limiter-flexible";
+import { RateLimiterMemory, RateLimiterRes } from "rate-limiter-flexible";
 
 const FRONTEND_DIST = `${process.env.FRONTEND_PATH}/dist`;
 const SOCKETIO_DIST = "node_modules/@socket.io/admin-ui/ui/dist";
@@ -102,11 +102,17 @@ app.get("/api/cardpack/:id", async (req, res) => {
             error: cardpack == undefined,
             data: cardpack != undefined ? cardpack : "Invalid cardpack"
         });
-    } catch (e) {
-        res.send({
-            error: true,
-            data: "Rate limited"
-        });
+    } catch (err) {
+        res.status = 400;
+        if (err instanceof RateLimiterRes) {
+            res.send({
+                error: true,
+                data: "Rate limited"
+            });
+        } else {
+            res.send({ error: true, data: "failed" });
+            LoggingSystem.singleton.log("[API(/cardpack/:id)]", `Error: ${err}`);
+        }
     }
 });
 
@@ -126,19 +132,67 @@ app.get("/api/cardpack/:id", async (req, res) => {
 app.get("/api/cardpacks", async (req, res) => {
     try {
         await rateLimiter.consume(req.ip); // consume 1 point per event from IP
+        const cardpacks = {};
+        Object.keys(Cardpack.cardpacks).forEach(cardpack => {
+            cardpacks[cardpack] = Cardpack.cardpacks[cardpack].pack_info;
+        });
         res.send({
             error: false,
-            data: Object.keys(Cardpack.cardpacks)
+            data: cardpacks
         });
-    } catch (e) {
-        res.send({
-            error: true,
-            data: "Rate limited"
-        });
+    } catch (err) {
+        res.status = 400;
+        if (err instanceof RateLimiterRes) {
+            res.send({
+                error: true,
+                data: "Rate limited"
+            });
+        } else {
+            res.send({ error: true, data: "failed" });
+            LoggingSystem.singleton.log("[API(/cardpacks)]", `Error: ${err}`);
+        }
     }
 });
 
-app.use("/", expressStaticGzip(FRONTEND_DIST, { enableBrotli: true, orderPreference: [ 'br', 'gzip' ] }));
+/**
+ * @openapi
+ * /api/rooms:
+ *   get:
+ *     summary: "Get available rooms"
+ *     description: "Returns the list of available rooms"
+ *     operationId: "get_rooms"
+ *     produces:
+ *     - "application/json"
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ */
+app.get("/api/rooms", async (req, res) => {
+    try {
+        await rateLimiter.consume(req.ip); // consume 1 point per event from IP
+        const rooms = {};
+        GameServer.singleton.rooms.forEach(room => {
+            rooms[room.roomId] = room.toJSONSimplified();
+        });
+        res.send({
+            error: false,
+            data: rooms
+        });
+    } catch (err) {
+        res.status = 400;
+        if (err instanceof RateLimiterRes) {
+            res.send({
+                error: true,
+                data: "Rate limited"
+            });
+        } else {
+            res.send({ error: true, data: "failed" });
+            LoggingSystem.singleton.log("[API(/rooms)]", `Error: ${err}`);
+        }
+    }
+});
+
+app.use("/", expressStaticGzip(FRONTEND_DIST, { enableBrotli: true, orderPreference: ['br', 'gzip'] }));
 
 if (process.env.SOCKETIO_ADMIN_UI_ENABLED === "true") { // Socket.IO Admin UI
     app.use("/", express.static(SOCKETIO_DIST));

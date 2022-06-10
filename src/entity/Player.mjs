@@ -105,4 +105,13 @@ export default class Player {
             "selectedCards" : this.selectedCards.map(card => card.toJSON())
         }
     }
+
+    toJSONSimplified() {
+        return {
+            "id": this.id,
+            "obesity" : this.obesity,
+            "name": this.name,
+            "ready": this.ready
+        }
+    }
 }

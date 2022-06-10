@@ -164,7 +164,7 @@ export default class Room extends EventHandler {
      */
     setCzar(player) {
         this.__czar = player;
-        this.emit("RoomCzarChanged", player.toJSON());
+        this.emit("RoomCzarChanged", player.toJSONSimplified());
     }
 
     /**
@@ -220,7 +220,7 @@ export default class Room extends EventHandler {
         else {
             player.room = this;
             this.players.set(player.id, player);
-            this.emit("RoomPlayerConnection", player.toJSON());
+            this.emit("RoomPlayerConnection", player.toJSONSimplified());
         }
     }
 
@@ -231,7 +231,7 @@ export default class Room extends EventHandler {
     removePlayer(player) {
         if (this._firstHost && player.id == this._firstHost.id) this._firstHost = undefined;
         this.players.delete(player.id);
-        this.emit("RoomPlayerDisconnection", player.toJSON());
+        this.emit("RoomPlayerDisconnection", player.toJSONSimplified());
     }
 
     /**
@@ -507,8 +507,19 @@ export default class Room extends EventHandler {
     toJSON() {
         return {
             "roomId": this.roomId,
-            "players": Array.from(this.players.values()).map(player => player.toJSON()),
-            "czar": this.czar.toJSON(),
+            "players": Array.from(this.players.values()).map(player => player.toJSONSimplified()),
+            "czar": this.czar.toJSONSimplified(),
+            "goalObesity": this.goalObesity,
+            "status": this.status
+        }
+    }
+
+    toJSONSimplified() {
+        return {
+            "roomId": this.roomId,
+            "players": Array.from(this.players.values()).map(player => player.name),
+            "maxPlayers": this.maxPlayers, 
+            "host": this.host.name,
             "goalObesity": this.goalObesity,
             "status": this.status
         }

@@ -238,7 +238,7 @@ export default class GameServer {
                     player.name = newName;
                     if (player.room && player.room.status == "lobby") {
                         let roomId = player.room.roomId;
-                        socket.to(roomId).emit("PlayerChangeName", player.toJSON());
+                        socket.to(roomId).emit("PlayerChangeName", player.toJSONSimplified());
                     }
 
                 }
@@ -699,11 +699,11 @@ export default class GameServer {
         });
 
         room.on("AnnouncePlayerIsNotReady", player => {
-            roomCh.emit("AnnouncePlayerIsNotReady", player.toJSON());
+            roomCh.emit("AnnouncePlayerIsNotReady", player.toJSONSimplified());
         });
 
         room.on("AnnouncePlayerIsReady", player => {
-            roomCh.emit("AnnouncePlayerIsReady", player.toJSON());
+            roomCh.emit("AnnouncePlayerIsReady", player.toJSONSimplified());
             let allReady = true;
             for (let player of room.players.values()) {
                 if (!player.ready && (room.czar.id != player.id)) { allReady = false; break; }
