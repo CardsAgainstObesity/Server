@@ -52,7 +52,7 @@ export default class Room extends EventHandler {
      * @param {String} roomId Room identifier 
      * @param {Player} createdBy The player that created the room
      */
-    constructor(roomId, createdBy) {
+    constructor(roomId, createdBy, privateRoom = false, password = "") {
         super();
         this.__roomId = roomId;
         this.__players = new Map();
@@ -63,6 +63,9 @@ export default class Room extends EventHandler {
         this.__maxPlayers = 8;
         this.__minPlayers = MIN_PLAYERS_AMOUNT;
         this._firstHost = createdBy;
+
+        this.__privateRoom = privateRoom;
+        this.__password = password;
 
         this.__lobby = new Lobby();
         this.__blackCard = undefined;
@@ -117,6 +120,20 @@ export default class Room extends EventHandler {
      */
     get status() {
         return this.__status;
+    }
+
+    /**
+     * @returns {boolean} Room privacy
+     */
+    get privateRoom() {
+        return this.__privateRoom;
+    }
+
+    /**
+     * @returns {string} Room's password, if the room is private
+     */
+    get password() {
+        return this.__password;
     }
 
     /**
@@ -510,7 +527,8 @@ export default class Room extends EventHandler {
             "players": Array.from(this.players.values()).map(player => player.toJSONSimplified()),
             "czar": this.czar.toJSONSimplified(),
             "goalObesity": this.goalObesity,
-            "status": this.status
+            "status": this.status,
+            "private" : this.__privateRoom
         }
     }
 
@@ -521,7 +539,8 @@ export default class Room extends EventHandler {
             "maxPlayers": this.maxPlayers, 
             "host": this.host.name,
             "goalObesity": this.goalObesity,
-            "status": this.status
+            "status": this.status,
+            "private" : this.__privateRoom
         }
     }
 
