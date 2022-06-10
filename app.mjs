@@ -103,7 +103,7 @@ app.get("/api/cardpack/:id", (req, res) => {
         })
 });
 
-app.use("/", expressStaticGzip(FRONTEND_DIST));
+app.use("/", expressStaticGzip(FRONTEND_DIST, { enableBrotli: true, orderPreference: [ 'br', 'gzip' ] }));
 
 if (process.env.SOCKETIO_ADMIN_UI_ENABLED === "true") { // Socket.IO Admin UI
     app.use("/", express.static(SOCKETIO_DIST));
