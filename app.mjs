@@ -44,7 +44,7 @@ const swagger_options = {
             background-color: #181818;
         }
 
-        *:not(.opblock-summary-method, .btn.execute, pre, input) {
+        *:not(.opblock-summary-method, .btn.execute, .download-contents, pre, input, code, code > *, pre.microlight > *) {
             color: #a2a2a2 !important;
             fill: #a2a2a2;
         }
