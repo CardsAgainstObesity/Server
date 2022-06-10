@@ -27,7 +27,7 @@ const openapi_options = {
         openapi: '3.0.0',
         info: {
             title: 'Cards Against Obesity',
-            version: '0.5.0',
+            version: '0.5.1',
         },
     },
     apis: ['./app.mjs'],
@@ -45,6 +45,13 @@ app.use("*", (req, res, next) => {
     LoggingSystem.singleton.log("[WEB]", `${method} | ${ip} | ${path} | ${userAgent}`);
     next();
 });
+
+const rateLimiter = new RateLimiterMemory(
+    {
+        points: 5,
+        duration: 2
+    }
+);
 
 const swaggerSpec = swaggerJSDoc(openapi_options);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -82,25 +89,52 @@ app.get('/helloworld', (req, res) => {
  *         description: "Successful operation"
  *       "404":
  *         description: "Cardpack not found"
+ * 
  */
-app.get("/api/cardpack/:id", (req, res) => {
-    const id = req.params.id;
-    Cardpack
-        .from(id)
-        .then(cardpack => {
-            res.send(
-                {
-                    data: cardpack
-                }
-            );
-        })
-        .catch(err => {
-            res.send(
-                {
-                    data: err
-                }
-            )
-        })
+app.get("/api/cardpack/:id", async (req, res) => {
+    try {
+        await rateLimiter.consume(req.ip); // consume 1 point per event from IP
+        const id = req.params.id;
+        const cardpack = Cardpack.getCardpack(id);
+        res.status = cardpack == undefined ? 404 : 200;
+        res.send({
+            error: cardpack == undefined,
+            data: cardpack != undefined ? cardpack : "Invalid cardpack"
+        });
+    } catch (e) {
+        res.send({
+            error: true,
+            data: "Rate limited"
+        });
+    }
+});
+
+/**
+ * @openapi
+ * /api/cardpacks:
+ *   get:
+ *     summary: "Get every cardpack's ID"
+ *     description: "Returns an array with the cardpack's IDs"
+ *     operationId: "get_cardpacks"
+ *     produces:
+ *     - "application/json"
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ */
+app.get("/api/cardpacks", (req, res) => {
+    try {
+        await rateLimiter.consume(req.ip); // consume 1 point per event from IP
+        res.send({
+            error: false,
+            data: Object.keys(Cardpack.cardpacks)
+        });
+    } catch (e) {
+        res.send({
+            error: true,
+            data: "Rate limited"
+        });
+    }
 });
 
 app.use("/", expressStaticGzip(FRONTEND_DIST, { enableBrotli: true, orderPreference: [ 'br', 'gzip' ] }));
@@ -135,12 +169,12 @@ secure_server.listen(process.env.SECURE_PORT, (e) => {
 
     // Load cardpacks
     Cardpack.__load()
-    .then(() => {
-        // Link GameServer to HTTP/1.1 server
-        // TODO: Redirect HTTP to HTTPs
-        GameServer.singleton.listen(secure_server);
-    })
-    .catch(err => {throw err;});
+        .then(() => {
+            // Link GameServer to HTTP/1.1 server
+            // TODO: Redirect HTTP to HTTPs
+            GameServer.singleton.listen(secure_server);
+        })
+        .catch(err => { throw err; });
 });
 secure_server.on("error", err => {
     throw err;
