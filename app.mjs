@@ -41,9 +41,16 @@ const swagger_options = {
         }
 
         body {
-            
-            filter: invert(100%);
-            background-color: #111;
+            background-color: #181818;
+        }
+
+        *:not(.opblock-summary-method, .btn.execute, pre, input) {
+            color: #a2a2a2 !important;
+            fill: #a2a2a2;
+        }
+
+        .swagger-ui .opblock .opblock-section-header {
+            background: #222222;
         }
         `,
 };
