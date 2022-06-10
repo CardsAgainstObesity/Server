@@ -5,5 +5,9 @@
     "name" : {
         "es": "Ejemplo",
         "en": "Example"
+    },
+    "license": {
+        "name": "license name",
+        "link": "license link"
     }
 }

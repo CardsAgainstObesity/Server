@@ -50,6 +50,9 @@ const default_cardpacks = {
  * @property {String} name.es
  * @property {String} name.en
  * @property {boolean} enabled
+ * @property {Object} license
+ * @property {string} license.name
+ * @property {string} license.link
  */
 
 /**

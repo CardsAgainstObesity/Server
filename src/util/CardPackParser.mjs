@@ -39,7 +39,8 @@ export default class CardPackParser {
                 "id": pack.id,
                 "author": pack.author,
                 "name": pack.name,
-                "enabled": pack.enabled
+                "enabled": pack.enabled,
+                "license": pack.license
             },
             "cards": {
                 "white": [],
