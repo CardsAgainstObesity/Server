@@ -108,20 +108,21 @@ export default class GameServer {
             // ----
             // Room creation
             // ----
-            socket.on("RoomCreationRequest", async (id) => {
+            socket.on("RoomCreationRequest", async (id, password) => {
                 try {
                     await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
-
                     let roomId = id ? id.replace(" ", "").slice(0, 10) : Date.now().toString(36).substr(2);
-                    LoggingSystem.singleton.log("[" + this.constructor.name + "]", "Created room: " + roomId);
                     // Check if already room exists in the server
                     let roomExists = this.rooms.has(roomId);
                     if (!roomExists) {
-                        let room = new Room(roomId, player);
+                        const privateRoom = password && password.length > 0;
+                        let room = new Room(roomId, player, privateRoom, password);
                         // Add room to sever
                         this.rooms.set(roomId, room);
                         // Bind room events to server
                         this.__roomSetup(room);
+                        // Log the creation of the room
+                        LoggingSystem.singleton.log("[" + this.constructor.name + "]", `Created a ${room.privateRoom ? "private" : "public"} room: ${roomId}`);
                         // First make sure to leave every room
                         socket.rooms.forEach(room => {
                             socket.leave(room);
@@ -160,7 +161,7 @@ export default class GameServer {
             // ---- 
             // Room connection
             // ----
-            socket.on("RoomConnectionRequest", async (roomId) => {
+            socket.on("RoomConnectionRequest", async (roomId, password) => {
                 try {
                     await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
 
@@ -172,6 +173,10 @@ export default class GameServer {
                         socket.rooms.forEach(room => {
                             socket.leave(room);
                         });
+                        if(room.privateRoom)
+                        {
+                            if(room.password != password) throw new Error("InvalidPassword")
+                        }
                         // Add socket to the sockets room
                         socket.join(roomId);
                         // Leave room if any
@@ -213,7 +218,8 @@ export default class GameServer {
                         // User being ratelimited ( by IP )
                         socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
-                        console.error(err);
+                        if(err.message && err.message == "InvalidPassword") socket.emit("error", "InvalidPassword");
+                        else console.error(err);
                     }
                 } 
             });

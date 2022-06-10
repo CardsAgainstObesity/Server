@@ -135,3 +135,4 @@ Error types:
 + PlayersNotReady
 + InvalidEventArgs
 + NoPermissions
++ InvalidPassword
