@@ -36,6 +36,7 @@ const openapi_options = {
 
 const app = express();
 
+// Logger
 app.use("*", (req, res, next) => {
     // Log connections to the server
     const method = req.method;
@@ -192,15 +193,21 @@ app.get("/api/rooms", async (req, res) => {
     }
 });
 
-app.use("/", expressStaticGzip(FRONTEND_DIST, { enableBrotli: true, orderPreference: ['br', 'gzip'] }));
+// Static
+app.use("/", expressStaticGzip(FRONTEND_DIST, { enableBrotli: true, orderPreference: [ 'br', 'gzip' ] }));
+app.get("/service-worker.js", (req, res) => {
+    res.sendFile(`${FRONTEND_DIST}/service-worker.js`);
+});
 
-if (process.env.SOCKETIO_ADMIN_UI_ENABLED === "true") { // Socket.IO Admin UI
+// Socket.IO Admin UI
+if (process.env.SOCKETIO_ADMIN_UI_ENABLED === "true") {
     app.use("/", express.static(SOCKETIO_DIST));
     app.use("/admin", (req, res) => {
         res.sendFile(path.resolve(`${SOCKETIO_DIST}/index.html`));
     });
 }
 
+// Let Vue handle 404s
 app.get("*", (req, res) => {
     res.sendFile(`${FRONTEND_DIST}/index.html`);
 });
@@ -210,11 +217,13 @@ const insecure_app = express();
 insecure_app.use("*", (req, res) => {
     res.redirect(`https://${req.headers.host.replace(`:${process.env.PORT}`, "")}:${process.env.SECURE_PORT}${req.url}`);
 });
+
 const insecure_server = http.createServer(insecure_app);
 insecure_server.listen(process.env.PORT);
 insecure_server.on("error", err => {
     throw err;
 });
+
 
 // Secure
 const secure_server = https.createServer(options, app);
@@ -231,6 +240,7 @@ secure_server.listen(process.env.SECURE_PORT, (e) => {
         })
         .catch(err => { throw err; });
 });
+
 secure_server.on("error", err => {
     throw err;
 });
