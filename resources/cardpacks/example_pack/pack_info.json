@@ -1,4 +1,5 @@
 {
+    "enabled" : false,
     "id":"example",
     "author":"example",
     "name" : {

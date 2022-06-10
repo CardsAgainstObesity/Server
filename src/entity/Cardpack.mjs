@@ -49,6 +49,7 @@ const default_cardpacks = {
  * @property {Object} name 
  * @property {String} name.es
  * @property {String} name.en
+ * @property {boolean} enabled
  */
 
 /**
@@ -96,7 +97,7 @@ export class Cardpack {
                     for (var name in paths) {
                         this.from(name)
                             .then(cardpack => {
-                                if (cardpack.pack_info.id != "example") {
+                                if (cardpack.pack_info.enabled) {
                                     LoggingSystem.singleton.log("[Cardpack]", `Loaded cardpack ${cardpack.pack_info.id}. White: ${cardpack.cards.white.length}, Black: ${cardpack.cards.black.length}`);
                                     this.cardpacks[cardpack.pack_info.id] = cardpack;
                                 }
