@@ -104,7 +104,7 @@ export default class GameServer {
 
             // Create a player for the client
             let player = new Player(socket.id);
-            Cardpack.getCardpacks()
+            Cardpack.getCardpackPaths()
             .then(cardpacks => {
                 socket.emit("AvailableCardPacks", Object.keys(cardpacks));
             });

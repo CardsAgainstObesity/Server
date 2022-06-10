@@ -1,5 +1,7 @@
 import fs from 'fs';
 import path, { resolve } from 'path';
+import CardPackParser from '../util/CardPackParser.mjs';
+import LoggingSystem from '../util/LoggingSystem.mjs';
 import BlackCard from './BlackCard.mjs';
 import Card from './Card.mjs';
 const default_cardpacks = {
@@ -55,84 +57,136 @@ const default_cardpacks = {
  * @property {WhiteAndBlackCards} cards
  */
 
-async function isValidCardpack(path)
-{
-    let f1,f2;
+async function getCardpackType(path) {
+    let isDirectory, hasPackMerged, hasToBeMerged;
+
     const pathResolved = resolve(path);
     const stat = await fs.promises.lstat(pathResolved);
-    f1 = stat.isDirectory();
-    if(f1)
-    {
+    isDirectory = stat.isDirectory(); // Directory must exist
+    if (isDirectory) {
         let dircontent = await fs.promises.readdir(path);
-        f2 = dircontent.indexOf("pack.json") != -1;
+        // contains pack.json, easy.
+        hasPackMerged = dircontent.indexOf("pack.json") != -1;
+        // contains .csv, merge csv into json.
+        if (!hasPackMerged) {
+            let hasWhiteCSV, hasBlackCSV, hasInfoCSV;
+            hasWhiteCSV = dircontent.indexOf("white_cards.csv") != -1;
+            hasBlackCSV = dircontent.indexOf("black_cards.csv") != -1;
+            hasInfoCSV = dircontent.indexOf("pack_info.json") != -1;
+            if (hasWhiteCSV && hasBlackCSV && hasInfoCSV) {
+                hasToBeMerged = true;
+            }
+        }
     }
-    if(f1 && f2) return true;
-    else return false;
+    if (hasToBeMerged) return "merge"
+    else if (hasPackMerged) return "pack"
+    else return "invalid";
 }
 
 export class Cardpack {
     constructor() { }
 
-    static cardpacks = undefined;
+    static paths = undefined;
+    static cardpacks = {};
+
+    static __load() {
+        return new Promise((res, rej) => {
+            this.getCardpackPaths()
+                .then(paths => {
+                    for (var name in paths) {
+                        this.from(name)
+                            .then(cardpack => {
+                                if (cardpack.pack_info.id != "example") {
+                                    LoggingSystem.singleton.log("[Cardpack]", `Loaded cardpack ${cardpack.pack_info.id}. White: ${cardpack.cards.white.length}, Black: ${cardpack.cards.black.length}`);
+                                    this.cardpacks[name] = cardpack;
+                                }
+                            })
+                            .catch(err => rej(err));
+                    }
+                    res(true);
+                });
+        });
+    }
 
     /**
      * Returns available cardpacks on the server
      * @returns {Promise<Object[]>}
      */
-    static getCardpacks() {
-        return new Promise(async (res,rej) => {
-            if(this.cardpacks != undefined) 
-            {
-                res(this.cardpacks);
+    static getCardpackPaths() {
+        return new Promise(async (res, rej) => {
+            if (this.paths != undefined) {
+                res(this.paths);
             }
-            else
-            {
-                fs.readdir("./resources/cardpacks", async (err,files) => {
-                    if(err) rej(err);
-                    let cardpacks = {};
-                    for(let i = 0, len = files.length; i < len; i++)
-                    {
+            else {
+                fs.readdir("./resources/cardpacks", async (err, files) => {
+                    if (err) rej(err);
+                    let paths = {};
+                    for (let i = 0, len = files.length; i < len; i++) {
                         let file = files[i];
                         let path = resolve("./resources/cardpacks/" + file);
-                        let isValid = await isValidCardpack(path)
-                        if(isValid)
-                        {
-                            cardpacks[file] = path + "/pack.json";
+                        let type = await getCardpackType(path);
+                        if (type == "pack") paths[file] = path + "/pack.json";
+                        else if (type == "merge") paths[file] = {
+                            pack: path + "/pack_info.json",
+                            white: path + "/white_cards.csv",
+                            black: path + "/black_cards.csv"
                         }
+                        else if (file != ".gitignore") LoggingSystem.singleton.log("[Cardpack]", `Couldn't resolve ${path}. Ignoring this cardpack`);
                     }
-                    this.cardpacks = cardpacks;
-                    res(cardpacks);
+                    this.paths = paths;
+                    res(paths);
                 });
             }
         });
     }
 
+    static getCardpack(name) {
+        return this.cardpacks[name];
+    }
 
     /**
      * @param {DefaultCardpackId} name Default pack name
      * @returns {Promise<CardpackType>}
      */
     static from(name) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (res, rej) => {
             // Check if its a default cardpack
-            let cardpack = this.cardpacks[name];
+            let cardpack = this.paths == undefined ? undefined : this.paths[name];
             if (cardpack) {
-                fs.promises.readFile(path.resolve(cardpack), {
-                    encoding: "utf8"
-                })
-                    .then(buffer => {
-                        try {
-                            var json = JSON.parse(buffer.toString());
-                            resolve(json);
-                        } catch (error) {
-                            reject(error);
-                        }
-                    })
-                    .catch(console.error);
+                switch (typeof cardpack) {
+                    case "string":
+                        fs.promises.readFile(path.resolve(cardpack), {
+                            encoding: "utf8"
+                        })
+                            .then(buffer => {
+                                try {
+                                    var json = JSON.parse(buffer.toString());
+                                    res(json);
+                                } catch (error) {
+                                    rej(error);
+                                }
+                            })
+                            .catch(console.error);
+                        break;
+                    case "object":
+                        const packInfoRaw = await fs.promises.readFile(cardpack.pack);
+                        const whiteRaw = await fs.promises.readFile(cardpack.white);
+                        const blackRaw = await fs.promises.readFile(cardpack.black);
+                        const parser = new CardPackParser(JSON.parse(packInfoRaw.toString()), whiteRaw.toString(), blackRaw.toString());
+                        parser.parse()
+                            .then(cardpack => {
+                                res(cardpack);
+                            })
+                            .catch(err => {
+                                rej(`Error while parsing ${name}. ${err}`);
+                            })
 
+                        break;
+
+                }
 
             } else {
-                reject("Invalid cardpack");
+                rej("Invalid cardpack");
             }
         });
     }

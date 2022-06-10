@@ -10,6 +10,7 @@ import LoggingSystem from './src/util/LoggingSystem.mjs';
 import GameServer from './src/service/GameServer.mjs';
 import 'dotenv/config';
 import { Cardpack } from "./src/entity/Cardpack.mjs";
+import { exit } from "process";
 
 const FRONTEND_DIST = `${process.env.FRONTEND_PATH}/dist`;
 const SOCKETIO_DIST = "node_modules/@socket.io/admin-ui/ui/dist";
@@ -23,11 +24,11 @@ const options = { // TODO: Set values in .env
 
 const openapi_options = {
     definition: {
-      openapi: '3.0.0',
-      info: {
-        title: 'Cards Against Obesity',
-        version: '0.5.0',
-      },
+        openapi: '3.0.0',
+        info: {
+            title: 'Cards Against Obesity',
+            version: '0.5.0',
+        },
     },
     apis: ['./app.mjs'],
 };
@@ -41,7 +42,7 @@ app.use("*", (req, res, next) => {
     const path = req['_parsedUrl'].pathname;
     const userAgent = req.headers["user-agent"];
 
-    LoggingSystem.singleton.log("[WEB]",`${method} | ${ip} | ${path} | ${userAgent}`);
+    LoggingSystem.singleton.log("[WEB]", `${method} | ${ip} | ${path} | ${userAgent}`);
     next();
 });
 
@@ -83,13 +84,23 @@ app.get('/helloworld', (req, res) => {
  *         description: "Cardpack not found"
  */
 app.get("/api/cardpack/:id", (req, res) => {
-    res.send(
-        {
-            data: {
-                id: req.params.id
-            }
-        }
-    );
+    const id = req.params.id;
+    Cardpack
+        .from(id)
+        .then(cardpack => {
+            res.send(
+                {
+                    data: cardpack
+                }
+            );
+        })
+        .catch(err => {
+            res.send(
+                {
+                    data: err
+                }
+            )
+        })
 });
 
 app.use("/", expressStaticGzip(FRONTEND_DIST));
@@ -112,14 +123,26 @@ insecure_app.use("*", (req, res) => {
 });
 const insecure_server = http.createServer(insecure_app);
 insecure_server.listen(process.env.PORT);
+insecure_server.on("error", err => {
+    throw err;
+});
 
 // Secure
 const secure_server = https.createServer(options, app);
-secure_server.listen(process.env.SECURE_PORT, () => {
+secure_server.listen(process.env.SECURE_PORT, (e) => {
     let host = secure_server.address().address + ":" + secure_server.address().port;
     LoggingSystem.singleton.log("[WEB]", "Listening to " + host);
+
+    // Load cardpacks
+    Cardpack.__load()
+    .then(() => {
+        // Link GameServer to HTTP/1.1 server
+        // TODO: Redirect HTTP to HTTPs
+        GameServer.singleton.listen(secure_server);
+    })
+    .catch(err => {throw err;});
+});
+secure_server.on("error", err => {
+    throw err;
 });
 
-// Link GameServer to HTTP/1.1 server
-// TODO: Redirect HTTP to HTTPs
-GameServer.singleton.listen(secure_server);

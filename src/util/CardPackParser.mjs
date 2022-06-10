@@ -1,3 +1,5 @@
+import {resolve} from 'path';
+import 'fs';
 function stdLangCode(lang) {
     let langCode;
     switch (lang.toLowerCase()) {

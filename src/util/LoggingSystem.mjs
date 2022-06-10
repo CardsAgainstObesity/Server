@@ -51,6 +51,7 @@ export default class LoggingSystem {
     log(caller,content) {
         let message = this.date_prefix + " - " + caller + " " + content;
         this._appendToFile(message + "\n");
+        if(process.env.DEBUG == "true") console.log(message);
     }
 
 }
