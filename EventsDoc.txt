@@ -136,3 +136,4 @@ Error types:
 + InvalidEventArgs
 + NoPermissions
 + InvalidPassword
++ CantSelectCzarAsWinner

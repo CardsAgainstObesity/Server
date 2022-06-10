@@ -514,6 +514,8 @@ export default class GameServer {
                         let pWinner = room.players.get(player_id);
                         if (!pWinner) {
                             socket.emit("error", "InvalidEventArgs");
+                        } else if(room.czar.id == pWinner.id) {
+                            socket.emit("error", "CantSelectCzarAsWinner");
                         } else {
                             room.selectWinner(player_id);
                         }
@@ -644,6 +646,13 @@ export default class GameServer {
             } else {
                 // If the player is the czar, change the czar
                 room.rotateCzar();
+                const czar = room.czar;
+                // Give selected cards back to the player
+                for(var card of czar.selectedCards) {
+                    console.log(card);
+                    czar.deck.set(card.id,card);
+                }
+                room.playerNotReady(czar);
             }
 
             roomCh.emit("RoomPlayerDisconnection", playerJSON);
