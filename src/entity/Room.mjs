@@ -275,6 +275,7 @@ export default class Room extends EventHandler {
                             this.setBlackCard(this.cards.black[0]);
                             // this.setBlackCard(DEBUG_BLACK_CARD);
                         } else {
+                            console.log(cardpack)
                             resolve("NotEnoughCards");
                         }
                     });

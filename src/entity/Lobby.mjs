@@ -4,8 +4,8 @@ import { Cardpack } from "./Cardpack.mjs";
 
 function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
     }
 }
 
@@ -31,17 +31,16 @@ export default class Lobby {
      */
     addCardPack(packId) {
         return new Promise((resolve, reject) => {
-            Cardpack
-                .from(packId)
-                .then(pack => {
-                    if (this.__cardPacks.has(pack.pack_info.id)) {
-                        reject(false);
-                    } else {
-                        this.__cardPacks.set(pack.pack_info.id, pack);
-                        resolve(pack);
-                    }
-                })
-                .catch(reject)
+            const cardpack = Cardpack.getCardpack(packId);
+            if (this.__cardPacks.has(cardpack.pack_info.id)) {
+                reject(false);
+            } else {
+                if (cardpack != undefined) {
+                    this.__cardPacks.set(cardpack.pack_info.id, cardpack);
+                    resolve(cardpack);
+                }
+                else reject("invalid cardpack");
+            }
         })
     }
 
@@ -77,13 +76,13 @@ export default class Lobby {
                 // Temporal
                 shuffleArray(cards.black);
                 shuffleArray(cards.white);
-                
+
                 cards.white.forEach(card => {
-                    result.cards.white.push(new Card(++lastId,card.text));
+                    result.cards.white.push(new Card(++lastId, card.text));
                 });
 
                 cards.black.forEach(card => {
-                    result.cards.black.push(new BlackCard(++lastId,card.text, card.slots));
+                    result.cards.black.push(new BlackCard(++lastId, card.text, card.slots));
                 });
 
             });

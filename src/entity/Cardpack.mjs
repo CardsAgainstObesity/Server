@@ -98,7 +98,7 @@ export class Cardpack {
                             .then(cardpack => {
                                 if (cardpack.pack_info.id != "example") {
                                     LoggingSystem.singleton.log("[Cardpack]", `Loaded cardpack ${cardpack.pack_info.id}. White: ${cardpack.cards.white.length}, Black: ${cardpack.cards.black.length}`);
-                                    this.cardpacks[name] = cardpack;
+                                    this.cardpacks[cardpack.pack_info.id] = cardpack;
                                 }
                             })
                             .catch(err => rej(err));
