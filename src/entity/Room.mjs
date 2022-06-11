@@ -3,12 +3,11 @@ import Card from "./Card.mjs";
 import EventHandler from "./EventHandler.mjs";
 import Lobby from "./Lobby.mjs";
 import Player from "./Player.mjs";
-import ReplayBuilder from "./ReplayBuilder.mjs";
+import ReplayBuilder from "../util/ReplayBuilder.mjs";
 
 const MIN_WHITE_CARDS_AMOUNT = 30;
 const MIN_BLACK_CARDS_AMOUNT = 30;
-const MIN_PLAYERS_AMOUNT = 1; // temporal
-const TIME_TO_LOBBY = 10; // 10s
+const MIN_PLAYERS_AMOUNT = 2;
 
 // DEBUG
 const DEBUG_BLACK_CARD = {
@@ -292,7 +291,6 @@ export default class Room extends EventHandler {
                             this.setBlackCard(this.cards.black[0]);
                             // this.setBlackCard(DEBUG_BLACK_CARD);
                         } else {
-                            console.log(cardpack)
                             resolve("NotEnoughCards");
                         }
                     });

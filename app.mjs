@@ -13,8 +13,14 @@ import { Cardpack } from "./src/entity/Cardpack.mjs";
 import { exit } from "process";
 import { RateLimiterMemory, RateLimiterRes } from "rate-limiter-flexible";
 
+
 const FRONTEND_DIST = `${process.env.FRONTEND_PATH}/dist`;
 const SOCKETIO_DIST = "node_modules/@socket.io/admin-ui/ui/dist";
+
+// Print server information
+LoggingSystem.singleton.log("[APP]", "Logging path: " + LoggingSystem.singleton._loggingPath);
+LoggingSystem.singleton.log("[APP]", "Replays path: " + path.resolve(process.env.REPLAYS_PATH));
+LoggingSystem.singleton.log("[APP]", `Socket.io admin panel (/admin) is ${process.env.SOCKETIO_ADMIN_UI_ENABLED == "true" ? "enabled" : "disabled"}`);
 
 // HTTPs Server configuration
 const options = { // TODO: Set values in .env
@@ -216,7 +222,7 @@ app.get("/api/rooms", async (req, res) => {
 });
 
 // Static
-app.use("/", expressStaticGzip(FRONTEND_DIST, { enableBrotli: true, orderPreference: [ 'br', 'gzip' ] }));
+app.use("/", expressStaticGzip(FRONTEND_DIST, { enableBrotli: true, orderPreference: ['br', 'gzip'] }));
 app.get("/service-worker.js", (req, res) => {
     res.sendFile(`${FRONTEND_DIST}/service-worker.js`);
 });
@@ -266,4 +272,3 @@ secure_server.listen(process.env.SECURE_PORT, (e) => {
 secure_server.on("error", err => {
     throw err;
 });
-

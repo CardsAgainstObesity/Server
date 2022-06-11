@@ -170,7 +170,9 @@ export class Cardpack {
                                     rej(error);
                                 }
                             })
-                            .catch(console.error);
+                            .catch((err) => {
+                                LoggingSystem.singleton.log("[Cardpack]", `Error: ${err}`); 
+                            });
                         break;
                     case "object":
                         const packInfoRaw = await fs.promises.readFile(cardpack.pack);

@@ -152,7 +152,7 @@ export default class GameServer {
                         // User being ratelimited ( by IP )
                         socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
-                        console.error(err);
+                        LoggingSystem.singleton.log("[GameServer]", `Error: ${err}`);
                     }
                 }
             });
@@ -195,7 +195,6 @@ export default class GameServer {
                                 let hostId = room.host.id;
                                 let host = this.io.of("/").sockets.get(hostId);
                                 host.emit("RoomConnectionRequestPrompt", (answer) => {
-                                    console.log(answer);
                                     if(answer) {
                                         socket.emit("RoomConnectionSuccess", room.toJSON());
                                         room.addPlayer(player);
@@ -219,7 +218,7 @@ export default class GameServer {
                         socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
                         if(err.message && err.message == "InvalidPassword") socket.emit("error", "InvalidPassword");
-                        else console.error(err);
+                        else LoggingSystem.singleton.log("[GameServer]", `Error: ${err}`);
                     }
                 } 
             });
@@ -253,7 +252,7 @@ export default class GameServer {
                         // User being ratelimited ( by IP )
                         socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
-                        console.error(err);
+                        LoggingSystem.singleton.log("[GameServer]", `Error: ${err}`);
                     }
                 }
             });
@@ -293,7 +292,7 @@ export default class GameServer {
                         // User being ratelimited ( by IP )
                         socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
-                        console.error(err);
+                        LoggingSystem.singleton.log("[GameServer]", `Error: ${err}`);
                     }
                 }
             });
@@ -330,7 +329,7 @@ export default class GameServer {
                         // User being ratelimited ( by IP )
                         socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
-                        console.error(err);
+                        LoggingSystem.singleton.log("[GameServer]", `Error: ${err}`);
                     }
                 }
             });
@@ -368,7 +367,7 @@ export default class GameServer {
                         // User being ratelimited ( by IP )
                         socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
-                        console.error(err);
+                        LoggingSystem.singleton.log("[GameServer]", `Error: ${err}`);
                     }
                 }
             });
@@ -423,7 +422,7 @@ export default class GameServer {
                         // User being ratelimited ( by IP )
                         socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
-                        console.error(err);
+                        LoggingSystem.singleton.log("[GameServer]", `Error: ${err}`);
                     }
                 }
             });
@@ -446,7 +445,7 @@ export default class GameServer {
                         // User being ratelimited ( by IP )
                         socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
-                        console.error(err);
+                        LoggingSystem.singleton.log("[GameServer]", `Error: ${err}`);
                     }
                 }
             });
@@ -493,7 +492,7 @@ export default class GameServer {
                         // User being ratelimited ( by IP )
                         socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
-                        console.error(err);
+                        LoggingSystem.singleton.log("[GameServer]", `Error: ${err}`);
                     }
                 }
             });
@@ -526,7 +525,7 @@ export default class GameServer {
                         // User being ratelimited ( by IP )
                         socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
-                        console.error(err);
+                        LoggingSystem.singleton.log("[GameServer]", `Error: ${err}`);
                     }
                 }
             });
@@ -552,7 +551,7 @@ export default class GameServer {
                         // User being ratelimited ( by IP )
                         socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
-                        console.error(err);
+                        LoggingSystem.singleton.log("[GameServer]", `Error: ${err}`);
                     }
                 }
             });
@@ -578,7 +577,7 @@ export default class GameServer {
                         // User being ratelimited ( by IP )
                         socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
-                        console.error(err);
+                        LoggingSystem.singleton.log("[GameServer]", `Error: ${err}`);
                     }
                 }
             });
@@ -603,7 +602,7 @@ export default class GameServer {
                         // User being ratelimited ( by IP )
                         socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
-                        console.error(err);
+                        LoggingSystem.singleton.log("[GameServer]", `Error: ${err}`);
                     }
                 }
             });
@@ -649,7 +648,6 @@ export default class GameServer {
                 const czar = room.czar;
                 // Give selected cards back to the player
                 for(var card of czar.selectedCards) {
-                    console.log(card);
                     czar.deck.set(card.id,card);
                 }
                 room.playerNotReady(czar);
