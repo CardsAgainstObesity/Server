@@ -10,11 +10,10 @@ import LoggingSystem from './src/util/LoggingSystem.mjs';
 import GameServer from './src/service/GameServer.mjs';
 import 'dotenv/config';
 import { Cardpack } from "./src/entity/Cardpack.mjs";
-import { exit } from "process";
 import { RateLimiterMemory, RateLimiterRes } from "rate-limiter-flexible";
 
 
-const FRONTEND_DIST = `${process.env.FRONTEND_PATH}/dist`;
+const FRONTEND_DIST = path.resolve(process.env.FRONTEND_DIST);
 const SOCKETIO_DIST = "node_modules/@socket.io/admin-ui/ui/dist";
 
 // Print server information
@@ -263,7 +262,6 @@ secure_server.listen(process.env.SECURE_PORT, (e) => {
     Cardpack.__load()
         .then(() => {
             // Link GameServer to HTTP/1.1 server
-            // TODO: Redirect HTTP to HTTPs
             GameServer.singleton.listen(secure_server);
         })
         .catch(err => { throw err; });
