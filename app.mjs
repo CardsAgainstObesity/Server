@@ -99,6 +99,10 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, swagger_options))
  *         description: "Successful operation"
  *       "404":
  *         description: "Cardpack not found"
+ *       "500":
+ *         description: "Internal error"
+ *       "429":
+ *         description: "Too many requests"
  * 
  */
 app.get("/api/cardpack/:id", async (req, res) => {
@@ -106,19 +110,20 @@ app.get("/api/cardpack/:id", async (req, res) => {
         await rateLimiter.consume(req.ip); // consume 1 point per event from IP
         const id = req.params.id;
         const cardpack = Cardpack.getCardpack(id);
-        res.status = cardpack == undefined ? 404 : 200;
+        res.status(cardpack == undefined ? 404 : 200);
         res.send({
             error: cardpack == undefined,
             data: cardpack != undefined ? cardpack : "Invalid cardpack"
         });
     } catch (err) {
-        res.status = 400;
         if (err instanceof RateLimiterRes) {
+            res.status(429)
             res.send({
                 error: true,
                 data: "Rate limited"
             });
         } else {
+            res.status(500);
             res.send({ error: true, data: "failed" });
             LoggingSystem.singleton.log("[API(/cardpack/:id)]", `Error: ${err}`);
         }
@@ -137,6 +142,10 @@ app.get("/api/cardpack/:id", async (req, res) => {
  *     responses:
  *       "200":
  *         description: "Successful operation"
+ *       "500":
+ *         description: "Internal error"
+ *       "429":
+ *         description: "Too many requests"
  */
 app.get("/api/cardpacks", async (req, res) => {
     try {
@@ -150,13 +159,14 @@ app.get("/api/cardpacks", async (req, res) => {
             data: cardpacks
         });
     } catch (err) {
-        res.status = 400;
+        res.status(429);
         if (err instanceof RateLimiterRes) {
             res.send({
                 error: true,
                 data: "Rate limited"
             });
         } else {
+            res.status(500)
             res.send({ error: true, data: "failed" });
             LoggingSystem.singleton.log("[API(/cardpacks)]", `Error: ${err}`);
         }
@@ -175,6 +185,10 @@ app.get("/api/cardpacks", async (req, res) => {
  *     responses:
  *       "200":
  *         description: "Successful operation"
+ *       "429":
+ *         description: "Too many requests"
+ *       "500":
+ *         description: "Internal error"
  */
 app.get("/api/rooms", async (req, res) => {
     try {
@@ -188,7 +202,7 @@ app.get("/api/rooms", async (req, res) => {
             data: rooms
         });
     } catch (err) {
-        res.status = 400;
+        res.status(429);
         if (err instanceof RateLimiterRes) {
             res.send({
                 error: true,
