@@ -7,6 +7,8 @@ import expressStaticGzip from "express-static-gzip";
 import LoggingSystem from './src/util/LoggingSystem.mjs';
 import GameServer from './src/service/GameServer.mjs';
 import 'dotenv/config';
+import dotenv from "dotenv";
+dotenv.config({ encoding: "ascii", override: true });
 import { Cardpack } from "./src/entity/Cardpack.mjs";
 import { RateLimiterMemory, RateLimiterRes } from "rate-limiter-flexible";
 
