@@ -17,5 +17,5 @@ services:
   node:
     build: .
     restart: unless-stopped
-    ports:
+    # ports:
       # - "3000:3000"

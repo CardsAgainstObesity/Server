@@ -58,7 +58,8 @@ app.use("*", (req, res, next) => {
     // Log connections to the server
     const method = req.method;
     // const ip = req.socket.remoteAddress;
-    const ip = req.headers["x-forwarded-for"];
+    const ip = req.headers["x-forwarded-for"].split(",")[0];
+    // req.headers["x-forwarded-for"].split(",").forEach(value => console.log(`ip: "${value}"`));
     const path = req['_parsedUrl'].pathname;
     const userAgent = req.headers["user-agent"];
 
