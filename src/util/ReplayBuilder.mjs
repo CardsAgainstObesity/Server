@@ -26,7 +26,7 @@ export default class ReplayBuilder {
         let identifier = room.__createdBy.id + '-' + room.roomId;
         this._replayFolder = process.env.REPLAYS_PATH || "./replays";
         this._replayFile = identifier + ".json";
-        this._replayPath = path.resolve(this._replayFolder + this._replayFile);
+        this._replayPath = path.resolve(`${this._replayFolder}/${this._replayFile}`);
 
         this._lastTimestamp = undefined;
     }

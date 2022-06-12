@@ -24,7 +24,7 @@ const openapi_options = {
         openapi: '3.0.0',
         info: {
             title: 'Cards Against Obesity',
-            version: '0.5.1',
+            version: '0.5.2',
         },
     },
     apis: ['./app.mjs'],
