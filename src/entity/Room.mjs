@@ -63,7 +63,7 @@ export default class Room extends EventHandler {
         this.__minPlayers = MIN_PLAYERS_AMOUNT;
         this._firstHost = createdBy;
 
-        this.__privateRoom = privateRoom;
+        this.__privateRoom = (privateRoom == "true" || privateRoom == true) ? true : false;
         this.__password = password;
 
         this.__lobby = new Lobby();
