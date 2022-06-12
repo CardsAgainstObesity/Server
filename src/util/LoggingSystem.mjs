@@ -18,7 +18,7 @@ export default class LoggingSystem {
         let date = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
         this._loggingFolder = process.env.LOGS_PATH || "./logs";
         this._loggingFile = date + ".log";
-        this._loggingPath = path.resolve( this._loggingFolder + this._loggingFile);
+        this._loggingPath = path.resolve(`${this._loggingFolder}/${this._loggingFile}`);
     }
 
     async _appendToFile(content) {

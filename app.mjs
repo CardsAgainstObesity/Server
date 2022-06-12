@@ -1,11 +1,9 @@
 import path from "path";
 import http from 'http';
-import https from 'https';
 import express from 'express';
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
 import expressStaticGzip from "express-static-gzip";
-import { readFileSync } from 'fs';
 import LoggingSystem from './src/util/LoggingSystem.mjs';
 import GameServer from './src/service/GameServer.mjs';
 import 'dotenv/config';
@@ -20,13 +18,6 @@ const SOCKETIO_DIST = "node_modules/@socket.io/admin-ui/ui/dist";
 LoggingSystem.singleton.log("[APP]", "Logging path: " + LoggingSystem.singleton._loggingPath);
 LoggingSystem.singleton.log("[APP]", "Replays path: " + path.resolve(process.env.REPLAYS_PATH));
 LoggingSystem.singleton.log("[APP]", `Socket.io admin panel (/admin) is ${process.env.SOCKETIO_ADMIN_UI_ENABLED == "true" ? "enabled" : "disabled"}`);
-
-// HTTPs Server configuration
-const options = { // TODO: Set values in .env
-    key: readFileSync('src/openssl/key.pem'),
-    cert: readFileSync('src/openssl/cert.pem'),
-    passphrase: 'abcd',
-}
 
 const openapi_options = {
     definition: {
@@ -66,7 +57,8 @@ const app = express();
 app.use("*", (req, res, next) => {
     // Log connections to the server
     const method = req.method;
-    const ip = req.socket.remoteAddress;
+    // const ip = req.socket.remoteAddress;
+    const ip = req.headers["x-forwarded-for"];
     const path = req['_parsedUrl'].pathname;
     const userAgent = req.headers["user-agent"];
 
@@ -239,34 +231,21 @@ app.get("*", (req, res) => {
     res.sendFile(`${FRONTEND_DIST}/index.html`);
 });
 
-// Insecure
-const insecure_app = express();
-insecure_app.use("*", (req, res) => {
-    res.redirect(`https://${req.headers.host.replace(`:${process.env.PORT}`, "")}:${process.env.SECURE_PORT}${req.url}`);
-});
-
-const insecure_server = http.createServer(insecure_app);
-insecure_server.listen(process.env.PORT);
-insecure_server.on("error", err => {
-    throw err;
-});
-
-
 // Secure
-const secure_server = https.createServer(options, app);
-secure_server.listen(process.env.SECURE_PORT, (e) => {
-    let host = secure_server.address().address + ":" + secure_server.address().port;
+const server = http.createServer(app);
+server.listen(process.env.PORT, (e) => {
+    let host = server.address().address + ":" + server.address().port;
     LoggingSystem.singleton.log("[WEB]", "Listening to " + host);
 
     // Load cardpacks
     Cardpack.__load()
         .then(() => {
             // Link GameServer to HTTP/1.1 server
-            GameServer.singleton.listen(secure_server);
+            GameServer.singleton.listen(server);
         })
         .catch(err => { throw err; });
 });
 
-secure_server.on("error", err => {
+server.on("error", err => {
     throw err;
 });

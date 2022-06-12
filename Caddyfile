@@ -1,0 +1,12 @@
+{
+	auto_https off
+}
+
+:80 {
+	reverse_proxy node:3000
+}
+
+:443 {
+	tls /etc/caddy/cert.pem /etc/caddy/key.pem
+	reverse_proxy node:3000
+}

@@ -21,6 +21,7 @@ node_modules/
 # Misc
 .directory
 frontend/
+/caddy
 
 # Private
 .env
