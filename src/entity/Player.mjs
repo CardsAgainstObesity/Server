@@ -78,6 +78,22 @@ export default class Player {
     }
 
     /**
+     * Clears a player's deck
+     */
+    clearCards() {
+        this.__deck.clear();
+        this.__selectedCards.length = 0;
+        this.__ready = false;
+    }
+
+    /**
+     * Sets score to 0
+     */
+    resetScore() {
+        this.__obesity = 0;
+    }
+
+    /**
      * If the player is in a room, leaves it
      */
     leaveRoom() {

@@ -286,6 +286,7 @@ export default class Room extends EventHandler {
                             resolve(false);
                             this.emit("RoomStart", this.toJSON());
                             // Temporal
+                            this.resetPlayers();
                             this.setStatus("choosing");
                             this.dealCards(10, true);
                             this.setBlackCard(this.cards.black[0]);
@@ -387,6 +388,16 @@ export default class Room extends EventHandler {
         }
 
         this.emit("RoomCardsDealedPlayer", player);
+    }
+
+    /**
+     * Resets every player's score and deck
+     */
+    resetPlayers() {
+        this.players.forEach(player => {
+            player.clearCards();
+            player.resetScore();
+        });
     }
 
     /**
