@@ -52,7 +52,7 @@ export default class GameServer {
         // Start the Socket.IO Server instance
         this.__io = new Server(server, {
             cors: {
-                origin: "*", // TODO: CAMBIAR ESTO EN PRODUCCIÓN POR FAVOR
+                origin: "localhost",
                 methods: ["GET", "POST"],
             }
         });
