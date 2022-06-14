@@ -60,15 +60,17 @@ app.use("*", (req, res, next) => {
     const method = req.method;
     const ip = req.headers["x-forwarded-for"].split(",")[0];
     // req.headers["x-forwarded-for"].split(",").forEach(value => console.log(`ip: "${value}"`));
+    const protocol = req.headers["x-forwarded-proto"].split(",")[0];
     const path = req['_parsedUrl'].pathname;
     const userAgent = req.headers["user-agent"];
 
-    LoggingSystem.singleton.log("[WEB]", `${method} | ${ip} | ${req.headers["x-forwarded-proto"]} | ${path} | ${userAgent}`);
+    LoggingSystem.singleton.log("[WEB]", `${method} | ${ip} | ${protocol} | ${path} | ${userAgent}`);
     next();
 });
 
 app.use("*", (req, res, next) => { // Redirect HTTP to HTTPs
-    if (req.headers["x-forwarded-proto"] === "http") {
+    const protocol = req.headers["x-forwarded-proto"].split(",")[0];
+    if (protocol === "http") {
         res.redirect(`https://${req.headers.host}${req['_parsedUrl'].pathname}`);
     } else next();
 });
