@@ -52,7 +52,7 @@ export default class GameServer {
         // Start the Socket.IO Server instance
         this.__io = new Server(server, {
             cors: {
-                origin: "localhost",
+                origin: "http://localhost:3000", // Vue dev server
                 methods: ["GET", "POST"],
             }
         });
@@ -644,7 +644,7 @@ export default class GameServer {
                 room.remove();
             } else if (room.players.size < room.minPlayers) {
                 room.remove();
-            } else {
+            } else if (playerJSON.id === room.czar.id) {
                 // If the player is the czar, change the czar
                 room.rotateCzar();
                 const czar = room.czar;

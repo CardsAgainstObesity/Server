@@ -1,11 +1,12 @@
 import path from "path";
-import http from 'http';
-import express from 'express';
+import http from "http";
+import express from "express";
+import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
 import expressStaticGzip from "express-static-gzip";
-import LoggingSystem from './src/util/LoggingSystem.mjs';
-import GameServer from './src/service/GameServer.mjs';
+import LoggingSystem from "./src/util/LoggingSystem.mjs";
+import GameServer from "./src/service/GameServer.mjs";
 import dotenv from "dotenv";
 dotenv.config({ encoding: "ascii", override: true });
 import { Cardpack } from "./src/entity/Cardpack.mjs";
@@ -22,13 +23,13 @@ LoggingSystem.singleton.log("[APP]", `Socket.io admin panel (/admin) is ${proces
 
 const openapi_options = {
     definition: {
-        openapi: '3.0.0',
+        openapi: "3.0.0",
         info: {
-            title: 'Cards Against Obesity',
-            version: '0.5.2',
+            title: "Cards Against Obesity",
+            version: "0.5.2",
         },
     },
-    apis: ['./app.mjs'],
+    apis: ["./app.mjs"],
 };
 
 const swagger_options = {
@@ -53,6 +54,13 @@ const swagger_options = {
 };
 
 const app = express();
+
+const corsOptions = {
+    origin: "http://localhost:3000",
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors(corsOptions));
 
 // Logger
 app.use("*", (req, res, next) => {
