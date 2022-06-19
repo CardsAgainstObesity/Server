@@ -67,7 +67,7 @@ export default class GameServer {
                 }
             });
         }
-        
+
 
         // Send log message
         const host = server.address().address + ":" + server.address().port;
@@ -105,8 +105,12 @@ export default class GameServer {
 
             // Create a player for the client
             const player = new Player(socket.id);
-            const address = socket.handshake.headers["x-forwarded-for"].split(",")[0];
-
+            let address;
+            if (socket.handshake.headers["x-forwarded-for"] != undefined) {
+                address = socket.handshake.headers["x-forwarded-for"].split(",")[0];
+            } else {
+                address = socket.handshake.address;
+            }
             // ----
             // Room creation
             // ----
@@ -175,9 +179,8 @@ export default class GameServer {
                         socket.rooms.forEach(room => {
                             socket.leave(room);
                         });
-                        if(room.privateRoom)
-                        {
-                            if(room.password != password) throw new Error("InvalidPassword")
+                        if (room.privateRoom) {
+                            if (room.password != password) throw new Error("InvalidPassword")
                         }
                         // Add socket to the sockets room
                         socket.join(roomId);
@@ -187,8 +190,7 @@ export default class GameServer {
                         if (room.players.size < room.maxPlayers) {
 
                             // If they are in the lobby then you can join
-                            if(room.status == "lobby")
-                            {
+                            if (room.status == "lobby") {
                                 // Send connection success reply
                                 socket.emit("RoomConnectionSuccess", room.toJSON());
                                 // Join room
@@ -197,10 +199,10 @@ export default class GameServer {
                                 let hostId = room.host.id;
                                 let host = this.io.of("/").sockets.get(hostId);
                                 host.emit("RoomConnectionRequestPrompt", (answer) => {
-                                    if(answer) {
+                                    if (answer) {
                                         socket.emit("RoomConnectionSuccess", room.toJSON());
                                         room.addPlayer(player);
-                                        room.dealCardsPlayer(player,room,true);
+                                        room.dealCardsPlayer(player, room, true);
                                     }
                                     else socket.emit("RoomConnectionDenied");
                                 });
@@ -219,16 +221,16 @@ export default class GameServer {
                         // User being ratelimited ( by IP )
                         socket.emit("RateLimited", { 'retry': err.msBeforeNext });
                     } else {
-                        if(err.message && err.message == "InvalidPassword") socket.emit("error", "InvalidPassword");
+                        if (err.message && err.message == "InvalidPassword") socket.emit("error", "InvalidPassword");
                         else LoggingSystem.singleton.log("[GameServer]", `Error: ${err}`);
                     }
-                } 
+                }
             });
 
             // ----
             // Name change
             // ----
-            socket.on("RequestPlayerChangeName",async (name) => {
+            socket.on("RequestPlayerChangeName", async (name) => {
                 try {
                     await rateLimiter.consume(address); // consume 1 point per event from IP
 
@@ -262,7 +264,7 @@ export default class GameServer {
             // ----
             // Add cardpack 
             // ----
-            socket.on("LobbyAddCardpackRequest",async (args) => {
+            socket.on("LobbyAddCardpackRequest", async (args) => {
                 try {
                     await rateLimiter.consume(address); // consume 1 point per event from IP
 
@@ -301,7 +303,7 @@ export default class GameServer {
             // ----
             // Remove cardpack 
             // ----
-            socket.on("LobbyRemoveCardpackRequest",async (args) => {
+            socket.on("LobbyRemoveCardpackRequest", async (args) => {
                 try {
                     await rateLimiter.consume(address); // consume 1 point per event from IP
 
@@ -338,7 +340,7 @@ export default class GameServer {
             // ----
             // Start the game
             // ----
-            socket.on("RoomStartRequest",async (room_id) => {
+            socket.on("RoomStartRequest", async (room_id) => {
                 try {
                     await rateLimiter.consume(address); // consume 1 point per event from IP
 
@@ -377,7 +379,7 @@ export default class GameServer {
             // ----
             // Player is ready ( prepare selected cards )
             // ----
-            socket.on("PlayerIsReady",async (card_ids) => {
+            socket.on("PlayerIsReady", async (card_ids) => {
                 try {
                     await rateLimiter.consume(address); // consume 1 point per event from IP
 
@@ -387,7 +389,7 @@ export default class GameServer {
                         if (room && room.blackCard) {
                             player.selectedCards.length = 0;
                             // TODO : Clear code
-                            if(player.id == room.czar.id) return;
+                            if (player.id == room.czar.id) return;
 
                             let bCard = room.blackCard;
                             if (card_ids.length == bCard.slots) {
@@ -432,7 +434,7 @@ export default class GameServer {
             // ----
             // Player is not ready
             // ----
-            socket.on("PlayerIsNotReady",async () => {
+            socket.on("PlayerIsNotReady", async () => {
                 try {
                     await rateLimiter.consume(address); // consume 1 point per event from IP
 
@@ -455,7 +457,7 @@ export default class GameServer {
             // ----
             // Czar wants to start voting ( all players must be ready ) 
             // ----
-            socket.on("RoomStartVotingRequest",async (room_id) => {
+            socket.on("RoomStartVotingRequest", async (room_id) => {
                 try {
                     await rateLimiter.consume(address); // consume 1 point per event from IP
 
@@ -502,7 +504,7 @@ export default class GameServer {
             // ----
             // Czar selected winner 
             // ----
-            socket.on("RoomSelectWinnerRequest",async (player_id) => {
+            socket.on("RoomSelectWinnerRequest", async (player_id) => {
                 try {
                     await rateLimiter.consume(address); // consume 1 point per event from IP
 
@@ -515,7 +517,7 @@ export default class GameServer {
                         let pWinner = room.players.get(player_id);
                         if (!pWinner) {
                             socket.emit("error", "InvalidEventArgs");
-                        } else if(room.czar.id == pWinner.id) {
+                        } else if (room.czar.id == pWinner.id) {
                             socket.emit("error", "CantSelectCzarAsWinner");
                         } else {
                             room.selectWinner(player_id);
@@ -561,7 +563,7 @@ export default class GameServer {
             // ----
             // After the game ended, the last Czar can send players to lobby
             // ----
-            socket.on("RoomGoBackToLobbyRequest",async () => {
+            socket.on("RoomGoBackToLobbyRequest", async () => {
                 try {
                     await rateLimiter.consume(address); // consume 1 point per event from IP
 
@@ -587,7 +589,7 @@ export default class GameServer {
             // ----
             // Czar fliped a card
             // ----
-            socket.on("RoomFlipCardRequest",async (player_id) => {
+            socket.on("RoomFlipCardRequest", async (player_id) => {
                 try {
                     await rateLimiter.consume(address); // consume 1 point per event from IP
 
@@ -649,8 +651,8 @@ export default class GameServer {
                 room.rotateCzar();
                 const czar = room.czar;
                 // Give selected cards back to the player
-                for(var card of czar.selectedCards) {
-                    czar.deck.set(card.id,card);
+                for (var card of czar.selectedCards) {
+                    czar.deck.set(card.id, card);
                 }
                 room.playerNotReady(czar);
             }
@@ -738,8 +740,8 @@ export default class GameServer {
         });
 
         room.on("RoomCardsDealedPlayer", player => {
-                let socket = this.io.of("/").sockets.get(player.id);
-                if (socket) socket.emit("PlayerDeckUpdated", Array.from(player.deck.values()));
+            let socket = this.io.of("/").sockets.get(player.id);
+            if (socket) socket.emit("PlayerDeckUpdated", Array.from(player.deck.values()));
         });
 
     }

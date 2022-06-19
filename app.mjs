@@ -66,9 +66,21 @@ app.use(cors(corsOptions));
 app.use("*", (req, res, next) => {
     // Log connections to the server
     const method = req.method;
-    const ip = req.headers["x-forwarded-for"].split(",")[0];
+    let ip;
+    if (socket.handshake.headers["x-forwarded-for"] != undefined) {
+        ip = socket.handshake.headers["x-forwarded-for"].split(",")[0];
+    } else {
+        ip = socket.handshake.address;
+    }
+
+    let protocol;
+    if (socket.handshake.headers["x-forwarded-proto"] != undefined) {
+        protocol = socket.handshake.headers["x-forwarded-proto"].split(",")[0];
+    } else {
+        protocol = socket.handshake.address;
+    }
+
     // req.headers["x-forwarded-for"].split(",").forEach(value => console.log(`ip: "${value}"`));
-    const protocol = req.headers["x-forwarded-proto"].split(",")[0];
     const path = req['_parsedUrl'].pathname;
     const userAgent = req.headers["user-agent"];
 
