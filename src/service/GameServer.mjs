@@ -675,7 +675,8 @@ export default class GameServer {
             this.io.of("/").in(roomId).disconnectSockets();
         });
 
-        room.on("RoomStart", (roomJSON) => {
+        room.on("RoomStart", () => {
+            const roomJSON = room.toJSON();
             LoggingSystem.singleton.log("[" + this.constructor.name + "]", "Room started: " + roomJSON.roomId);
             roomCh.emit("RoomStart", roomJSON);
         });
@@ -742,6 +743,11 @@ export default class GameServer {
         room.on("RoomCardsDealedPlayer", player => {
             let socket = this.io.of("/").sockets.get(player.id);
             if (socket) socket.emit("PlayerDeckUpdated", Array.from(player.deck.values()));
+        });
+
+        room.on("PlayerKicked", (player) => {
+            let socket = this.io.of("/").sockets.get(player.id);
+            if (socket) socket.emit("PlayerKicked", Array.from(player.deck.values()));
         });
 
     }

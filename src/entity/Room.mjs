@@ -42,7 +42,7 @@ function getPlayerIndex(player, playerList) {
  */
 
 /**
- * @typedef {"RoomStartChoosing" | "RoomGoBackToLobby" | "AnnouncePlayerIsReady" | "AnnouncePlayerIsNotReady" | "RoomGameFinished" | "AnnounceRoomSelectWinner" | "RoomBlackCardChanged" | "RoomCardsDealed" | "RoomCardsDealedPlayer" | "LobbyRemoveCardpackSuccess" | "LobbyAddCardpackSuccess" | "RoomStart" | "RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged"} GameEvent
+ * @typedef {"RoomStartChoosing" | "RoomGoBackToLobby" | "AnnouncePlayerIsReady" | "AnnouncePlayerIsNotReady" | "RoomGameFinished" | "AnnounceRoomSelectWinner" | "RoomBlackCardChanged" | "RoomCardsDealed" | "RoomCardsDealedPlayer" | "LobbyRemoveCardpackSuccess" | "LobbyAddCardpackSuccess" | "RoomStart" | "RoomRemoved" | "RoomPlayerConnection" | "RoomPlayerDisconnection" | "RoomStatusChanged" | "RoomCzarChanged" | "PlayerKicked"} GameEvent
  */
 
 export default class Room extends EventHandler {
@@ -284,12 +284,13 @@ export default class Room extends EventHandler {
                         else if (white_am >= MIN_WHITE_CARDS_AMOUNT && black_am >= MIN_BLACK_CARDS_AMOUNT) {
                             this.__cards = cardpack.cards;
                             resolve(false);
-                            this.emit("RoomStart", this.toJSON());
-                            // Temporal
+
                             this.resetPlayers();
                             this.setStatus("choosing");
                             this.dealCards(10, true);
                             this.setBlackCard(this.cards.black[0]);
+
+                            this.emit("RoomStart", this.toJSON());
                             // this.setBlackCard(DEBUG_BLACK_CARD);
                         } else {
                             resolve("NotEnoughCards");
@@ -318,6 +319,11 @@ export default class Room extends EventHandler {
         player.ready = false;
         player.selectedCards.length = 0;
         this.emit("AnnouncePlayerIsNotReady", player);
+    }
+
+    kickPlayer(player) {
+        this.emit("PlayerKicked",player);
+        this.removePlayer(player);
     }
 
     /**
