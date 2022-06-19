@@ -67,18 +67,13 @@ app.use("*", (req, res, next) => {
     // Log connections to the server
     const method = req.method;
     let ip;
-    if (socket.handshake.headers["x-forwarded-for"] != undefined) {
-        ip = socket.handshake.headers["x-forwarded-for"].split(",")[0];
+    if (req.headers["x-forwarded-for"] != undefined) {
+        ip = req.headers["x-forwarded-for"].split(",")[0];
     } else {
-        ip = socket.handshake.address;
+        ip = req.ip;
     }
 
-    let protocol;
-    if (socket.handshake.headers["x-forwarded-proto"] != undefined) {
-        protocol = socket.handshake.headers["x-forwarded-proto"].split(",")[0];
-    } else {
-        protocol = socket.handshake.address;
-    }
+    const protocol = req.protocol;
 
     // req.headers["x-forwarded-for"].split(",").forEach(value => console.log(`ip: "${value}"`));
     const path = req['_parsedUrl'].pathname;
@@ -89,10 +84,12 @@ app.use("*", (req, res, next) => {
 });
 
 app.use("*", (req, res, next) => { // Redirect HTTP to HTTPs
-    const protocol = req.headers["x-forwarded-proto"].split(",")[0];
-    if (protocol === "http") {
-        res.redirect(`https://${req.headers.host}${req['_parsedUrl'].pathname}`);
-    } else next();
+    const protocol = req.protocol;
+    //if (protocol === "http") {
+    //    res.redirect(`https://${req.headers.host}${req['_parsedUrl'].pathname}`);
+    //} else next();
+    // Temporal
+    next();
 });
 
 const rateLimiter = new RateLimiterMemory(
