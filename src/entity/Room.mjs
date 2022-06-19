@@ -4,6 +4,7 @@ import EventHandler from "./EventHandler.mjs";
 import Lobby from "./Lobby.mjs";
 import Player from "./Player.mjs";
 import ReplayBuilder from "../util/ReplayBuilder.mjs";
+import LoggingSystem from "../util/LoggingSystem.mjs";
 
 const MIN_WHITE_CARDS_AMOUNT = 30;
 const MIN_BLACK_CARDS_AMOUNT = 30;
@@ -247,7 +248,6 @@ export default class Room extends EventHandler {
     removePlayer(player) {
         if (this._firstHost && player.id == this._firstHost.id) this._firstHost = undefined;
         this.players.delete(player.id);
-        player.leaveRoom();
         this.emit("RoomPlayerDisconnection", player.toJSONSimplified());
     }
 
@@ -256,7 +256,7 @@ export default class Room extends EventHandler {
      */
     remove() {
         this.setStatus("finished");
-        for(const player of this.players) {
+        for(const player of this.players.values()) {
             this.kickPlayer(player);
         }
         this.emit("RoomRemoved", this.toJSON());
@@ -324,9 +324,14 @@ export default class Room extends EventHandler {
         this.emit("AnnouncePlayerIsNotReady", player);
     }
 
+    /**
+     * 
+     * @param {Player} player 
+     */
     kickPlayer(player) {
+        LoggingSystem.singleton.log("[ROOM/" + this.roomId + "]", "Kicked player " + player.name);
         this.emit("PlayerKicked",player);
-        this.removePlayer(player);
+        player.leaveRoom();
     }
 
     /**

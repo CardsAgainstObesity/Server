@@ -672,7 +672,7 @@ export default class GameServer {
             LoggingSystem.singleton.log("[" + this.constructor.name + "]", "Room deleted: " + roomJSON.roomId);
             roomCh.emit("RoomRemoved", roomJSON);
             this.rooms.delete(roomId);
-            this.io.of("/").in(roomId).disconnectSockets();
+            // this.io.of("/").in(roomId).disconnectSockets();
         });
 
         room.on("RoomStart", () => {
