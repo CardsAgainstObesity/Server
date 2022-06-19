@@ -247,6 +247,7 @@ export default class Room extends EventHandler {
     removePlayer(player) {
         if (this._firstHost && player.id == this._firstHost.id) this._firstHost = undefined;
         this.players.delete(player.id);
+        player.leaveRoom();
         this.emit("RoomPlayerDisconnection", player.toJSONSimplified());
     }
 
@@ -255,7 +256,9 @@ export default class Room extends EventHandler {
      */
     remove() {
         this.setStatus("finished");
-        this.players.forEach(p => p.leaveRoom());
+        for(const player of this.players) {
+            this.kickPlayer(player);
+        }
         this.emit("RoomRemoved", this.toJSON());
 
         // TODO: How to dist the replay
